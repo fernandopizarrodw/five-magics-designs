@@ -1,0 +1,2388 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Five Magics Designs | Rust & Bones Edition</title>
+    <meta name="description"
+        content="Remeras personalizadas de Megadeth y Metal. Calidad DTG. Diseños exclusivos en Argentina.">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fivemagicsdesigns.com/">
+    <meta property="og:title" content="Five Magics Designs | Rust & Bones Edition">
+    <meta property="og:description" content="Remeras personalizadas de Megadeth y Metal. Calidad DTG. Diseños exclusivos en Argentina.">
+    <meta property="og:image" content="https://tu-dominio.com/img/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://fivemagicsdesigns.com/">
+    <meta property="twitter:title" content="Five Magics Designs | Rust & Bones Edition">
+    <meta property="twitter:description" content="Remeras personalizadas de Megadeth y Metal. Calidad DTG. Diseños exclusivos en Argentina.">
+    <meta property="twitter:image" content="https://tu-dominio.com/img/twitter-image.jpg">
+
+    <!-- Favicon Genérico (Casco/Calavera sugerido) -->
+    <link rel="icon" href="data:image/svg+xml;utf8,
+  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💀</text>
+  </svg>">
+    <!-- Fuentes Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Bebas+Neue&family=Oswald:wght@300;500;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* --- IDENTITY: "RUST IN PEACE" PALETTE --- */
+        :root {
+            /* Fondos */
+            --bg-body: #050505;
+            --bg-card: #121212;
+
+            /* Tipografía */
+            --text-bone: #F5F5DC;
+            /* Blanco Hueso */
+            --text-muted: #999999;
+
+            /* Acentos de Marca */
+            --rust: #852C0C;
+            /* Óxido Megadeth */
+            --rust-glow: #b83b11;
+            /* Hover */
+            --steel-blue: #003366;
+            /* Contraste */
+
+            /* Fuentes */
+            --font-premium: 'Cinzel', serif;
+            /* Títulos de impacto */
+            --font-title: 'Bebas Neue', sans-serif;
+            --font-sub: 'Oswald', sans-serif;
+            --font-body: 'Inter', sans-serif;
+
+            /* Animación */
+            --orbit-speed: 40s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Scrollbar Personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+            background: #000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--rust);
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-bone);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            opacity: 0;
+            animation: pageFadeIn 1s ease forwards;
+            /* Entrada suave */
+        }
+
+        @keyframes pageFadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* --- SHIPPING BANNER --- */
+        #shipping-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg, #000, var(--rust), #000);
+            color: white;
+            text-align: center;
+            font-family: var(--font-sub);
+            font-size: 1rem;
+            padding: 9px 0;
+            letter-spacing: 1px;
+            font-weight: 900;
+            z-index: 2000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+        }
+
+        #shipping-banner .flag {
+            margin: 0 8px;
+            display: inline-block;
+            width: 18px;
+            height: 12px;
+            vertical-align: -1px;
+            background: linear-gradient(#75aadb 0 33%, #fff 33% 66%, #75aadb 66%);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        #shipping-banner strong {
+            font-size: 1.1rem;
+        }
+
+        /* --- HEADER & NAV --- */
+        nav {
+            position: fixed;
+            top: 35px;
+            width: 100%;
+            z-index: 1000;
+            padding: 10px 4%;
+            /* Ajustado padding para logo imagen */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 5, 0.95);
+            border-bottom: 1px solid rgba(133, 44, 12, 0.3);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        /* LOGO IMAGEN */
+        .logo {
+            display: block;
+            text-decoration: none;
+            line-height: 0;
+            /* Elimina espacio extra debajo de imagen */
+            padding: 5px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+
+        .logo img {
+            height: 60px;
+            /* Tamaño controlado del logo */
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8));
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover img {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 10px rgba(133, 44, 12, 0.4));
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-family: var(--font-sub);
+            letter-spacing: 1px;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--rust-glow);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--rust);
+            transition: 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .btn-header-wa {
+            background: var(--rust);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 2px;
+            font-family: var(--font-sub);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid var(--rust-glow);
+            box-shadow: 0 0 15px rgba(133, 44, 12, 0.2);
+            transition: 0.3s;
+        }
+
+        .btn-header-wa:hover {
+            background: var(--rust-glow);
+            box-shadow: 0 0 25px rgba(189, 62, 17, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* --- HERO ORBITAL (EJE CENTRAL) --- */
+        /* ===== PARALLAX BACKGROUND (OPTIONAL) ===== */
+        /* Descomenta #parallax-bg { display: block !important; } para activar */
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            z-index: 1;
+            will-change: transform;
+        }
+
+        /* Logo en Parallax */
+        .parallax-logo {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            opacity: 0.15;
+            will-change: transform;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .parallax-logo img {
+            width: 100%;
+            height: auto;
+            max-width: 100vw;
+            object-fit: contain;
+            filter: drop-shadow(0 0 30px rgba(133, 44, 12, 0.2));
+        }
+
+        #hero-orbit {
+            height: 110vh;
+            width: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+            /* Profundidad 3D */
+            background: radial-gradient(circle at center, #1f0805 0%, #000 80%);
+            overflow: hidden;
+            border-bottom: 1px solid #222;
+        }
+
+        /* Textura Noise */
+        #hero-orbit::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        /* Texto Overlay */
+        .hero-text-overlay {
+            position: absolute;
+            top: 110px;
+            width: 100%;
+            text-align: center;
+            z-index: 30;
+            pointer-events: none;
+            padding: 0 20px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-h1 {
+            font-family: var(--font-premium);
+            font-size: clamp(1.2rem, 3vw, 2.2rem);
+            color: var(--text-bone);
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .hero-h2 {
+            font-family: var(--font-title);
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            color: var(--rust);
+            text-transform: uppercase;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 1);
+            line-height: 0.9;
+            display: inline-block;
+            will-change: transform;
+        }
+
+        /* Badge Nuevos Lanzamientos */
+        .new-arrivals-label {
+            position: absolute;
+            top: 62%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 25;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--rust);
+            padding: 8px 30px;
+            text-transform: uppercase;
+            font-family: var(--font-sub);
+            font-size: 1rem;
+            letter-spacing: 4px;
+            color: var(--rust);
+            box-shadow: 0 0 30px rgba(133, 44, 12, 0.6), 0 0 60px rgba(133, 44, 12, 0.3);
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        .new-arrivals-label::before {
+            content: '★';
+            margin-right: 10px;
+            color: var(--rust);
+        }
+
+        .new-arrivals-label::after {
+            content: '★';
+            margin-left: 10px;
+            color: var(--rust);
+        }
+
+        /* Contenedor Órbita (Mantiene todo alineado) */
+        .orbit-center {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 420px;
+            transform-style: preserve-3d;
+            z-index: 10;
+        }
+
+        /* Vic Estático */
+        .vic-center {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Placeholder para Vic */
+            background: url('/images/Gemini_Generated_Image_1bx4u21bx4u21bx4.png') no-repeat center center/cover;
+            border-radius: 4px;
+            box-shadow: 
+                0 0 50px rgba(133, 44, 12, 0.8),
+                0 0 100px rgba(133, 44, 12, 0.5),
+                0 0 150px rgba(133, 44, 12, 0.3),
+                inset 0 0 50px rgba(133, 44, 12, 0.2);
+            border: 2px solid rgba(133, 44, 12, 0.8);
+            z-index: 5;
+            animation: vic-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes vic-glow {
+            0%, 100% {
+                box-shadow: 
+                    0 0 50px rgba(133, 44, 12, 0.8),
+                    0 0 100px rgba(133, 44, 12, 0.5),
+                    0 0 150px rgba(133, 44, 12, 0.3),
+                    inset 0 0 50px rgba(133, 44, 12, 0.2);
+            }
+            50% {
+                box-shadow: 
+                    0 0 80px rgba(133, 44, 12, 1),
+                    0 0 150px rgba(133, 44, 12, 0.7),
+                    0 0 200px rgba(133, 44, 12, 0.4),
+                    inset 0 0 70px rgba(133, 44, 12, 0.3);
+            }
+        }
+
+        /* Sistema Solar Giratorio */
+        .solar-system {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            transform-style: preserve-3d;
+            animation: rotateSystem var(--orbit-speed) linear infinite;
+            z-index: 10;
+        }
+
+        .solar-system:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes rotateSystem {
+            0% {
+                transform: translate(-50%, -50%) rotateY(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotateY(360deg);
+            }
+        }
+
+        .orbit-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: 140px;
+            height: 210px;
+            transform-style: preserve-3d;
+            /* Radio de órbita */
+            transform: rotateY(calc(var(--i) * (360deg / var(--total)))) translateZ(480px);
+            cursor: pointer;
+        }
+
+        .orbit-content {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border: 1px solid #333;
+            overflow: hidden;
+            /* Contra-rotación para mirar siempre al frente */
+            animation: counterRotateItem var(--orbit-speed) linear infinite;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+
+        .orbit-content:hover {
+            border-color: var(--rust);
+            box-shadow: 0 0 30px rgba(133, 44, 12, 0.6);
+            transform: scale(1.1);
+        }
+
+        @keyframes counterRotateItem {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(-360deg);
+            }
+        }
+
+        .orbit-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .nav-menu {
+                width: 100%;
+                justify-content: space-between;
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+            #hero-orbit {
+                height: 100vh;
+                padding-top: 140px;
+                overflow: hidden;
+            }
+
+            .hero-text-overlay {
+                top: 110px;
+            }
+
+            .new-arrivals-label {
+                top: 32%;
+            }
+
+            /* Escalar el sistema solar para móviles */
+            .orbit-center {
+                top: 65%;
+                transform: translate(-50%, -50%) scale(0.6);
+            }
+        }
+
+        /* --- CONTENIDO / CATALOGO --- */
+        .content-wrapper {
+            padding-bottom: 0;
+            position: relative;
+            z-index: 10;
+            margin-top: 50px;
+            background: linear-gradient(to bottom, transparent 0%, var(--bg-body) 100px);
+        }
+
+        /* Anclas ajustadas */
+        #slider-albums,
+        #slider-songs,
+        #slider-custom {
+            scroll-margin-top: 140px;
+        }
+
+        .category-row {
+            margin-bottom: 70px;
+            position: relative;
+        }
+
+        .category-header {
+            padding-left: 4%;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--rust);
+            margin-left: 4%;
+            padding-left: 15px;
+        }
+
+        .category-title {
+            font-family: var(--font-sub);
+            font-size: 1.8rem;
+            color: var(--text-bone);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .category-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 5px;
+            font-family: var(--font-body);
+        }
+
+        /* Sliders */
+        .slider-wrapper {
+            position: relative;
+            padding: 0 4%;
+        }
+
+        .slider-container {
+            display: flex;
+            gap: 15px;
+            overflow-x: scroll;
+            padding-bottom: 20px;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+        }
+
+        .slider-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 0;
+            bottom: 20px;
+            width: 60px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.9), transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-bone);
+            font-size: 3rem;
+            cursor: pointer;
+            z-index: 20;
+            border: none;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .slider-arrow:hover {
+            color: var(--rust);
+        }
+
+        .slider-wrapper:hover .slider-arrow {
+            opacity: 1;
+        }
+
+        .arrow-left {
+            left: 0;
+        }
+
+        .arrow-right {
+            right: 0;
+            background: linear-gradient(to left, rgba(0, 0, 0, 0.9), transparent);
+        }
+
+        /* Hint de Scroll */
+        .slider-hint {
+            position: absolute;
+            right: 4%;
+            bottom: 0;
+            transform: translateY(100%);
+            margin-top: 5px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: var(--font-body);
+            pointer-events: none;
+            border: 1px solid #333;
+        }
+
+        .slider-hint-arrow {
+            display: inline-block;
+            animation: hintMove 1.5s infinite ease-in-out;
+            color: var(--rust);
+        }
+
+        @keyframes hintMove {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(4px);
+            }
+        }
+
+        /* Cards Producto */
+        .poster-card {
+            flex: 0 0 auto;
+            width: 180px;
+            height: 270px;
+            background: var(--bg-card);
+            border-radius: 2px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+            overflow: hidden;
+            border: 1px solid #222;
+        }
+
+        .poster-card:hover {
+            transform: scale(1.05);
+            z-index: 100;
+            border-color: var(--text-bone);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Efecto mejorado en hover de tarjetas */
+        .glitch-card:hover {
+            border-color: var(--rust) !important;
+            box-shadow: 
+                0 0 20px rgba(133, 44, 12, 0.6),
+                0 0 40px rgba(133, 44, 12, 0.3),
+                inset 0 0 20px rgba(133, 44, 12, 0.1) !important;
+            animation: none !important;
+        }
+
+        .poster-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.8) grayscale(20%);
+            transition: 0.4s;
+        }
+
+        .poster-card:hover .poster-img {
+            filter: brightness(1.1) grayscale(0%);
+        }
+
+        .poster-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+        }
+
+        .poster-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-bone);
+            text-transform: uppercase;
+            font-family: var(--font-sub);
+        }
+
+        .poster-year {
+            font-size: 0.75rem;
+            color: #aaa;
+        }
+
+        .badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding: 4px 8px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            font-family: var(--font-sub);
+            letter-spacing: 1px;
+            z-index: 2;
+            box-shadow: 0 2px 5px black;
+        }
+
+        .badge-new {
+            background: var(--rust);
+            color: white;
+        }
+
+        .badge-custom {
+            background: var(--steel-blue);
+            color: white;
+        }
+
+        /* --- GUIA DE TALLES --- */
+        #size-guide {
+            background: #0a0a0a;
+            border-top: 1px solid var(--rust);
+            padding: 60px 20px;
+            position: relative;
+        }
+
+        .sg-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .sg-title {
+            font-family: var(--font-premium);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-bone);
+            letter-spacing: 2px;
+        }
+
+        /* Tabs */
+        .sg-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .sg-tab-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: #888;
+            padding: 10px 20px;
+            font-family: var(--font-sub);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .sg-tab-btn:hover {
+            border-color: var(--rust);
+            color: var(--text-bone);
+        }
+
+        .sg-tab-btn.active {
+            background: var(--rust);
+            color: white;
+            border-color: var(--rust);
+            box-shadow: 0 0 15px rgba(133, 44, 12, 0.3);
+        }
+
+        /* Tablas */
+        .sg-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .sg-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sg-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #121212;
+            border: 1px solid #333;
+        }
+
+        .sg-table th,
+        .sg-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+        }
+
+        .sg-table th {
+            background: #1a1a1a;
+            color: var(--rust);
+            font-family: var(--font-premium);
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .sg-table td {
+            color: #ccc;
+            font-family: var(--font-body);
+        }
+
+        .sg-table tr:hover {
+            background: #181818;
+        }
+
+        .sg-note {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 10px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* COMO COMPRAR */
+        #como-comprar {
+            background: #0a0a0a;
+            border-top: 1px solid #222;
+            border-bottom: 3px solid var(--rust);
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .step-item {
+            background: linear-gradient(145deg, #0a0a0a, #151515);
+            padding: 40px 30px;
+            border: 2px solid #333;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .step-item:hover {
+            transform: translateY(-10px);
+            border-color: var(--rust);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .step-num {
+            color: var(--rust);
+            font-size: 3rem;
+            font-family: var(--font-premium);
+            display: block;
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+
+        .step-title {
+            color: var(--text-bone);
+            font-family: var(--font-sub);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+
+        .step-desc {
+            color: #888;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            font-family: var(--font-sub);
+        }
+
+        /* INSTAGRAM FEED */
+        #social-feed {
+            background: #111;
+            padding: 80px 0 40px;
+            text-align: center;
+            margin-top: 40px;
+            border-top: 5px solid #000;
+            clip-path: polygon(0% 20px, 5% 0px, 10% 20px, 15% 5px, 20% 25px, 25% 5px, 30% 20px, 35% 0px, 40% 25px, 45% 5px, 50% 20px, 55% 0px, 60% 25px, 65% 5px, 70% 20px, 75% 0px, 80% 25px, 85% 5px, 90% 20px, 95% 0px, 100% 20px, 100% 100%, 0% 100%);
+        }
+
+        .social-title {
+            font-family: var(--font-premium);
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            color: var(--text-bone);
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .social-item {
+            aspect-ratio: 1/1;
+            background: #222;
+            overflow: hidden;
+            position: relative;
+            display: block;
+            cursor: pointer;
+            filter: grayscale(80%);
+            transition: 0.4s;
+            border: 1px solid #333;
+        }
+
+        .social-item:hover {
+            filter: grayscale(0%);
+            transform: scale(0.98);
+            border-color: var(--rust);
+        }
+
+        .social-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .social-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2rem;
+            text-shadow: 0 2px 5px black;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #050505;
+            color: #444;
+            font-size: 0.8rem;
+            border-top: 1px solid #111;
+            font-family: var(--font-sub);
+            letter-spacing: 1px;
+        }
+
+
+        /* MODAL (CON SPECS GRID) */
+        #modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        #modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: #181818;
+            max-width: 900px;
+            width: 95%;
+            display: flex;
+            border: 1px solid #333;
+            box-shadow: 0 0 100px rgba(133, 44, 12, 0.2);
+            position: relative;
+        }
+
+        @media (max-width: 700px) {
+            .modal-box {
+                flex-direction: column;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+        }
+
+        .modal-img-container {
+            flex: 2;
+            position: relative;
+            min-height: 300px;
+            background: black;
+        }
+
+        .modal-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-info {
+            flex: 3;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .modal-title {
+            font-family: var(--font-premium);
+            font-size: 2.2rem;
+            line-height: 1;
+            margin-bottom: 10px;
+            color: var(--text-bone);
+        }
+
+        .modal-meta {
+            font-size: 0.9rem;
+            color: var(--rust);
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-family: var(--font-sub);
+            letter-spacing: 1px;
+        }
+
+        .modal-desc {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        /* SPECS GRID */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .spec-item {
+            background: #000;
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 2px;
+        }
+
+        .spec-label {
+            color: var(--rust);
+            font-size: 0.7rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+            font-family: var(--font-sub);
+        }
+
+        .spec-value {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .btn-modal {
+            background: var(--rust);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 1rem;
+            font-family: var(--font-sub);
+            font-weight: bold;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.2s;
+            border: 1px solid transparent;
+            display: block;
+            width: 100%;
+        }
+
+        .btn-modal:hover {
+            background: transparent;
+            border-color: var(--rust);
+            color: var(--rust);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            z-index: 2100;
+            line-height: 0.8;
+        }
+
+        /* Carousel Styles */
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0.8; }
+            to { opacity: 1; }
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(133, 44, 12, 0.7);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            padding: 10px 15px;
+            cursor: pointer;
+            z-index: 10;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .carousel-btn:hover {
+            background: var(--rust);
+        }
+
+        .carousel-btn.prev {
+            left: 10px;
+        }
+
+        .carousel-btn.next {
+            right: 10px;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .dot.active {
+            background: var(--rust);
+            border-color: var(--rust);
+        }
+
+        /* Reveal on scroll effects */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Glitch animation on hero subtitle */
+        .hero-h2:hover {
+            animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+            color: var(--rust-glow);
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0)
+            }
+
+            20% {
+                transform: translate(-2px, 2px)
+            }
+
+            40% {
+                transform: translate(-2px, -2px)
+            }
+
+            60% {
+                transform: translate(2px, 2px)
+            }
+
+            80% {
+                transform: translate(2px, -2px)
+            }
+
+            100% {
+                transform: translate(0)
+            }
+        }
+
+        /* Contact chooser */
+        .cta-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .contact-chooser {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: calc(100% + 8px);
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 2px;
+            display: none;
+            min-width: 260px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            padding: 8px;
+            z-index: 1500;
+        }
+
+        .contact-chooser.open {
+            display: block;
+        }
+
+        .contact-option {
+            display: block;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: var(--text-bone);
+            font-family: var(--font-sub);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            border: 1px solid transparent;
+            margin: 4px 0;
+            border-radius: 2px;
+        }
+
+        .contact-option.wa {
+            background: var(--rust);
+        }
+
+        .contact-option.wa:hover {
+            background: var(--rust-glow);
+        }
+
+        .contact-option.ig {
+            background: #111;
+            border-color: #333;
+        }
+
+        .contact-option.ig:hover {
+            border-color: var(--rust);
+            color: var(--rust);
+        }
+
+        .badge-soldout {
+            background: #444;
+            color: #eee;
+        }
+
+        .badge-low {
+            background: #b83b11;
+            color: #fff;
+        }
+
+        /* Para bordes y separadores - efecto corrosión */
+        .corrosion-border {
+            position: relative;
+            padding: 20px;
+            border: 2px solid transparent;
+            background: 
+              linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+              linear-gradient(45deg,
+                transparent 20%,
+                var(--rust) 40%,
+                #8B4513 50%,
+                var(--rust) 60%,
+                transparent 80%) border-box;
+            animation: corrosion-flow 6s ease-in-out infinite;
+            background-size: 200% 200%;
+            will-change: background-position;
+            border-radius: 2px;
+        }
+        .corrosion-border.paused { animation-play-state: paused; }
+        .corrosion-border:hover { animation-play-state: running; }
+
+        @keyframes corrosion-flow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 200%; }
+        }
+
+        /* Efecto de sangre que gotea */
+        .drip-effect { position: relative; overflow: visible; }
+        .drip-effect::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 0;
+            background: linear-gradient(to bottom, var(--rust), transparent);
+            animation: drip 2.2s infinite;
+            border-radius: 0 0 10px 10px;
+            pointer-events: none;
+            will-change: height, opacity;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 0;
+            background: linear-gradient(to bottom, var(--rust), transparent);
+            animation: drip 2.2s infinite;
+            border-radius: 0 0 10px 10px;
+            pointer-events: none;
+            will-change: height, opacity;
+        }
+        @keyframes drip {
+            0%, 20% { height: 0; opacity: 0; }
+            30% { height: 20px; opacity: 1; }
+            100% { height: 40px; opacity: 0; }
+        }
+
+        /* Aplicaciones controladas */
+        .modal-box.corro-wrap { padding: 0; border: none; }
+        #contact-chooser.corro-wrap { border: none; }
+
+        /* Respeto por reduce motion */
+        @media (prefers-reduced-motion: reduce) {
+            .corrosion-border { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+            .drip-effect::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+        }
+    /* Para subtítulos o información importante */
+        .scanner-text {
+            position: relative;
+            overflow: hidden;
+            padding: 5px 0;
+        }
+        .scanner-text::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(133, 44, 12, 0.3),
+                rgba(245, 245, 220, 0.6),
+                rgba(133, 44, 12, 0.3),
+                transparent);
+            animation: scanner-beam 3s ease-in-out infinite;
+        }
+        @keyframes scanner-beam {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+        /* Efecto de terminal typing */
+        .terminal-typing {
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--rust);
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: var(--rust); }
+        }
+
+        /* Para títulos importantes */
+        .burning-text {
+            position: relative;
+            display: inline-block;
+            color: var(--rust);
+        }
+
+        /* Efecto de chispas */
+        .spark {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--rust-glow);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: spark-fly 0.5s linear forwards;
+        }
+        @keyframes spark-fly {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        /* Efecto Glitch para el logo */
+        .logo-glitch {
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-glitch::before,
+        .logo-glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .logo-glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--rust);
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+
+        .logo-glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 var(--steel-blue);
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim2 1s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(31px, 9999px, 94px, 0); }
+            5% { clip: rect(112px, 9999px, 76px, 0); }
+            10% { clip: rect(85px, 9999px, 77px, 0); }
+            15% { clip: rect(27px, 9999px, 97px, 0); }
+            20% { clip: rect(64px, 9999px, 98px, 0); }
+            100% { clip: rect(58px, 9999px, 98px, 0); }
+        }
+
+        /* Parpadeo aleatorio estilo señal vieja */
+        @keyframes random-flicker {
+            0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 72%, 100% {
+                opacity: 1;
+            }
+            20%, 21.999%, 63%, 63.999%, 65%, 71.999% {
+                opacity: 0.4;
+            }
+        }
+
+        /* Efecto de tinta que se seca */
+        .dry-ink {
+            position: relative;
+        }
+
+        .dry-ink::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, 
+                transparent 0%, 
+                rgba(133, 44, 12, 0.1) 10%, 
+                transparent 20%,
+                rgba(133, 44, 12, 0.05) 30%,
+                transparent 40%,
+                rgba(133, 44, 12, 0.03) 50%,
+                transparent 100%);
+            pointer-events: none;
+            animation: ink-drying 8s linear infinite;
+        }
+
+        @keyframes ink-drying {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Partículas flotantes (Efecto Ceniza) */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(ellipse, rgba(245, 245, 220, 0.08), rgba(245, 245, 220, 0.02));
+            border-radius: 50%;
+            animation: float-particle linear infinite;
+            filter: blur(0.5px);
+        }
+
+        .particle:nth-child(odd) {
+            background: radial-gradient(ellipse, rgba(133, 44, 12, 0.06), rgba(133, 44, 12, 0.01));
+        }
+
+        .particle:nth-child(3n) {
+            background: radial-gradient(ellipse, rgba(0, 51, 102, 0.04), rgba(0, 51, 102, 0.01));
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Contenedor de Partículas Flotantes -->
+    <div class="particles-container" id="particles-container"></div>
+
+    <!-- SHIPPING BANNER -->
+    <div id="shipping-banner">🇦🇷<span class="flag"></span> <strong>ENVÍO GRATIS A TODO EL PAÍS</strong> <span
+            class="flag"></span>🇦🇷</div>
+
+    <!-- NAVBAR -->
+    <nav>
+        <a href="#" class="logo logo-glitch" data-text="FMD">
+            <img src="/images/BRANDING NEW LOGO/8.png" alt="Five Magics Designs Logo"
+                class="logo-img">
+        </a>
+        <div class="nav-menu">
+            <a href="#slider-albums" class="nav-link">Álbumes</a>
+            <a href="#slider-songs" class="nav-link">Hits</a>
+            <a href="#slider-custom" class="nav-link">Custom</a>
+            <a href="https://wa.me/5491112345678" target="_blank" class="btn-header-wa">WhatsApp</a>
+        </div>
+    </nav>
+
+    <!-- HERO 3D -->
+    <section id="hero-orbit">
+        <!-- Fondo con Parallax (DESCOMENTA PARA USAR) -->
+        <div class="parallax-bg" id="parallax-bg" style="background-image: url('https://placehold.co/1920x1200/050505/050505');"></div>
+        
+        <!-- Logo en Parallax (REEMPLAZA LA URL CON TU LOGO) -->
+        <div class="parallax-logo" id="parallax-logo">
+            <img src="/images/BRANDING NEW LOGO/PRESENTACION FINAL.jpg" alt="Logo Parallax">
+        </div>
+        
+        <div class="hero-text-overlay">
+            <h1 class="hero-h1">BIENVENIDOS A LA CASA DE FIVE MAGICS DESIGNS</h1>
+            <h2 class="hero-h2 burning-text">VESTITE DE GALA PARA LA DESPEDIDA.</h2>
+        </div>
+
+        <div class="new-arrivals-label drip-effect">NUEVOS LANZAMIENTOS</div>
+
+        <div class="orbit-center">
+            <!-- VIC STATIC CENTER -->
+            <div class="vic-center"></div>
+            <!-- SOLAR SYSTEM ROTATING -->
+            <div class="solar-system" id="solar-system"></div>
+        </div>
+    </section>
+
+    <!-- CATALOGO -->
+    <div class="content-wrapper">
+
+        <!-- Fila 1: Álbumes -->
+        <div class="category-row reveal-on-scroll" id="slider-albums">
+            <div class="category-header slide-in-left">
+                <h3 class="category-title burning-text">Discografía Oficial</h3>
+                <div class="category-subtitle scanner-text">La historia del Thrash en tu pecho</div>
+            </div>
+            <div class="slider-wrapper">
+                <button class="slider-arrow arrow-left"
+                    onclick="scrollSlider('slider-albums-container', -300)">&#8249;</button>
+                <div class="slider-container" id="slider-albums-container"></div>
+                <button class="slider-arrow arrow-right"
+                    onclick="scrollSlider('slider-albums-container', 300)">&#8250;</button>
+                <div class="slider-hint">Deslizá para ver más <span class="slider-hint-arrow">➜</span></div>
+            </div>
+        </div>
+
+        <!-- Fila 2: Canciones -->
+        <div class="category-row reveal-on-scroll" id="slider-songs">
+            <div class="category-header slide-in-left">
+                <h3 class="category-title burning-text" style="border-color: var(--steel-blue);">Himnos & Hits</h3>
+                <div class="category-subtitle scanner-text">Setlist de la despedida</div>
+            </div>
+            <div class="slider-wrapper">
+                <button class="slider-arrow arrow-left"
+                    onclick="scrollSlider('slider-songs-container', -300)">&#8249;</button>
+                <div class="slider-container" id="slider-songs-container"></div>
+                <button class="slider-arrow arrow-right"
+                    onclick="scrollSlider('slider-songs-container', 300)">&#8250;</button>
+                <div class="slider-hint">Deslizá para ver más <span class="slider-hint-arrow">➜</span></div>
+            </div>
+        </div>
+
+        <!-- Fila 3: Músicos -->
+        <div class="category-row reveal-on-scroll" id="slider-musicians">
+            <div class="category-header slide-in-left">
+                <h3 class="category-title burning-text">Leyendas</h3>
+                <div class="category-subtitle scanner-text">Dave, Marty, Nick & Más</div>
+            </div>
+            <div class="slider-wrapper">
+                <button class="slider-arrow arrow-left"
+                    onclick="scrollSlider('slider-musicians-container', -300)">&#8249;</button>
+                <div class="slider-container" id="slider-musicians-container"></div>
+                <button class="slider-arrow arrow-right"
+                    onclick="scrollSlider('slider-musicians-container', 300)">&#8250;</button>
+                <div class="slider-hint">Deslizá para ver más <span class="slider-hint-arrow">➜</span></div>
+            </div>
+        </div>
+
+        <!-- Fila 4: Custom -->
+        <div class="category-row reveal-on-scroll" id="slider-custom">
+            <div class="category-header slide-in-left">
+                <h3 class="category-title burning-text" style="border-color: #d4af37;">Custom Shop</h3>
+                <div class="category-subtitle scanner-text">La imaginación es el límite</div>
+            </div>
+            <div class="slider-wrapper">
+                <button class="slider-arrow arrow-left"
+                    onclick="scrollSlider('slider-custom-container', -300)">&#8249;</button>
+                <div class="slider-container" id="slider-custom-container"></div>
+                <button class="slider-arrow arrow-right"
+                    onclick="scrollSlider('slider-custom-container', 300)">&#8250;</button>
+                <div class="slider-hint">Deslizá para ver más <span class="slider-hint-arrow">➜</span></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- GUÍA DE TALLES (NUEVA SECCIÓN) -->
+    <section id="size-guide" class="reveal-on-scroll">
+        <div class="sg-container">
+            <h2 class="sg-title">GUÍA DE ARMADURAS</h2>
+
+            <div class="sg-tabs">
+                <button class="sg-tab-btn active" onclick="openTab(event, 'tab-men')">CLÁSICA (HOMBRE)</button>
+                <button class="sg-tab-btn" onclick="openTab(event, 'tab-women')">CLÁSICA (MUJER)</button>
+                <button class="sg-tab-btn" onclick="openTab(event, 'tab-oversize')">OVERSIZE (UNISEX)</button>
+            </div>
+
+            <!-- TABLA HOMBRE REGULAR -->
+            <div id="tab-men" class="sg-content active">
+                <table class="sg-table">
+                    <thead>
+                        <tr>
+                            <th>TALLE</th>
+                            <th>PECHO (cm)</th>
+                            <th>LARGO (cm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>S</td>
+                            <td>52</td>
+                            <td>75</td>
+                        </tr>
+                        <tr>
+                            <td>M</td>
+                            <td>54</td>
+                            <td>77</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>56</td>
+                            <td>79</td>
+                        </tr>
+                        <tr>
+                            <td>XL</td>
+                            <td>58</td>
+                            <td>81</td>
+                        </tr>
+                        <tr>
+                            <td>2XL</td>
+                            <td>60</td>
+                            <td>83</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="sg-note">* Medidas aproximadas, pueden variar hasta un 5%.</p>
+            </div>
+
+            <!-- TABLA MUJER REGULAR -->
+            <div id="tab-women" class="sg-content">
+                <table class="sg-table">
+                    <thead>
+                        <tr>
+                            <th>TALLE</th>
+                            <th>PECHO (cm)</th>
+                            <th>LARGO (cm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>S</td>
+                            <td>47</td>
+                            <td>61</td>
+                        </tr>
+                        <tr>
+                            <td>M</td>
+                            <td>49</td>
+                            <td>63</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>51</td>
+                            <td>65</td>
+                        </tr>
+                        <tr>
+                            <td>XL</td>
+                            <td>53</td>
+                            <td>67</td>
+                        </tr>
+                        <tr>
+                            <td>2XL</td>
+                            <td>55</td>
+                            <td>69</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="sg-note">* Medidas aproximadas, pueden variar hasta un 5%.</p>
+            </div>
+
+            <!-- TABLA OVERSIZE UNISEX -->
+            <div id="tab-oversize" class="sg-content">
+                <table class="sg-table">
+                    <thead>
+                        <tr>
+                            <th>TALLE</th>
+                            <th>PECHO (cm)</th>
+                            <th>LARGO (cm)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2XS</td>
+                            <td>55</td>
+                            <td>69</td>
+                        </tr>
+                        <tr>
+                            <td>XS</td>
+                            <td>57</td>
+                            <td>71</td>
+                        </tr>
+                        <tr>
+                            <td>S</td>
+                            <td>59</td>
+                            <td>73</td>
+                        </tr>
+                        <tr>
+                            <td>M</td>
+                            <td>61</td>
+                            <td>75</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>63</td>
+                            <td>77</td>
+                        </tr>
+                        <tr>
+                            <td>XL</td>
+                            <td>66</td>
+                            <td>79</td>
+                        </tr>
+                        <tr>
+                            <td>2XL</td>
+                            <td>69</td>
+                            <td>81</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="sg-note">* Medidas aproximadas, pueden variar hasta un 5%.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN CÓMO COMPRAR -->
+    <section id="como-comprar" class="reveal-on-scroll">
+        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <h2 class="category-title"
+                style="border: none; padding: 0; text-align: center; font-size: 2.5rem; margin-bottom: 40px; font-family: var(--font-premium);">
+                Cómo comprar tu remera FMD</h2>
+
+            <div class="steps-grid">
+                <div class="step-item">
+                    <span class="step-num">01</span>
+                    <h4 class="step-title">Elegís tu diseño</h4>
+                    <p class="step-desc">Explorá el catálogo y encontrá tu armadura favorita.</p>
+                </div>
+                <div class="step-item">
+                    <span class="step-num">02</span>
+                    <h4 class="step-title">Contacto</h4>
+                    <p class="step-desc">Me escribís por WhatsApp con talle, color y ubicación.</p>
+                </div>
+                <div class="step-item">
+                    <span class="step-num">03</span>
+                    <h4 class="step-title">Confirmación</h4>
+                    <p class="step-desc">Te confirmo el precio final con envío incluido.</p>
+                </div>
+                <div class="step-item">
+                    <span class="step-num">04</span>
+                    <h4 class="step-title">Producción</h4>
+                    <p class="step-desc">Pago → Producción (5-7 días) → Envío a todo el país.</p>
+                </div>
+            </div>
+
+            <div class="cta-wrapper">
+                <button id="cta-comprar" type="button" class="btn-header-wa"
+                    style="font-size: 1.2rem; padding: 15px 40px; display: inline-block;">
+                    Quiero encargar ahora
+                </button>
+                <div id="contact-chooser" class="contact-chooser corro-wrap corrosion-border paused">
+                    <a id="cta-wa" class="contact-option wa" target="_blank">WhatsApp</a>
+                    <a id="cta-ig" class="contact-option ig" target="_blank">Instagram</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOCIAL FEED -->
+    <section id="social-feed" class="reveal-on-scroll">
+        <h2 class="social-title">@FIVEMAGICS.DESIGNS</h2>
+        <div class="social-grid">
+            <a href="https://instagram.com/fivemagicsdesigns" target="_blank" class="social-item"><img
+                    src="https://placehold.co/400x400/111/333?text=POST+1" alt="Insta">
+                <div class="social-icon">📷</div>
+            </a>
+            <a href="https://instagram.com/fivemagicsdesigns" target="_blank" class="social-item"><img
+                    src="https://placehold.co/400x400/222/444?text=POST+2" alt="Insta">
+                <div class="social-icon">📷</div>
+            </a>
+            <a href="https://instagram.com/fivemagicsdesigns" target="_blank" class="social-item"><img
+                    src="https://placehold.co/400x400/151515/333?text=POST+3" alt="Insta">
+                <div class="social-icon">📷</div>
+            </a>
+            <a href="https://instagram.com/fivemagicsdesigns" target="_blank" class="social-item"><img
+                    src="https://placehold.co/400x400/1a1a1a/555?text=POST+4" alt="Insta">
+                <div class="social-icon">📷</div>
+            </a>
+            <a href="https://instagram.com/fivemagicsdesigns" target="_blank" class="social-item"><img
+                    src="https://placehold.co/400x400/000/333?text=POST+5" alt="Insta">
+                <div class="social-icon">📷</div>
+            </a>
+        </div>
+    </section>
+
+    <footer>&copy; 2025 Five Magics Designs. Vestite de Gala para la Despedida.</footer>
+
+    <!-- MODAL (CON SPECS GRID) -->
+    <div id="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div class="modal-box corro-wrap corrosion-border paused">
+            <div class="modal-img-container">
+                <div class="carousel-wrapper">
+                    <img id="m-img" src="" alt="" class="carousel-image">
+                    <div class="carousel-dots" id="carousel-dots"></div>
+                    <button class="carousel-btn prev" onclick="prevImage()">&#10094;</button>
+                    <button class="carousel-btn next" onclick="nextImage()">&#10095;</button>
+                </div>
+            </div>
+            <div class="modal-info">
+                <h2 id="m-title" class="modal-title">TITULO</h2>
+                <div class="modal-meta">
+                    <span id="m-year">AÑO</span>
+                    <span>|</span>
+                    <span id="m-type">TIPO</span>
+                </div>
+                <p id="m-desc" class="modal-desc">Descripción...</p>
+
+                <!-- SPECS GRID -->
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <div class="spec-label">TÉCNICA</div>
+                        <div class="spec-value">DTG Premium</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">TELA</div>
+                        <div class="spec-value">Algodón 24/1</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">TALLES</div>
+                        <div class="spec-value">S a XXL</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">COLORES</div>
+                        <div class="spec-value">Negro / Blanco</div>
+                    </div>
+                </div>
+
+                <a id="m-btn" href="#" target="_blank" class="btn-modal">
+                    PEDIR POR WHATSAPP
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const WHATSAPP_BASE = "https://wa.me/5491112345678";
+        const CTA_MSG = "Hola FMD, quiero encargar una remera. Te paso mi idea / modelo, talle, color y ubicación.";
+
+        // CTA CONFIG
+        const ctaBtn = document.getElementById('cta-comprar');
+        const chooser = document.getElementById('contact-chooser');
+        const IG_PROFILE = 'fivemagicsdesigns';
+        const IG_URL = `https://instagram.com/${IG_PROFILE}`;
+        const ctaWa = document.getElementById('cta-wa');
+        const ctaIg = document.getElementById('cta-ig');
+
+        if (ctaWa) ctaWa.href = `${WHATSAPP_BASE}?text=${encodeURIComponent(CTA_MSG)}`;
+        if (ctaIg) ctaIg.href = IG_URL;
+        if (ctaBtn && chooser) {
+            ctaBtn.onclick = (e) => {
+                e.preventDefault();
+                chooser.classList.toggle('open');
+            };
+            // cerrar si clickea afuera
+            document.addEventListener('click', (e) => {
+                if (!chooser.contains(e.target) && e.target !== ctaBtn) {
+                    chooser.classList.remove('open');
+                }
+            });
+        }
+
+        // TABS LOGIC
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("sg-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            tablinks = document.getElementsByClassName("sg-tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            // Trigger reflow for animation
+            void document.getElementById(tabName).offsetWidth;
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.className += " active";
+        }
+
+
+        // Reveal on scroll observer to toggle .visible
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // una vez visible, dejar de observar para no reanimar constantemente
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        // Observar secciones con reveal y los headers
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+        document.querySelectorAll('.category-header').forEach(el => observer.observe(el));
+
+        // --- BASE DE DATOS CON STOCK ---
+        const db = [
+            // ALBUMES
+            { id: 1, category: "Album", year: "1985", name: "Killing Is My Business – Skull Tee", img: "https://placehold.co/300x450/111/F5F5DC?text=KIMB", img_design: "https://placehold.co/300x450/111/F5F5DC?text=KIMB+DESIGN", img_zoom: "https://placehold.co/300x450/111/F5F5DC?text=KIMB+ZOOM", desc: "Remera negra de algodón 24/1 con el arte crudo del debut. Vic Rattlehead en su forma más primitiva. Ideal para fans de la vieja escuela.", stock: 10 },
+            { id: 2, category: "Album", year: "1986", name: "Peace Sells – UN Fire Tee", img: "https://placehold.co/300x450/852C0C/FFF?text=PEACE", img_design: "https://placehold.co/300x450/852C0C/FFF?text=PEACE+DESIGN", img_zoom: "https://placehold.co/300x450/852C0C/FFF?text=PEACE+ZOOM", desc: "La remera definitiva de Megadeth. Vic Rattlehead frente a la ONU en llamas. Colores naranjas intensos sobre tela negra.", stock: 3 },
+            { id: 3, category: "Album", year: "1988", name: "So Far, So Good – Moon Tee", img: "https://placehold.co/300x450/333/FFF?text=SFSGSW", img_design: "https://placehold.co/300x450/333/FFF?text=SFSGSW+DESIGN", img_zoom: "https://placehold.co/300x450/333/FFF?text=SFSGSW+ZOOM", desc: "Remera negra con Vic bajo la luna llena. Estética oscura y rebelde, perfecta para combinar con campera de cuero.", stock: 0 },
+            { id: 4, category: "Album", year: "1990", name: "Rust in Peace – Nuclear Green Tee", img: "https://placehold.co/300x450/1a1f24/FFF?text=RUST", img_design: "https://placehold.co/300x450/1a1f24/FFF?text=RUST+DESIGN", img_zoom: "https://placehold.co/300x450/1a1f24/FFF?text=RUST+ZOOM", desc: "La joya del metal técnico hecha remera. Estampa de Vic en el Hangar 18 con detalles radioactivos.", stock: 15 },
+            { id: 5, category: "Album", year: "1992", name: "Countdown – Electric Chair Tee", img: "https://placehold.co/300x450/332200/FFF?text=COUNTDOWN", img_design: "https://placehold.co/300x450/332200/FFF?text=COUNTDOWN+DESIGN", img_zoom: "https://placehold.co/300x450/332200/FFF?text=COUNTDOWN+ZOOM", desc: "Arte conceptual del álbum más exitoso. Tonos sepia y detalles macabros." },
+            { id: 6, category: "Album", year: "1994", name: "Youthanasia – Hanging Babies Tee", img: "https://placehold.co/300x450/222/FFF?text=YOUTHANASIA", img_design: "https://placehold.co/300x450/222/FFF?text=YOUTHANASIA+DESIGN", img_zoom: "https://placehold.co/300x450/222/FFF?text=YOUTHANASIA+ZOOM", desc: "Remera con diseño surrealista y melancólico. Colores suaves y definición HD." },
+            { id: 7, category: "Album", year: "1997", name: "Cryptic Writings – Voodoo Tee", img: "https://placehold.co/300x450/111/FFF?text=CRYPTIC", img_design: "https://placehold.co/300x450/111/FFF?text=CRYPTIC+DESIGN", img_zoom: "https://placehold.co/300x450/111/FFF?text=CRYPTIC+ZOOM", desc: "El símbolo del caos estilizado. Minimalista y moderna." },
+            { id: 8, category: "Album", year: "1999", name: "Risk – Cat Tee", img: "https://placehold.co/300x450/000/FFF?text=RISK", img_design: "https://placehold.co/300x450/000/FFF?text=RISK+DESIGN", img_zoom: "https://placehold.co/300x450/000/FFF?text=RISK+ZOOM", desc: "La portada del gato en la trampera. Pieza de colección." },
+            { id: 9, category: "Album", year: "2001", name: "World Needs a Hero – Alien Vic Tee", img: "https://placehold.co/300x450/300/FFF?text=TWNAH", img_design: "https://placehold.co/300x450/300/FFF?text=TWNAH+DESIGN", img_zoom: "https://placehold.co/300x450/300/FFF?text=TWNAH+ZOOM", desc: "Vic saliendo del pecho del alien. Gore y sci-fi." },
+            { id: 10, category: "Album", year: "2004", name: "System Has Failed – Supreme Court Tee", img: "https://placehold.co/300x450/444/FFF?text=SYSTEM", img_design: "https://placehold.co/300x450/444/FFF?text=SYSTEM+DESIGN", img_zoom: "https://placehold.co/300x450/444/FFF?text=SYSTEM+ZOOM", desc: "Vic vendiendo sentencias. Arte político y detallado." },
+            { id: 11, category: "Album", year: "2007", name: "United Abominations – Angel Tee", img: "https://placehold.co/300x450/111/FFF?text=UA", img_design: "https://placehold.co/300x450/111/FFF?text=UA+DESIGN", img_zoom: "https://placehold.co/300x450/111/FFF?text=UA+ZOOM", desc: "El ángel de la ONU en llamas. Diseño explosivo." },
+            { id: 12, category: "Album", year: "2009", name: "Endgame – Ant Farm Tee", img: "https://placehold.co/300x450/000/FFF?text=ENDGAME", img_design: "https://placehold.co/300x450/000/FFF?text=ENDGAME+DESIGN", img_zoom: "https://placehold.co/300x450/000/FFF?text=ENDGAME+ZOOM", desc: "Concepto distópico de vigilancia. Blanco y negro puro." },
+            { id: 13, category: "Album", year: "2011", name: "TH1RT3EN – Candles Tee", img: "https://placehold.co/300x450/333/FFF?text=13", img_design: "https://placehold.co/300x450/333/FFF?text=13+DESIGN", img_zoom: "https://placehold.co/300x450/333/FFF?text=13+ZOOM", desc: "Vic de espaldas con las velas. Misterioso y oscuro." },
+            { id: 14, category: "Album", year: "2013", name: "Super Collider – Accelerator Tee", img: "https://placehold.co/300x450/222/FFF?text=SUPER", img_design: "https://placehold.co/300x450/222/FFF?text=SUPER+DESIGN", img_zoom: "https://placehold.co/300x450/222/FFF?text=SUPER+ZOOM", desc: "El colisionador de partículas. Diseño geométrico." },
+            { id: 15, category: "Album", year: "2016", name: "Dystopia – Cyborg Vic Tee", img: "https://placehold.co/300x450/003366/FFF?text=DYSTOPIA", img_design: "https://placehold.co/300x450/003366/FFF?text=DYSTOPIA+DESIGN", img_zoom: "https://placehold.co/300x450/003366/FFF?text=DYSTOPIA+ZOOM", desc: "Vic futurista con katana. Estética cyberpunk." },
+            { id: 16, category: "Album", year: "2022", name: "The Sick, the Dying – Plague Tee", img: "https://placehold.co/300x450/003300/FFF?text=SICK", img_design: "https://placehold.co/300x450/003300/FFF?text=SICK+DESIGN", img_zoom: "https://placehold.co/300x450/003300/FFF?text=SICK+ZOOM", desc: "Arte medieval de la peste. Detalles increíbles full color." },
+            { id: 17, category: "Album", year: "2026", name: "Megadeth 2026 – Future Tee", img: "https://placehold.co/300x450/852C0C/FFF?text=FUTURE", img_design: "https://placehold.co/300x450/852C0C/FFF?text=FUTURE+DESIGN", img_zoom: "https://placehold.co/300x450/852C0C/FFF?text=FUTURE+ZOOM", desc: "Pre-order del futuro diseño." },
+            // SONGS
+            { id: 18, category: "Song", year: "1990", name: "Holy Wars – Battlefield Tee", img: "https://placehold.co/300x450/111/FFF?text=HOLY+WARS", img_design: "https://placehold.co/300x450/111/FFF?text=HOLY+WARS+DESIGN", img_zoom: "https://placehold.co/300x450/111/FFF?text=HOLY+WARS+ZOOM", desc: "Inspirada en las cruzadas. Vic liderando la batalla." },
+            { id: 19, category: "Song", year: "1990", name: "Hangar 18 – Alien Autopsy Tee", img: "https://placehold.co/300x450/1a1f24/FFF?text=HANGAR+18", img_design: "https://placehold.co/300x450/1a1f24/FFF?text=HANGAR+18+DESIGN", img_zoom: "https://placehold.co/300x450/1a1f24/FFF?text=HANGAR+18+ZOOM", desc: "Extraterrestres y conspiraciones. Tonos verdes y azules." },
+            { id: 20, category: "Song", year: "1990", name: "Tornado of Souls – Storm Tee", img: "https://placehold.co/300x450/000033/FFF?text=TORNADO", img_design: "https://placehold.co/300x450/000033/FFF?text=TORNADO+DESIGN", img_zoom: "https://placehold.co/300x450/000033/FFF?text=TORNADO+ZOOM", desc: "Un vórtice de almas azules. Representación del solo más épico." },
+            { id: 21, category: "Song", year: "1986", name: "Wake Up Dead – Zombies Tee", img: "https://placehold.co/300x450/000/00F?text=WAKE+UP", img_design: "https://placehold.co/300x450/000/00F?text=WAKE+UP+DESIGN", img_zoom: "https://placehold.co/300x450/000/00F?text=WAKE+UP+ZOOM", desc: "Estilo cómic de terror ochentero. Zombies y graffiti." },
+            { id: 22, category: "Song", year: "1992", name: "Symphony of Destruction – Puppet Tee", img: "https://placehold.co/300x450/330000/FFF?text=SYMPHONY", img_design: "https://placehold.co/300x450/330000/FFF?text=SYMPHONY+DESIGN", img_zoom: "https://placehold.co/300x450/330000/FFF?text=SYMPHONY+ZOOM", desc: "El director de orquesta del caos. Elegante y destructiva." },
+            { id: 23, category: "Song", year: "1994", name: "A Tout Le Monde – Rose Tee", img: "https://placehold.co/300x450/222/FFF?text=A+TOUT", img_design: "https://placehold.co/300x450/222/FFF?text=A+TOUT+DESIGN", img_zoom: "https://placehold.co/300x450/222/FFF?text=A+TOUT+ZOOM", desc: "Diseño gótico y romántico. Rosas y calaveras." },
+            { id: 24, category: "Song", year: "1986", name: "The Conjuring – Ritual Tee", img: "https://placehold.co/300x450/300/FFF?text=CONJURING", img_design: "https://placehold.co/300x450/300/FFF?text=CONJURING+DESIGN", img_zoom: "https://placehold.co/300x450/300/FFF?text=CONJURING+ZOOM", desc: "Simbología oculta y magia negra." },
+            { id: 25, category: "Song", year: "1988", name: "In My Darkest Hour – Grief Tee", img: "https://placehold.co/300x450/000/FFF?text=DARKEST", img_design: "https://placehold.co/300x450/000/FFF?text=DARKEST+DESIGN", img_zoom: "https://placehold.co/300x450/000/FFF?text=DARKEST+ZOOM", desc: "Minimalista y oscura. Homenaje emotivo." },
+            { id: 26, category: "Song", year: "1985", name: "Mechanix – Garage Tee", img: "https://placehold.co/300x450/555/FFF?text=MECHANIX", img_design: "https://placehold.co/300x450/555/FFF?text=MECHANIX+DESIGN", img_zoom: "https://placehold.co/300x450/555/FFF?text=MECHANIX+ZOOM", desc: "Estilo taller mecánico vintage. Grasa y velocidad." },
+            { id: 27, category: "Song", year: "2016", name: "The Threat Is Real – Dystopian Tee", img: "https://placehold.co/300x450/003366/FFF?text=THREAT", img_design: "https://placehold.co/300x450/003366/FFF?text=THREAT+DESIGN", img_zoom: "https://placehold.co/300x450/003366/FFF?text=THREAT+ZOOM", desc: "Vic cortando cabezas en un futuro desolador." },
+            // MUSICIANS
+            { id: 28, category: "Musician", year: "Leyenda", name: "Dave Mustaine – General Tee", img: "https://placehold.co/300x450/852C0C/FFF?text=DAVE", img_design: "https://placehold.co/300x450/852C0C/FFF?text=DAVE+DESIGN", img_zoom: "https://placehold.co/300x450/852C0C/FFF?text=DAVE+ZOOM", desc: "El Colorado con su Flying V. El líder indiscutido." },
+            { id: 29, category: "Musician", year: "Leyenda", name: "Marty Friedman – Tornado Tee", img: "https://placehold.co/300x450/990099/FFF?text=MARTY", img_design: "https://placehold.co/300x450/990099/FFF?text=MARTY+DESIGN", img_zoom: "https://placehold.co/300x450/990099/FFF?text=MARTY+ZOOM", desc: "Homenaje al guitarrista exótico. Estilo japonés." },
+            { id: 30, category: "Musician", year: "Leyenda", name: "Nick Menza – Drum God Tee", img: "https://placehold.co/300x450/000099/FFF?text=MENZA", img_design: "https://placehold.co/300x450/000099/FFF?text=MENZA+DESIGN", img_zoom: "https://placehold.co/300x450/000099/FFF?text=MENZA+ZOOM", desc: "El motor de la banda. Diseño dinámico." },
+            { id: 31, category: "Musician", year: "Leyenda", name: "David Ellefson – Bass Tee", img: "https://placehold.co/300x450/006600/FFF?text=JUNIOR", img_design: "https://placehold.co/300x450/006600/FFF?text=JUNIOR+DESIGN", img_zoom: "https://placehold.co/300x450/006600/FFF?text=JUNIOR+ZOOM", desc: "El bajista original. Estampa clásica de los 90s." },
+            { id: 32, category: "Musician", year: "Actual", name: "Kiko Loureiro – Brazil Tee", img: "https://placehold.co/300x450/333/FFF?text=KIKO", img_design: "https://placehold.co/300x450/333/FFF?text=KIKO+DESIGN", img_zoom: "https://placehold.co/300x450/333/FFF?text=KIKO+ZOOM", desc: "El virtuoso moderno. Diseño técnico." },
+            // CUSTOM
+            { id: 33, category: "Custom", year: "Tu Idea", name: "CUSTOM SHOP – Tu Diseño", img: "https://placehold.co/300x450/d4af37/000?text=CUSTOM", img_design: "https://placehold.co/300x450/d4af37/000?text=CUSTOM+DESIGN", img_zoom: "https://placehold.co/300x450/d4af37/000?text=CUSTOM+ZOOM", desc: "¿No encontraste lo que buscabas? Mandanos tu idea." },
+            { id: 34, category: "Custom", year: "Restauración", name: "RESCATE RETRO – Restauración", img: "https://placehold.co/300x450/555/FFF?text=RETRO", img_design: "https://placehold.co/300x450/555/FFF?text=RETRO+DESIGN", img_zoom: "https://placehold.co/300x450/555/FFF?text=RETRO+ZOOM", desc: "¿Esa remera que perdiste en el 95? La reconstruimos." }
+        ];
+
+        // --- ORBITA (Fix: Use IDs + setProperty) ---
+        const solarSystem = document.getElementById('solar-system');
+        const orbitIds = [2, 4, 18, 19, 28, 33];
+        const orbitItems = db.filter(item => orbitIds.includes(item.id));
+
+        orbitItems.forEach((d, i) => {
+            const el = document.createElement('div');
+            el.className = 'orbit-item';
+            el.style.setProperty('--i', i);
+            el.style.setProperty('--total', orbitItems.length);
+            el.innerHTML = `
+                <div class="orbit-content" onclick="openModal(${d.id})">
+                    <img src="${d.img}" alt="${d.name}">
+                </div>`;
+            solarSystem.appendChild(el);
+        });
+
+        // --- RENDERIZAR SLIDERS ---
+        function renderSlider(containerId, filterFn) {
+            const container = document.getElementById(containerId);
+            const items = db.filter(filterFn);
+            items.forEach(d => {
+                const card = document.createElement('div');
+                card.className = 'poster-card glitch-card';
+                card.onclick = () => openModal(d.id);
+
+                let badge = '';
+                if (d.stock <= 0) {
+                    badge = '<div class="badge badge-soldout">AGOTADO</div>';
+                    card.classList.add('sold-out');
+                    card.onclick = null;
+                } else if (d.stock < 4) {
+                    badge = `<div class="badge badge-low">ÚLTIMOS ${d.stock}</div>`;
+                } else {
+                    if (d.year === "2026") badge = '<div class="badge badge-new">NUEVO</div>';
+                    if (d.category === "Custom") badge = '<div class="badge badge-custom">TU DISEÑO</div>';
+                }
+
+                card.innerHTML = `
+                    <img src="${d.img}" class="poster-img" loading="lazy" alt="${d.name}">
+                    ${badge}
+                    <div class="poster-overlay">
+                        <div class="poster-title">${d.name}</div>
+                        <div class="poster-year">${d.year}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        renderSlider('slider-albums-container', item => item.category === 'Album');
+        renderSlider('slider-songs-container', item => item.category === 'Song');
+        renderSlider('slider-musicians-container', item => item.category === 'Musician');
+        renderSlider('slider-custom-container', item => item.category === 'Custom');
+
+        function scrollSlider(id, val) {
+            document.getElementById(id).scrollBy({ left: val, behavior: 'smooth' });
+        }
+
+        // --- MODAL SYSTEM ---
+        const modal = document.getElementById('modal');
+        let currentProductId = null;
+        let currentImageIndex = 0;
+
+        function getProductImages(d) {
+            const images = [d.img];
+            if (d.img_design) images.push(d.img_design);
+            if (d.img_zoom) images.push(d.img_zoom);
+            return images;
+        }
+
+        function updateCarouselDots() {
+            const dotsContainer = document.getElementById('carousel-dots');
+            dotsContainer.innerHTML = '';
+            const d = db.find(x => x.id === currentProductId);
+            if (!d) return;
+            const images = getProductImages(d);
+            images.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = `dot ${i === currentImageIndex ? 'active' : ''}`;
+                dot.onclick = () => setImageIndex(i);
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function setImageIndex(index) {
+            const d = db.find(x => x.id === currentProductId);
+            if (!d) return;
+            const images = getProductImages(d);
+            currentImageIndex = (index + images.length) % images.length;
+            document.getElementById('m-img').src = images[currentImageIndex];
+            updateCarouselDots();
+        }
+
+        function nextImage() {
+            const d = db.find(x => x.id === currentProductId);
+            if (!d) return;
+            const images = getProductImages(d);
+            setImageIndex(currentImageIndex + 1);
+        }
+
+        function prevImage() {
+            const d = db.find(x => x.id === currentProductId);
+            if (!d) return;
+            const images = getProductImages(d);
+            setImageIndex(currentImageIndex - 1);
+        }
+
+        function openModal(id) {
+            const d = db.find(x => x.id === id);
+            if (!d) return;
+            
+            currentProductId = id;
+            currentImageIndex = 0;
+            
+            const images = getProductImages(d);
+            document.getElementById('m-img').src = images[0];
+            document.getElementById('m-title').innerText = d.name;
+            document.getElementById('m-year').innerText = d.year;
+            document.getElementById('m-type').innerText = d.category;
+            document.getElementById('m-desc').innerText = d.desc;
+
+            updateCarouselDots();
+
+            const msg = `Hola FMD! Quiero encargar la remera: ${d.name} (${d.category}). Mi talle es ___ y la quiero en color ___`;
+            document.getElementById('m-btn').href = `${WHATSAPP_BASE}?text=${encodeURIComponent(msg)}`;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentProductId = null;
+            currentImageIndex = 0;
+        }
+        
+        modal.onclick = (e) => { if (e.target === modal) closeModal(); }
+
+    </script>
+        <script>
+    // Page transition overlay + enhanced scroll reveal + hell-rise on hero
+    (function(){
+        const TRANSITION_MS = 600;
+        let overlay;
+        function ensureOverlay(){
+            if (overlay) return overlay;
+            overlay = document.createElement('div');
+            overlay.className = 'page-transition';
+            document.body.appendChild(overlay);
+            return overlay;
+        }
+        function playIn(){
+            const o = ensureOverlay();
+            o.classList.add('active');
+            requestAnimationFrame(()=> setTimeout(()=> o.classList.remove('active'), 50));
+        }
+        function playOutAndNavigate(url){
+            const o = ensureOverlay();
+            o.classList.add('active');
+            setTimeout(()=> { window.location.href = url; }, TRANSITION_MS);
+        }
+        document.addEventListener('DOMContentLoaded', ()=>{
+            ensureOverlay();
+            // Entrada
+            playIn();
+            // Hell rise en títulos del hero
+            document.querySelector('.hero-h1')?.classList.add('hell-rise');
+            document.querySelector('.hero-h2')?.classList.add('hell-rise');
+            // Scroll reveal para elementos con .scroll-reveal
+            const srObserver = new IntersectionObserver((entries, obs)=>{
+                entries.forEach(entry=>{
+                    if (entry.isIntersecting){
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+            document.querySelectorAll('.scroll-reveal').forEach(el=> srObserver.observe(el));
+            // Interceptar clicks en enlaces para animar transición
+            document.addEventListener('click', (e)=>{
+                const a = e.target.closest('a');
+                if (!a) return;
+                if (a.target && a.target !== '' && a.target !== '_self') return;
+                const href = a.getAttribute('href');
+                if (!href || href.startsWith('javascript:')) return;
+                // Teclas modificadoras: permitir default
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+                const url = new URL(href, window.location.href);
+                // Externos: permitir default
+                if (url.origin !== window.location.origin) return;
+                e.preventDefault();
+                // Anclas internas en misma página: animar leve y hacer scroll
+                if (url.hash && url.pathname === window.location.pathname){
+                    const o = ensureOverlay();
+                    o.classList.add('active');
+                    const target = document.querySelector(url.hash);
+                    setTimeout(()=>{
+                        o.classList.remove('active');
+                        if (target) target.scrollIntoView({ behavior: 'smooth' });
+                        history.pushState(null, '', url.hash);
+                    }, Math.min(TRANSITION_MS/2, 300));
+                } else {
+                    playOutAndNavigate(url.href);
+                }
+            });
+        });
+    })();
+    </script>
+
+    <!-- Script para Parallax -->
+    <script>
+        // PARALLAX EFFECT
+        function initParallax() {
+            const parallaxBg = document.getElementById('parallax-bg');
+            const parallaxLogo = document.getElementById('parallax-logo');
+            
+            window.addEventListener('scroll', () => {
+                const scrollY = window.scrollY;
+                const parallaxAmount = scrollY * 0.5; // Ajusta este valor para más/menos parallax (0.3 = lento, 0.7 = rápido)
+                
+                if (parallaxBg) {
+                    parallaxBg.style.transform = `translateY(${parallaxAmount}px)`;
+                }
+                
+                if (parallaxLogo) {
+                    parallaxLogo.style.transform = `translate(-50%, calc(-50% + ${parallaxAmount * 0.3}px))`;
+                }
+            });
+        }
+
+        // Iniciar parallax cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initParallax);
+        } else {
+            initParallax();
+        }
+    </script>
+
+    <!-- Script para generar partículas flotantes -->
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            if (!container) return;
+            
+            const particleCount = 60;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Tamaño aleatorio entre 2px y 8px
+                const size = Math.random() * 6 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Posición horizontal aleatoria
+                particle.style.left = Math.random() * 100 + '%';
+                
+                // Duración de animación aleatoria entre 8s y 20s
+                const duration = Math.random() * 12 + 8;
+                particle.style.animationDuration = duration + 's';
+                
+                // Retraso aleatorio para que no comiencen todas juntas
+                const delay = Math.random() * 5;
+                particle.style.animationDelay = delay + 's';
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Crear partículas cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', createParticles);
+        } else {
+            createParticles();
+        }
+    </script>
+</body>
+
+</html>
