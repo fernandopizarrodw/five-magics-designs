@@ -111,7 +111,7 @@
             color: white;
             text-align: center;
             font-family: var(--font-sub);
-            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            font-size: clamp(1.5rem, 4.5vw, 1.8rem);
             padding: clamp(12px, 2.5vw, 14px) 0;
             letter-spacing: 1px;
             font-weight: 900;
@@ -187,7 +187,7 @@
         .nav-link {
             color: #ccc;
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 1.1rem;
             font-weight: 600;
             text-transform: uppercase;
             font-family: var(--font-sub);
@@ -536,14 +536,14 @@
             }
 
             .nav-link {
-                font-size: 0.85rem;
+                font-size: 1rem;
                 padding: 6px 3px;
                 letter-spacing: 0.5px;
             }
 
             .btn-header-wa {
                 padding: 8px 12px;
-                font-size: 0.85rem;
+                font-size: 1rem;
                 min-height: 36px;
             }
 
@@ -604,13 +604,13 @@
             }
 
             .nav-link {
-                font-size: 0.8rem;
+                font-size: 0.95rem;
                 padding: 4px 2px;
             }
 
             .btn-header-wa {
                 padding: 6px 10px;
-                font-size: 0.8rem;
+                font-size: 0.95rem;
                 min-height: 34px;
             }
 
@@ -1004,7 +1004,7 @@
         }
 
         .sg-note {
-            font-size: clamp(0.95rem, 2.5vw, 1.05rem);
+            font-size: clamp(0.65rem, 1.5vw, 0.75rem);
             color: #666;
             margin-top: 10px;
             text-align: center;
@@ -1037,7 +1037,7 @@
         }
 
         .sg-note {
-            font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+            font-size: clamp(0.65rem, 1.5vw, 0.75rem);
             color: #666;
             margin-top: 10px;
             text-align: center;
@@ -1055,13 +1055,19 @@
 
         .steps-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: 1fr;
             gap: 25px;
             margin-bottom: 50px;
             max-width: 1200px;
             margin-left: auto;
             margin-right: auto;
             padding: 0 15px;
+        }
+
+        @media (min-width: 768px) {
+            .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         .step-item {
@@ -1100,7 +1106,7 @@
 
         .step-desc {
             color: #aaa;
-            font-size: clamp(0.95rem, 2.3vw, 1.1rem);
+            font-size: clamp(1.1rem, 2.8vw, 1.3rem);
             line-height: 1.6;
             font-family: var(--font-body);
         }
@@ -1162,6 +1168,14 @@
             right: 10px;
             font-size: 1.4rem;
             text-shadow: 0 2px 5px black;
+        }
+
+        .instagram-logo {
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: #f5f5dc;
+            margin-bottom: 20px;
+            display: inline-block;
+            filter: drop-shadow(0 0 10px rgba(133, 44, 12, 0.3));
         }
 
         /* FOOTER */
@@ -1268,7 +1282,7 @@
             color: #ccc;
             line-height: 1.6;
             margin-bottom: 20px;
-            font-size: clamp(0.95rem, 2.7vw, 1.1rem);
+            font-size: clamp(1.3rem, 3.5vw, 1.6rem);
         }
 
         /* SPECS GRID */
@@ -2100,7 +2114,7 @@
 
             <div class="cta-wrapper">
                 <button id="cta-comprar" type="button" class="btn-header-wa"
-                    style="font-size: 1.4rem; padding: 15px 40px; display: inline-block;">
+                    style="font-size: 2.2rem; padding: 25px 60px; display: inline-block; background: #39FF14; color: #000; font-weight: 900; border: none;">
                     Quiero encargar ahora
                 </button>
                 <div id="contact-chooser" class="contact-chooser corro-wrap corrosion-border paused">
@@ -2113,6 +2127,7 @@
 
     <!-- SOCIAL FEED -->
     <section id="social-feed" class="reveal-on-scroll">
+        <div class="instagram-logo">📷</div>
         <h2 class="social-title">@FIVEMAGICS.DESIGNS</h2>
         <div class="social-grid">
             <a href="https://instagram.com/fivemagicsdesigns" target="_blank" class="social-item"><img
