@@ -366,7 +366,8 @@
     <!-- CABECERA -->
     <header>
         <h1>Five Magics <span style="font-size:0.6em; color:white;">Designs Manager</span></h1>
-        <div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <a href="index.html" class="btn btn-secondary btn-sm" style="text-decoration:none; display:inline-flex;">🏪 Catálogo</a>
             <button class="btn btn-secondary btn-sm" onclick="app.io.exportCSV()">⬇ Exportar CSV</button>
             <button class="btn btn-secondary btn-sm" onclick="document.getElementById('csvInput').click()">⬆ Importar CSV</button>
             <input type="file" id="csvInput" accept=".csv" style="display: none;" onchange="app.io.importCSV(this)">
