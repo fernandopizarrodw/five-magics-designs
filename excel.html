@@ -13,14 +13,29 @@
             --card-bg: #1a1a1d;
             --text-main: #e0e0e0;
             --text-muted: #a0a0a0;
-            --accent-cyan: #00eeff;
-            --accent-violet: #b026ff;
-            --danger: #ff4d4d;
-            --success: #00ff9d;
+            --accent-cyan: #7a9b8f;
+            --accent-violet: #8b7ba8;
+            --danger: #d97676;
+            --success: #7ba876;
             --border-radius: 8px;
             --border-color: #333;
             --font-main: 'Kanit', sans-serif;
             --font-mono: 'Roboto Mono', monospace;
+            /* Colores sutiles por columna - tonos tierra, gris, beige elegante */
+            --col-fecha: #a89968;
+            --col-cliente: #8a9b9f;
+            --col-design: #9a8ba6;
+            --col-color: #b09a68;
+            --col-talle: #8a9a97;
+            --col-cantidad: #9a8ab6;
+            --col-precio: #7ba889;
+            --col-costo: #a99a7a;
+            --col-ganancia: #7ba989;
+            --col-envio: #9a907a;
+            --col-tracking: #7a9ab9;
+            --col-estado: #9a7a9a;
+            --col-canal: #b9a97a;
+            --col-nro: #7a9a7f;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -45,10 +60,10 @@
         }
 
         h1 {
-            color: var(--accent-cyan);
+            color: var(--accent-violet);
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 238, 255, 0.3);
+            text-shadow: 0 0 10px rgba(139, 123, 168, 0.2);
         }
 
         .stats-container {
@@ -72,7 +87,7 @@
         .stat-value {
             font-family: var(--font-mono);
             font-size: 1.5rem;
-            color: var(--accent-cyan);
+            color: var(--accent-violet);
             font-weight: bold;
         }
 
@@ -111,8 +126,8 @@
         }
 
         input:focus, select:focus, textarea:focus {
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 5px rgba(0, 238, 255, 0.2);
+            border-color: var(--accent-violet);
+            box-shadow: 0 0 5px rgba(139, 123, 168, 0.3);
         }
 
         /* --- BOTONES --- */
@@ -166,21 +181,68 @@
             text-align: left;
             border-bottom: 1px solid #333;
             font-size: 0.8rem;
+            position: relative;
         }
 
         th {
             background-color: #111;
-            color: var(--accent-cyan);
+            color: var(--accent-violet);
             font-weight: 600;
             position: sticky;
             top: 0;
             cursor: pointer;
             user-select: none;
             z-index: 10;
+            min-width: 80px;
         }
 
-        th:hover { background-color: #222; }
-        tr:hover { background-color: #252529; }
+        th::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            cursor: col-resize;
+            background: transparent;
+            user-select: none;
+        }
+
+        th:hover::after {
+            background: rgba(0, 238, 255, 0.5);
+        }
+
+        /* Colores por columna en la tabla */
+        th:nth-child(1) { color: var(--col-fecha); border-bottom-color: var(--col-fecha); }
+        th:nth-child(2) { color: var(--col-cliente); border-bottom-color: var(--col-cliente); }
+        th:nth-child(3) { color: var(--col-design); border-bottom-color: var(--col-design); }
+        th:nth-child(4) { color: var(--col-color); border-bottom-color: var(--col-color); }
+        th:nth-child(5) { color: var(--col-talle); border-bottom-color: var(--col-talle); }
+        th:nth-child(6) { color: var(--col-cantidad); border-bottom-color: var(--col-cantidad); }
+        th:nth-child(7) { color: var(--col-precio); border-bottom-color: var(--col-precio); }
+        th:nth-child(8) { color: var(--col-costo); border-bottom-color: var(--col-costo); }
+        th:nth-child(9) { color: var(--col-ganancia); border-bottom-color: var(--col-ganancia); }
+        th:nth-child(10) { color: var(--col-envio); border-bottom-color: var(--col-envio); }
+        th:nth-child(11) { color: var(--col-tracking); border-bottom-color: var(--col-tracking); }
+        th:nth-child(12) { color: var(--col-estado); border-bottom-color: var(--col-estado); }
+        th:nth-child(13) { color: var(--col-canal); border-bottom-color: var(--col-canal); }
+        th:nth-child(14) { color: var(--col-nro); border-bottom-color: var(--col-nro); }
+
+        tbody tr td:nth-child(1) { border-left: 3px solid var(--col-fecha); }
+        tbody tr td:nth-child(2) { border-left: 3px solid var(--col-cliente); }
+        tbody tr td:nth-child(3) { border-left: 3px solid var(--col-design); }
+        tbody tr td:nth-child(4) { border-left: 3px solid var(--col-color); }
+        tbody tr td:nth-child(5) { border-left: 3px solid var(--col-talle); }
+        tbody tr td:nth-child(6) { border-left: 3px solid var(--col-cantidad); }
+        tbody tr td:nth-child(7) { border-left: 3px solid var(--col-precio); }
+        tbody tr td:nth-child(8) { border-left: 3px solid var(--col-costo); }
+        tbody tr td:nth-child(9) { border-left: 3px solid var(--col-ganancia); }
+        tbody tr td:nth-child(10) { border-left: 3px solid var(--col-envio); }
+        tbody tr td:nth-child(11) { border-left: 3px solid var(--col-tracking); }
+        tbody tr td:nth-child(12) { border-left: 3px solid var(--col-estado); }
+        tbody tr td:nth-child(13) { border-left: 3px solid var(--col-canal); }
+        tbody tr td:nth-child(14) { border-left: 3px solid var(--col-nro); }
+        tr:hover { background-color: #252529; } 
 
         .tag {
             padding: 3px 8px;
@@ -190,7 +252,7 @@
         }
         .tag-status-Entregado { background-color: rgba(0, 255, 157, 0.15); color: var(--success); }
         .tag-status-Pendiente { background-color: rgba(255, 193, 7, 0.15); color: #ffc107; }
-        .tag-status-Transito { background-color: rgba(0, 238, 255, 0.15); color: var(--accent-cyan); }
+        .tag-status-Transito { background-color: rgba(123, 143, 159, 0.15); color: #7b8f9f; }
         .tag-status-Intentofallido { background-color: rgba(255, 77, 77, 0.15); color: var(--danger); }
         .money { font-family: var(--font-mono); color: #fff; }
         .profit-positive { color: var(--success); }
@@ -216,7 +278,7 @@
             max-width: 900px;
             border-radius: var(--border-radius);
             border: 1px solid var(--accent-violet);
-            box-shadow: 0 0 20px rgba(176, 38, 255, 0.3);
+            box-shadow: 0 0 20px rgba(139, 123, 168, 0.2);
             padding: 25px;
             position: relative;
             margin-bottom: 50px;
@@ -241,7 +303,7 @@
             grid-column: 1 / -1;
             margin-top: 15px;
             margin-bottom: 5px;
-            color: var(--accent-cyan);
+            color: var(--accent-violet);
             font-size: 1.1rem;
             border-bottom: 1px solid #333;
             padding-bottom: 5px;
@@ -269,7 +331,7 @@
         #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; }
         .toast {
             background-color: #333; color: #fff; padding: 12px 20px; margin-top: 10px;
-            border-radius: 4px; border-left: 4px solid var(--accent-cyan);
+            border-radius: 4px; border-left: 4px solid var(--accent-violet);
             animation: slideIn 0.3s ease-out;
             box-shadow: 0 3px 10px rgba(0,0,0,0.5);
         }
@@ -938,7 +1000,7 @@ Ciudad: La Plata",,42,22,20,CON,
                     const tr = document.createElement('tr');
                     const profitClass = o.ganancia_neta >= 0 ? 'profit-positive' : 'profit-negative';
                     tr.innerHTML = `
-                        <td style="font-weight:bold; color:var(--accent-cyan);">${o.fecha_pedido}</td>
+                        <td style="font-weight:bold; color:var(--accent-violet);">${o.fecha_pedido}</td>
                         <td><div style="font-weight:bold;">${o.nombre_apellido}</div><div style="font-size:0.7em; color:#888;">${o.localidad || '-'}</div></td>
                         <td style="font-size:0.75rem; max-width:100px; overflow:hidden; text-overflow:ellipsis;">${o.diseño_frente || '-'}</td>
                         <td>${o.color_remera || '-'}</td>
@@ -1046,6 +1108,43 @@ Ciudad: La Plata",,42,22,20,CON,
         };
 
         window.onload = () => app.init();
+
+        // 🔧 Redimensionamiento de columnas
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.getElementById('ordersTable');
+            const headers = table.querySelectorAll('th');
+            
+            headers.forEach((header, idx) => {
+                header.addEventListener('mousedown', (e) => {
+                    if (e.offsetX < header.offsetWidth - 5) return; // Solo desde el borde derecho
+                    
+                    e.preventDefault();
+                    const startX = e.clientX;
+                    const startWidth = header.offsetWidth;
+                    
+                    const onMouseMove = (moveEvent) => {
+                        const diff = moveEvent.clientX - startX;
+                        const newWidth = Math.max(50, startWidth + diff);
+                        header.style.width = newWidth + 'px';
+                        header.style.minWidth = newWidth + 'px';
+                        
+                        // Aplicar ancho a todas las celdas de esa columna
+                        table.querySelectorAll(`tbody tr td:nth-child(${idx + 1})`).forEach(td => {
+                            td.style.width = newWidth + 'px';
+                            td.style.minWidth = newWidth + 'px';
+                        });
+                    };
+                    
+                    const onMouseUp = () => {
+                        document.removeEventListener('mousemove', onMouseMove);
+                        document.removeEventListener('mouseup', onMouseUp);
+                    };
+                    
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.addEventListener('mouseup', onMouseUp);
+                });
+            });
+        });
     </script>
 </body>
 </html>
