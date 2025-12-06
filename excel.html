@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Five Magics Designs | Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* * 🎨 ESTILOS (CSS) - Tema Dark Metal */
+        :root {
+            --bg-color: #0d0d0f;
+            --card-bg: #1a1a1d;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --accent-cyan: #00eeff;
+            --accent-violet: #b026ff;
+            --danger: #ff4d4d;
+            --success: #00ff9d;
+            --border-radius: 8px;
+            --border-color: #333;
+            --font-main: 'Kanit', sans-serif;
+            --font-mono: 'Roboto Mono', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            font-size: 15px;
+            padding-bottom: 50px;
+        }
+
+        /* --- HEADER & STATS --- */
+        header {
+            background: linear-gradient(135deg, #111 0%, #222 100%);
+            padding: 20px;
+            border-bottom: 2px solid var(--accent-violet);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 238, 255, 0.3);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* --- CONTROLES Y FILTROS --- */
+        .controls-bar {
+            padding: 15px 20px;
+            background-color: #151518;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filters-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        input, select, textarea {
+            background-color: #2a2a2e;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            outline: none;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 5px rgba(0, 238, 255, 0.2);
+        }
+
+        /* --- BOTONES --- */
+        .btn {
+            cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent-violet), #9000ff);
+            color: white;
+            box-shadow: 0 0 10px rgba(176, 38, 255, 0.2);
+        }
+        .btn-primary:hover { filter: brightness(1.2); }
+
+        .btn-secondary { background-color: #444; color: white; }
+        .btn-secondary:hover { background-color: #555; }
+        .btn-danger { background-color: #3e1b1b; color: #ff9e9e; border: 1px solid #7f1d1d; }
+
+        .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+
+        /* --- TABLA --- */
+        .table-container {
+            overflow-x: auto;
+            margin: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            max-height: 70vh; /* Scroll vertical para tabla muy larga */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+            font-size: 0.8rem;
+        }
+
+        th {
+            background-color: #111;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            cursor: pointer;
+            user-select: none;
+            z-index: 10;
+        }
+
+        th:hover { background-color: #222; }
+        tr:hover { background-color: #252529; }
+
+        .tag {
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .tag-status-Entregado { background-color: rgba(0, 255, 157, 0.15); color: var(--success); }
+        .tag-status-Pendiente { background-color: rgba(255, 193, 7, 0.15); color: #ffc107; }
+        .tag-status-Transito { background-color: rgba(0, 238, 255, 0.15); color: var(--accent-cyan); }
+        .tag-status-Intentofallido { background-color: rgba(255, 77, 77, 0.15); color: var(--danger); }
+        .money { font-family: var(--font-mono); color: #fff; }
+        .profit-positive { color: var(--success); }
+        .profit-negative { color: var(--danger); }
+
+        /* --- MODAL (FORMULARIO) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            width: 95%;
+            max-width: 900px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--accent-violet);
+            box-shadow: 0 0 20px rgba(176, 38, 255, 0.3);
+            padding: 25px;
+            position: relative;
+            margin-bottom: 50px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .form-section {
+            grid-column: 1 / -1;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: var(--accent-cyan);
+            font-size: 1.1rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .close-modal {
+            background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer;
+        }
+
+        /* Utilidades */
+        .hidden { display: none !important; }
+        
+        /* Mensajes Toast */
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; }
+        .toast {
+            background-color: #333; color: #fff; padding: 12px 20px; margin-top: 10px;
+            border-radius: 4px; border-left: 4px solid var(--accent-cyan);
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+        }
+        @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+        @media (max-width: 768px) {
+            .controls-bar { flex-direction: column; align-items: stretch; }
+            .filters-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABECERA -->
+    <header>
+        <h1>Five Magics <span style="font-size:0.6em; color:white;">Designs Manager</span></h1>
+        <div>
+            <button class="btn btn-secondary btn-sm" onclick="app.io.exportCSV()">⬇ Exportar CSV</button>
+            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('csvInput').click()">⬆ Importar CSV</button>
+            <input type="file" id="csvInput" accept=".csv" style="display: none;" onchange="app.io.importCSV(this)">
+            <!-- Botón para borrar todo -->
+            <button class="btn btn-danger btn-sm" onclick="app.data.clearAllData()" title="Borrar toda la base de datos">🗑️ Vaciar Todo</button>
+        </div>
+    </header>
+
+    <!-- ESTADÍSTICAS -->
+    <div class="stats-container" id="statsPanel"></div>
+
+    <!-- BARRA DE CONTROL Y FILTROS -->
+    <div class="controls-bar">
+        <button class="btn btn-primary" onclick="app.ui.openModal()">+ Nuevo Pedido</button>
+        
+        <div class="filters-group">
+            <input type="text" id="filterSearch" placeholder="Buscar cliente..." onkeyup="app.render()">
+            
+            <select id="filterStatus" onchange="app.render()">
+                <option value="">Todos los estados</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="En tránsito">En tránsito</option>
+                <option value="Entregado">Entregado</option>
+                <option value="Intento fallido">Intento fallido</option>
+            </select>
+            
+            <select id="filterChannel" onchange="app.render()">
+                <option value="">Todos los canales</option>
+                <option value="Instagram">Instagram</option>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="Facebook">Facebook</option>
+                <option value="MercadoLibre">MercadoLibre</option>
+            </select>
+            
+            <div style="display:flex; align-items:center; gap:5px;">
+                <input type="date" id="filterDateFrom" onchange="app.render()">
+                <span style="color:#666">-</span>
+                <input type="date" id="filterDateTo" onchange="app.render()">
+            </div>
+        </div>
+    </div>
+
+    <!-- TABLA DE DATOS -->
+    <div class="table-container">
+        <table id="ordersTable">
+            <thead>
+                <tr>
+                    <th onclick="app.sort('fecha_pedido')">Fecha ⬍</th>
+                    <th onclick="app.sort('nombre_apellido')">Cliente</th>
+                    <th>Diseño</th>
+                    <th>Color</th>
+                    <th>Talle</th>
+                    <th>Cantidad</th>
+                    <th onclick="app.sort('precio_venta')">Precio ⬍</th>
+                    <th onclick="app.sort('costo_remera')">Costo ⬍</th>
+                    <th onclick="app.sort('ganancia_neta')">Ganancia ⬍</th>
+                    <th>Envío</th>
+                    <th>Tracking</th>
+                    <th>Estado</th>
+                    <th>Canal</th>
+                    <th>Nro Orden</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- MODAL DE FORMULARIO -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nuevo Pedido</h2>
+                <button class="close-modal" onclick="app.ui.closeModal()">&times;</button>
+            </div>
+            
+            <form id="orderForm" onsubmit="event.preventDefault(); app.data.save();">
+                <input type="hidden" id="id_pedido">
+                <input type="hidden" id="fecha_creacion_registro">
+
+                <div class="form-grid">
+                    <!-- SECCIÓN: CLIENTE -->
+                    <div class="form-section">👤 Datos del Cliente</div>
+                    
+                    <div class="form-group">
+                        <label>Nombre y Apellido *</label>
+                        <input type="text" id="nombre_apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Red Contacto</label>
+                        <select id="red_contactado">
+                            <option value="Instagram">Instagram</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="MercadoLibre">MercadoLibre</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="text" id="telefono">
+                    </div>
+                    <div class="form-group" style="display:flex; flex-direction:row; align-items:center; height:100%;">
+                        <input type="checkbox" id="es_cliente_recurrente" style="width:auto; margin-right:5px;">
+                        <label for="es_cliente_recurrente" style="margin:0; cursor:pointer;">Es Cliente Recurrente</label>
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Dirección Completa</label>
+                        <input type="text" id="direccion">
+                    </div>
+                    <div class="form-group">
+                        <label>Localidad / Provincia</label>
+                        <input type="text" id="localidad">
+                    </div>
+                    <div class="form-group">
+                        <label>CP</label>
+                        <input type="text" id="cp">
+                    </div>
+
+                    <!-- SECCIÓN: PEDIDO -->
+                    <div class="form-section">👕 Datos del Pedido</div>
+
+                    <div class="form-group">
+                        <label>Fecha Pedido *</label>
+                        <input type="date" id="fecha_pedido" required onchange="app.logic.recalcDelay()">
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <input type="number" id="cantidad" min="1" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Nro Orden Dreamful</label>
+                        <input type="text" id="nro_orden_df">
+                    </div>
+                    <div class="form-group">
+                        <label>Links / Referencias</label>
+                        <input type="text" id="links">
+                    </div>
+                    <div class="form-group">
+                        <label>Diseño Frente</label>
+                        <input type="text" id="diseño_frente">
+                    </div>
+                    <div class="form-group">
+                        <label>Diseño Dorso</label>
+                        <input type="text" id="diseño_dorso">
+                    </div>
+                    <div class="form-group">
+                        <label>Talle *</label>
+                        <select id="talle" required>
+                            <option value="">-- Seleccionar --</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                            <option value="XXS">XXS</option>
+                            <option value="2XS">2XS</option>
+                            <option value="3XL">3XL</option>
+                            <option value="Oversize S">Oversize S</option>
+                            <option value="Oversize M">Oversize M</option>
+                            <option value="Oversize L">Oversize L</option>
+                            <option value="Oversize XL">Oversize XL</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Corte</label>
+                        <select id="corte">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="Hombre Clásico">Hombre Clásico</option>
+                            <option value="Hombre">Hombre</option>
+                            <option value="Mujer">Mujer</option>
+                            <option value="Oversize">Oversize</option>
+                            <option value="Niño">Niño</option>
+                            <option value="Clásica">Clásica</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Color Remera</label>
+                        <input type="text" id="color_remera" list="colors">
+                        <datalist id="colors">
+                            <option value="Negro">
+                            <option value="Blanco">
+                            <option value="Gris">
+                            <option value="NEGRA">
+                            <option value="BLANCA">
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label>Estampa Doble</label>
+                        <select id="estampa_doble">
+                            <option value="No">No</option>
+                            <option value="Sí">Sí</option>
+                            <option value="Si">Si</option>
+                        </select>
+                    </div>
+
+                    <!-- SECCIÓN: ECONOMÍA -->
+                    <div class="form-section" style="color:var(--success);">💰 Economía</div>
+
+                    <div class="form-group">
+                        <label>Precio Venta ($) *</label>
+                        <input type="number" id="precio_venta" step="0.01" required oninput="app.logic.recalcProfit()">
+                    </div>
+                    <div class="form-group">
+                        <label>Costo Remera ($)</label>
+                        <input type="number" id="costo_remera" step="0.01" value="0" oninput="app.logic.recalcProfit()">
+                    </div>
+                    <div class="form-group">
+                        <label>Costo Envío ($)</label>
+                        <input type="number" id="costo_envio" step="0.01" value="0" oninput="app.logic.recalcProfit()">
+                    </div>
+                    <div class="form-group">
+                        <label style="color:var(--accent-cyan); font-weight:bold;">Ganancia Neta ($)</label>
+                        <input type="number" id="ganancia_neta" step="0.01" style="border-color:var(--accent-cyan); font-weight:bold;">
+                    </div>
+
+                    <!-- SECCIÓN: ENVÍO -->
+                    <div class="form-section">🚚 Envío</div>
+
+                    <div class="form-group">
+                        <label>¿Incluye Envío? (CON/SIN)</label>
+                        <select id="envio_flag">
+                            <option value="CON">CON envío</option>
+                            <option value="SIN">SIN envío</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select id="estado_entrega_actual" onchange="app.logic.handleStatusChange()">
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="En tránsito">En tránsito</option>
+                            <option value="En sucursal">En sucursal</option>
+                            <option value="Entregado">Entregado</option>
+                            <option value="Intento fallido">Intento fallido</option>
+                            <option value="Devuelto">Devuelto</option>
+                            <option value="Retirado">Retirado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Empresa Envío</label>
+                        <input type="text" id="empresa_envio" list="couriers">
+                        <datalist id="couriers">
+                            <option value="Andreani">
+                            <option value="Correo Argentino">
+                        </datalist>
+                    </div>
+                    <div class="form-group">
+                        <label>Tracking / Nro Seguimiento</label>
+                        <input type="text" id="nro_envio">
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha Entrega</label>
+                        <input type="date" id="fecha_entrega" onchange="app.logic.recalcDelay()">
+                    </div>
+                    <div class="form-group">
+                        <label>Días Demora</label>
+                        <input type="number" id="dias_demora" readonly style="background:#222; color:#777;">
+                    </div>
+
+                    <!-- SECCIÓN: GASTOS Y NOTAS -->
+                    <div class="form-section" style="color:#ffa500;">⚠️ Gastos Adicionales</div>
+
+                    <div class="form-group">
+                        <label>Gastos en Publicidad ($)</label>
+                        <input type="number" id="gastos_publicidad" step="0.01" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Tardó (Notas de demora)</label>
+                        <input type="text" id="tardo" placeholder="ej: 3 dias, 7 dias">
+                    </div>
+
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Notas / Reclamos</label>
+                        <textarea id="detalle_reclamo" rows="2"></textarea>
+                    </div>
+
+                </div>
+
+                <div style="margin-top: 30px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #333; padding-top: 20px;">
+                    <button type="button" class="btn btn-secondary" onclick="app.ui.clearForm()">Limpiar</button>
+                    <button type="submit" class="btn btn-primary">💾 Guardar Pedido</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script>
+        const PRELOADED_CSV = `TARDÓ ,Fecha,Cantidad,Cliente,Canal/IG-Whatsapp,LINKS,Pedido (Diseño),COLOR,Talle / Corte,Doble Estampa?,N° Orden (Dreamful),Cliente,Estado,Dirección,Nro de seguimiento,Precio de Venta,Costo Dreamful,Ganancia Neta,C/S Envío,Gastos en publicidad
+,01/10,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE
+,,,,,,,,,,,,,,,,,,,
+,05/10,1,(Test),,,Vic (Blanca),,XXL (Clásica),No,#300,(Test),Entregado,,,0,15,-15,SIN,
+,05/10,1,(Test),,,Vic (Negra),,XL (Clásica),No,#301,(Test),Entregado,,,0,15,-15,SIN,
+,8/10,1,Marcos,,,Vic (Negra),,XL (Clásica),No, #328,Marcos,Entregado,,,37,21,16,CON,
+,08/10,1,Florencia,,,Tipping Point (Blanca),,M (Clásica),No,#336,Florencia,Entregado,,,37,21,16,CON,
+,12/10,1,David,,,Vic + Mellowdeth,,L (Clásica),SÍ,#362,David,Entregado,,,42,22,20,CON,
+,15/10,4,Ariel,,,Bifröst (x4),,XL (Clásica),SÍ,#376,Ariel,Entregado,,,140,66,74,CON,
+,17/10,1,Gastón,,,Tipping Point (Negra),,XL (Clásica),No,#393,Gastón,Entregado,,,37,23,15,CON,
+,17/10,1,Nico,,,Vic (Negra),,XXL OVERSIZE,No,#394,Nico,Entregado,,,37,21,16,CON,
+,31/10,1,Soledad,,,Slinka,,XXL OVERSIZE,No,#421,Soledad,Entregado,,,25,15,10,SIN,
+,31/10,1,Jose Luis,,,Carnicero,,XXL (Clásica),SÍ,#421,Jose Luis,Entregado,,,40,16,24,SIN,
+,31/10,1,Leonardo,,,Guitarristas,,XXL (Clásica),No,#421,Leonardo,Entregado,,,15,15,0,SIN,
+,31/10,1,Fer Marty,,,Rust In Peace,,XXL (Oversize),No,#421,Fer Marty,Entregado,,,37,15,22,SIN,
+,31/10,1,Sebastian,,,Velvet,,M (Clásica),No,#421,Sebastian,Entregado,,,30,15,15,SIN,
+,31/10,1,Santino,,,Messi-Goku,,M (Clásica),No,#421,Santino,Entregado,,,25,15,10,SIN,
+,31/10,1,Tobias,,,Flema,,L (Clásica),SÍ,#421,Tobias,Entregado,,,20,16,4,SIN,
+,31/10,1,(PARA VOS),,,Tipping Point (Negra),,(Tu Talle),No,#421,(PARA VOS),Entregado,,,0,15,-15,SIN,
+,,,,,,,,,,,,,,,,,,,
+,01/11,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,PUBLICIDAD
+,,,,,,,,,,,,,,,,,,,
+,01/11,1,Dante,Instagram,,Vic (Negra),NEGRA,2XS (Oversize),No,#433,Dante,Entregado,,,37,-21,16,CON,
+,02/11,1,Victor,Instagram,,RIP + Custom,NEGRA,L,SÍ,#436,Victor,Entregado,,,42,-22,20,CON,
+,02/11,1,Brian,Whatsapp,,Dystopia,NEGRA,L,No,#437,Brian,Entregado,,,37,-20,17,CON,
+,02/11,2,"""Picky""",Instagram,,SFSGSW + CUSTOM (x2),NEGRA,S (Hombre),No,#443,"""Picky""",Entregado,,,74,-34$,40$,CON,
+,15/11,1,Roberto Da Silv,Whatsapp,,I DON'T CARE,NEGRA,M (Clásica),No,#513,Roberto Da Silv,Entregado OK,,,37,-22,15,CON,
+,15/11,1,Diego Salinas,Whatsapp,,I DON'T CARE,NEGRA,XXL (Clásica),No,#514,Diego Salinas,Entregado OK ,,,37,-20,17,CON,
+,15/11,1,Ricardo Ruben,Instagram,https://goo.su/Ga1WVw,VIC BLANCO TAPA,BLANCA,M (Clásica),No,#522,Ricardo Ruben,Entregado OK,,,37,-19,21,CON,
+,17/11,2,Leo Bulacio,Whatsapp,,VIC WTH + VIC FATHER,BLANCA - NEGRA,XXL(Clásica),No,#528,Leo Bulacio,Entregado OK,,,74,-33,41,CON,
+,24/11,1,Diego Peralta,Instagram ,https://goo.su/V0myL7,DAVE + YOUTHANASIA,NEGRA,XXL(Clásica),Si,#557,Diego Peralta,Entregado ----,,,42,-22,20,CON,20 mil 19/11
+,24/11,1,Vic Hugo Ruiz,Instagram ,https://goo.su/HhX5,DAVE ,NEGRA,L (Clásica),No,#558,Vic Hugo Ruiz,Entregado ----,,,37,-20,17,CON,
+,25/11,1,Silvia Leo,Persona,,JESUS,NEGRA,XL (Oversize),No,#566,Silvia Leo,Retirado,,,30,-14,16,SIN,
+,21/11,2,Ariel Contreras,Whatsapp,,Bifröst + SALTATIO,NEGRA,M + M CLASICA,SÍ,#567,Ariel Contreras,Entregado OK,,,70,-39,31,CON,
+3 dias,26/11,1,Sarandon Nahuel,Instagram,https://goo.su/QXCxN6n,LOGO MEGA F / MUSTAINE FIRMA D,NEGRA,XXS (Oversize),Sí,#569,Sarandon Nahuel,Entregado ----,,,42,-22,20,CON,
+,26/11,1,Javier Díaz,Instagram,https://goo.su/cIbZOUt,VIC BLANCO TAPA,BLANCA,XL (Clásica),Sí,#573,Javier Díaz,Entregado,"Dirección: Brasil 307
+Ciudad: Chascomus",,37,-21,16,CON,
+7 dias,27/11,1,Diego Pedernera ,Facebook,https://goo.su/tFNMzX,VIC BLANCO TAPA,BLANCA,S (Hombre),Sí,#580,Diego Pedernera ,LLEGA HOY,"Dirección: Goyena 412
+Ciudad: Burzaco",,42,-21,21,CON,
+,28/11,2,Luis Gerez,Instagram,https://goo.su/DYtwL,RUST IN PEACE + CSTM CALAVERA,NEGRA,XL (Hombre),Sí,#590,Luis Gerez,Entregado OK,1° Mayo - Remedios de Escalada,360002811813000,79,-36,43,CON,
+,29/11,1,Miguel Arcadio,Instagram/Whatsapp,https://goo.su/OMLY1sQ,CUSTOM CTE F / + LYRICS CTE D,BLANCA,L (Clásica),Sí,#593,Miguel Arcadio,Entregado OK,Chubut - Adrogué,,42,-21,21,CON,
+,29/11,1,Jorge Batlle,Instagram,https://goo.su/DFT5v5l,RUST IN PEACE,NEGRA,XL (Oversize),No,#595,Jorge Batlle,LLEGA HOY,"Dirección: Congreso 4936
+Ciudad: Villa Urquiza",360002811816810,37,-21,16,CON,26 mil 28/11
+4 días ,30/11,3,Luis Mariano De M,Instagram,https://goo.su/DUcmkb5,WASP + MINISTRY + APHEX TWIN,NEG + BLK + BLK,L + L + XL (Clasica),No,#602,Luis Mariano De M,Entregado ----,Guardia Vieja - Merlo,360002811813150,111,-47,64,CON,
+,30/11,1,Gustavo Ortíz,Instagram,https://goo.su/fAlK,VIC RUSTED V-1 + LOGO VICRUS V1,NEGRA,S (Oversize),Sí,#604,Gustavo Ortíz,Entregado OK,"Dirección: M y L de la V 1517
+Ciudad: Moreno",360002811816570,42,-21,21,CON,
+,,,,,,,,,,,,,,,,,,,
+,01/12,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE
+,,,,,,,,,,,,,,,,,,,
+,02/12,1,Roberto Sosa,Instagram,https://goo.su/RlpZZ,VIC RUSTED V-2 Frente y Dorso,NEGRA,L (Clásica),Sí ,#610,Roberto Sosa,LLEGA HOY,,,42,22,20,CON,
+,02/12,1,Adrian Del Curto,Whatsapp,,PRIMAL FEAR FRNT - LOGO DORSO,NEGRA,XXL (Clásica),Sí,#611,Adrian Del Curto,LLEGÓ NO HABIA NADIE,"Dirección: Calle 132
+Ciudad: La Plata",,42,22,20,CON,
+,04/12,1,Vale,,,THE RAMONES,NEGRA,L,No,,,,,,,,,,
+,04/12,1,Ale Caffaratti,Instagram,https://goo.su/6U6pUh,VIC FATHER,NEGRA,L,No,,,,,,,,,,
+,04/12,1,Cesar Pedernera,Whatsapp,,DAVE 90S BLACK N WHITE,NEGRA,L,No,,,,,,,,,,`;
+        const app = {
+            state: {
+                orders: [],
+                sortCol: 'fecha_pedido',
+                sortAsc: false
+            },
+
+            init: function() {
+                const stored = localStorage.getItem('fmd_pedidos');
+                if (stored) {
+                    try {
+                        this.state.orders = JSON.parse(stored);
+                    } catch(e) { console.error(e); }
+                } else {
+                    // Si no hay datos en localStorage, parseamos el CSV embebido y lo cargamos
+                    try {
+                        const text = PRELOADED_CSV || '';
+                        const rows = text.split(/\r?\n/);
+                        if (rows.length > 1) {
+                            const firstLine = rows[0];
+                            const delimiter = firstLine.includes(';') ? ';' : ',';
+                            const headers = firstLine.split(delimiter).map(h => h.replace(/^"|"$/g, '').trim());
+
+                            for (let i = 1; i < rows.length; i++) {
+                                const line = rows[i];
+                                if (!line || !line.trim()) continue;
+                                const values = line.split(delimiter);
+                                const raw = {};
+                                headers.forEach((h, idx) => {
+                                    let val = values[idx] ? values[idx].replace(/^"|"$/g, '').replace(/""/g, '"').trim() : '';
+                                    raw[h] = val;
+                                });
+
+                                const fechaRaw = (raw['Fecha'] || '').trim();
+                                if (!fechaRaw) continue;
+                                const skipMonths = ['OCTUBRE','NOVIEMBRE','DICIEMBRE','PUBLICIDAD'];
+                                if (skipMonths.includes(fechaRaw.toUpperCase())) continue;
+
+                                // Parse fecha dd/mm -> 2025-mm-dd
+                                let fechaIso = fechaRaw;
+                                const m = fechaRaw.match(/(\d{1,2})[\/\-](\d{1,2})/);
+                                if (m) {
+                                    const dd = m[1].padStart(2,'0');
+                                    const mm = m[2].padStart(2,'0');
+                                    fechaIso = `2025-${mm}-${dd}`;
+                                }
+
+                                const nombre = (raw['Cliente'] || '').trim();
+                                const canal = (raw['Canal/IG-Whatsapp'] || '').trim();
+                                const diseño = (raw['Pedido (Diseño)'] || '').trim();
+                                const color = (raw['COLOR'] || '').trim();
+                                const talleCorte = (raw['Talle / Corte'] || '').trim();
+
+                                let talleVal = '';
+                                let corteVal = '';
+                                if (talleCorte) {
+                                    const paren = talleCorte.match(/(.*)\((.*)\)/);
+                                    if (paren) {
+                                        talleVal = paren[1].trim().split('+')[0].trim();
+                                        corteVal = paren[2].trim();
+                                    } else {
+                                        const parts = talleCorte.split(/\s+/);
+                                        talleVal = parts[0];
+                                        corteVal = parts.slice(1).join(' ') || '';
+                                    }
+                                }
+
+                                const doble = (raw['Doble Estampa?'] || '').toLowerCase().includes('s') ? 'Si' : 'No';
+                                const nroOrden = (raw['N° Orden (Dreamful)'] || '').replace('#','').trim();
+                                const estado = (raw['Estado'] || '').trim();
+                                const direccion = (raw['Dirección'] || '').trim();
+                                const tracking = (raw['Nro de seguimiento'] || '').trim();
+                                const precio = parseFloat((raw['Precio de Venta'] || '').replace(/[^0-9\.\-]/g,'')) || 0;
+                                const costo = parseFloat((raw['Costo Dreamful'] || '').replace(/[^0-9\.\-]/g,'')) || 0;
+                                const ganancia = parseFloat((raw['Ganancia Neta'] || '').replace(/[^0-9\.\-]/g,'')) || 0;
+                                const envioFlag = (raw['C/S Envío'] || '').trim();
+                                const gastosPub = (raw['Gastos en publicidad'] || '').trim();
+
+                                const orderObj = {
+                                    id_pedido: app.logic.generateId(),
+                                    nombre_apellido: nombre || '(sin nombre)',
+                                    direccion: direccion,
+                                    localidad: '',
+                                    cp: '',
+                                    telefono: '',
+                                    red_contactado: canal || '',
+                                    es_cliente_recurrente: false,
+                                    fecha_pedido: fechaIso,
+                                    cantidad: parseInt((raw['Cantidad']||'1').replace(/\D/g,'')) || 1,
+                                    nro_orden_df: nroOrden,
+                                    links: (raw['LINKS'] || '').trim(),
+                                    diseño_frente: diseño,
+                                    diseño_dorso: '',
+                                    talle: talleVal || '',
+                                    corte: corteVal || '',
+                                    color_remera: color || '',
+                                    estampa_doble: doble,
+                                    precio_venta: precio,
+                                    costo_remera: costo,
+                                    costo_envio: 0,
+                                    ganancia_neta: ganancia,
+                                    envio_flag: envioFlag,
+                                    estado_entrega_actual: estado || 'Pendiente',
+                                    empresa_envio: '',
+                                    nro_envio: tracking,
+                                    fecha_entrega: '',
+                                    dias_demora: 0,
+                                    gastos_publicidad: 0,
+                                    tardo: (raw['TARDÓ'] || '').trim(),
+                                    detalle_reclamo: '',
+                                    fecha_creacion_registro: new Date().toISOString(),
+                                };
+
+                                app.state.orders.push(orderObj);
+                            }
+
+                            localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                        }
+                    } catch(e) { console.error('Error cargando CSV embebido', e); }
+                }
+
+                this.render();
+                document.getElementById('filterDateTo').valueAsDate = new Date();
+            },
+
+            logic: {
+                generateId: () => Date.now().toString(36) + Math.random().toString(36).substr(2),
+                
+                recalcProfit: function() {
+                    const venta = parseFloat(document.getElementById('precio_venta').value) || 0;
+                    const costoR = parseFloat(document.getElementById('costo_remera').value) || 0;
+                    const costoE = parseFloat(document.getElementById('costo_envio').value) || 0;
+                    const ganancia = venta - costoR - costoE;
+                    document.getElementById('ganancia_neta').value = ganancia.toFixed(2);
+                },
+
+                recalcDelay: function() {
+                    const fPedido = document.getElementById('fecha_pedido').value;
+                    const fEntrega = document.getElementById('fecha_entrega').value;
+                    if (fPedido && fEntrega) {
+                        const d1 = new Date(fPedido);
+                        const d2 = new Date(fEntrega);
+                        const diffTime = Math.abs(d2 - d1);
+                        document.getElementById('dias_demora').value = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                    } else {
+                        document.getElementById('dias_demora').value = '';
+                    }
+                },
+
+                handleStatusChange: function() {
+                    const status = document.getElementById('estado_entrega_actual').value;
+                    if (status === 'Entregado' && !document.getElementById('fecha_entrega').value) {
+                        document.getElementById('fecha_entrega').valueAsDate = new Date();
+                        this.recalcDelay();
+                    }
+                }
+            },
+
+            data: {
+                save: function() {
+                    const id = document.getElementById('id_pedido').value;
+                    const isNew = !id;
+                    
+                    const orderData = {
+                        id_pedido: id || app.logic.generateId(),
+                        nombre_apellido: document.getElementById('nombre_apellido').value,
+                        direccion: document.getElementById('direccion').value,
+                        localidad: document.getElementById('localidad').value,
+                        cp: document.getElementById('cp').value,
+                        telefono: document.getElementById('telefono').value,
+                        red_contactado: document.getElementById('red_contactado').value,
+                        es_cliente_recurrente: document.getElementById('es_cliente_recurrente').checked,
+                        
+                        fecha_pedido: document.getElementById('fecha_pedido').value,
+                        cantidad: parseInt(document.getElementById('cantidad').value) || 1,
+                        nro_orden_df: document.getElementById('nro_orden_df').value,
+                        links: document.getElementById('links').value,
+                        diseño_frente: document.getElementById('diseño_frente').value,
+                        diseño_dorso: document.getElementById('diseño_dorso').value,
+                        talle: document.getElementById('talle').value,
+                        corte: document.getElementById('corte').value,
+                        color_remera: document.getElementById('color_remera').value,
+                        estampa_doble: document.getElementById('estampa_doble').value,
+                        
+                        precio_venta: parseFloat(document.getElementById('precio_venta').value) || 0,
+                        costo_remera: parseFloat(document.getElementById('costo_remera').value) || 0,
+                        costo_envio: parseFloat(document.getElementById('costo_envio').value) || 0,
+                        ganancia_neta: parseFloat(document.getElementById('ganancia_neta').value) || 0,
+                        
+                        envio_flag: document.getElementById('envio_flag').value,
+                        estado_entrega_actual: document.getElementById('estado_entrega_actual').value,
+                        empresa_envio: document.getElementById('empresa_envio').value,
+                        nro_envio: document.getElementById('nro_envio').value,
+                        fecha_entrega: document.getElementById('fecha_entrega').value,
+                        dias_demora: parseInt(document.getElementById('dias_demora').value) || 0,
+                        
+                        gastos_publicidad: parseFloat(document.getElementById('gastos_publicidad').value) || 0,
+                        tardo: document.getElementById('tardo').value,
+                        detalle_reclamo: document.getElementById('detalle_reclamo').value,
+                        
+                        fecha_creacion_registro: isNew ? new Date().toISOString() : document.getElementById('fecha_creacion_registro').value,
+                    };
+
+                    if (isNew) {
+                        app.state.orders.push(orderData);
+                    } else {
+                        const index = app.state.orders.findIndex(o => o.id_pedido === id);
+                        if (index !== -1) app.state.orders[index] = orderData;
+                    }
+
+                    localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                    app.ui.closeModal();
+                    app.render();
+                    app.ui.showToast(isNew ? 'Pedido Creado' : 'Pedido Actualizado');
+                },
+
+                delete: function(id) {
+                    if(!confirm('⚠️ ¿Estás seguro de BORRAR este pedido?')) return;
+                    app.state.orders = app.state.orders.filter(o => o.id_pedido !== id);
+                    localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                    app.render();
+                    app.ui.showToast('Pedido Eliminado');
+                },
+
+                clearAllData: function() {
+                    if(confirm("⚠ ¿Estás seguro de VACIAR TODA la base de datos? Esto borrará todos los pedidos y dejará la tabla en cero.")) {
+                        localStorage.removeItem('fmd_pedidos');
+                        app.state.orders = [];
+                        app.render();
+                        app.ui.showToast('Base de datos vaciada correctamente.');
+                    }
+                }
+            },
+
+            ui: {
+                openModal: function(id = null) {
+                    const modal = document.getElementById('orderModal');
+                    const title = document.getElementById('modalTitle');
+                    this.clearForm();
+
+                    if (id) {
+                        title.innerText = "Editar Pedido";
+                        const order = app.state.orders.find(o => o.id_pedido === id);
+                        if (order) {
+                            for (const key in order) {
+                                const input = document.getElementById(key);
+                                if (input) {
+                                    if (input.type === 'checkbox') input.checked = order[key];
+                                    else input.value = order[key];
+                                }
+                            }
+                        }
+                    } else {
+                        title.innerText = "Nuevo Pedido";
+                        document.getElementById('fecha_pedido').valueAsDate = new Date();
+                    }
+                    modal.style.display = 'flex';
+                },
+
+                closeModal: function() { document.getElementById('orderModal').style.display = 'none'; },
+                clearForm: function() { document.getElementById('orderForm').reset(); document.getElementById('id_pedido').value = ''; },
+                showToast: function(msg) {
+                    const container = document.getElementById('toast-container');
+                    const el = document.createElement('div');
+                    el.className = 'toast'; el.innerText = msg;
+                    container.appendChild(el);
+                    setTimeout(() => el.remove(), 3000);
+                }
+            },
+
+            render: function() {
+                const tbody = document.getElementById('tableBody');
+                tbody.innerHTML = '';
+
+                // Filtros
+                const search = document.getElementById('filterSearch').value.toLowerCase();
+                const status = document.getElementById('filterStatus').value;
+                const channel = document.getElementById('filterChannel').value;
+                const dateFrom = document.getElementById('filterDateFrom').value;
+                const dateTo = document.getElementById('filterDateTo').value;
+
+                let filtered = app.state.orders.filter(o => {
+                    const matchesSearch = (o.nombre_apellido || '').toLowerCase().includes(search);
+                    const matchesStatus = status ? o.estado_entrega_actual === status : true;
+                    const matchesChannel = channel ? o.red_contactado === channel : true;
+                    let matchesDate = true;
+                    if (dateFrom && dateTo) matchesDate = o.fecha_pedido >= dateFrom && o.fecha_pedido <= dateTo;
+                    return matchesSearch && matchesStatus && matchesChannel && matchesDate;
+                });
+
+                // Ordenar
+                filtered.sort((a, b) => {
+                    let valA = a[app.state.sortCol] || '';
+                    let valB = b[app.state.sortCol] || '';
+                    if (!isNaN(parseFloat(valA)) && !isNaN(parseFloat(valB))) { valA = parseFloat(valA); valB = parseFloat(valB); }
+                    return app.state.sortAsc ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+                });
+
+                this.renderStats(filtered);
+
+                filtered.forEach(o => {
+                    const tr = document.createElement('tr');
+                    const profitClass = o.ganancia_neta >= 0 ? 'profit-positive' : 'profit-negative';
+                    tr.innerHTML = `
+                        <td style="font-weight:bold; color:var(--accent-cyan);">${o.fecha_pedido}</td>
+                        <td><div style="font-weight:bold;">${o.nombre_apellido}</div><div style="font-size:0.7em; color:#888;">${o.localidad || '-'}</div></td>
+                        <td style="font-size:0.75rem; max-width:100px; overflow:hidden; text-overflow:ellipsis;">${o.diseño_frente || '-'}</td>
+                        <td>${o.color_remera || '-'}</td>
+                        <td>${o.talle || '-'}</td>
+                        <td>${o.cantidad || 1}</td>
+                        <td class="money">$${(o.precio_venta || 0).toLocaleString('es-AR')}</td>
+                        <td class="money">$${(o.costo_remera || 0).toLocaleString('es-AR')}</td>
+                        <td class="money ${profitClass}">$${(o.ganancia_neta || 0).toLocaleString('es-AR')}</td>
+                        <td>${o.envio_flag || 'SIN'}</td>
+                        <td style="font-size:0.75rem;">${o.nro_envio || '-'}</td>
+                        <td><span class="tag tag-status-${(o.estado_entrega_actual || '').replace(/ /g, '')}">${o.estado_entrega_actual || 'Pendiente'}</span></td>
+                        <td>${o.red_contactado || '-'}</td>
+                        <td>${o.nro_orden_df || '-'}</td>
+                        <td>
+                            <button class="btn btn-secondary btn-sm" onclick="app.ui.openModal('${o.id_pedido}')" title="Editar">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="app.data.delete('${o.id_pedido}')" title="Borrar">🗑️</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            },
+
+            renderStats: function(data) {
+                const totalVentas = data.reduce((sum, o) => sum + (parseFloat(o.precio_venta) || 0), 0);
+                const totalGanancia = data.reduce((sum, o) => sum + (parseFloat(o.ganancia_neta) || 0), 0);
+                
+                document.getElementById('statsPanel').innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-value">${data.length}</div>
+                        <div class="stat-label">Pedidos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$${totalVentas.toLocaleString('es-AR')}</div>
+                        <div class="stat-label">Total Ventas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" style="color:var(--success);">$${totalGanancia.toLocaleString('es-AR')}</div>
+                        <div class="stat-label">Ganancia Neta</div>
+                    </div>
+                `;
+            },
+
+            sort: function(col) {
+                if (this.state.sortCol === col) this.state.sortAsc = !this.state.sortAsc;
+                else { this.state.sortCol = col; this.state.sortAsc = true; }
+                this.render();
+            },
+
+            io: {
+                exportCSV: function() {
+                    if (!app.state.orders.length) return alert("Nada para exportar.");
+                    const headers = Object.keys(app.state.orders[0]);
+                    const csv = [headers.join(',')];
+                    
+                    app.state.orders.forEach(row => {
+                        csv.push(headers.map(h => `"${(row[h] || '').toString().replace(/"/g, '""')}"`).join(','));
+                    });
+
+                    const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = 'fmd_pedidos.csv';
+                    a.click();
+                },
+
+                importCSV: function(input) {
+                    const file = input.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const text = e.target.result;
+                        const rows = text.split(/\r?\n/);
+                        if (rows.length < 2) return alert("Archivo vacío o inválido");
+
+                        const firstLine = rows[0];
+                        const delimiter = firstLine.includes(';') ? ';' : ',';
+                        
+                        const headers = firstLine.split(delimiter).map(h => h.replace(/^"|"$/g, '').trim());
+                        
+                        let imported = 0;
+                        for (let i = 1; i < rows.length; i++) {
+                            if (!rows[i].trim()) continue;
+                            const values = rows[i].split(delimiter); 
+
+                            if (values.length >= headers.length) {
+                                const obj = {};
+                                headers.forEach((h, idx) => {
+                                    let val = values[idx] ? values[idx].replace(/^"|"$/g, '').replace(/""/g, '"').trim() : '';
+                                    obj[h] = val;
+                                });
+                                if (!obj.id_pedido) obj.id_pedido = app.logic.generateId();
+                                app.state.orders.push(obj);
+                                imported++;
+                            }
+                        }
+                        
+                        localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                        app.render();
+                        app.ui.showToast(`Importados ${imported} pedidos correctamente.`);
+                        input.value = '';
+                    };
+                    reader.readAsText(file);
+                }
+            }
+        };
+
+        window.onload = () => app.init();
+    </script>
+</body>
+</html>
