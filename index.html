@@ -1876,6 +1876,7 @@
             <div class="category-header slide-in-left">
                 <h3 class="category-title burning-text">Discografía Oficial</h3>
                 <div class="category-subtitle scanner-text">La historia del Thrash en tu pecho</div>
+                <div><a href="#viewer/albums" class="nav-link" style="padding-left:0;">Ver todo en pantalla completa ➜</a></div>
             </div>
             <div class="slider-wrapper">
                 <button class="slider-arrow arrow-left"
@@ -1892,6 +1893,7 @@
             <div class="category-header slide-in-left">
                 <h3 class="category-title burning-text" style="border-color: var(--steel-blue);">Himnos & Hits</h3>
                 <div class="category-subtitle scanner-text">Setlist de la despedida</div>
+                <div><a href="#viewer/songs" class="nav-link" style="padding-left:0;">Ver todo en pantalla completa ➜</a></div>
             </div>
             <div class="slider-wrapper">
                 <button class="slider-arrow arrow-left"
@@ -1908,6 +1910,7 @@
             <div class="category-header slide-in-left">
                 <h3 class="category-title burning-text">Leyendas</h3>
                 <div class="category-subtitle scanner-text">Dave, Marty, Nick & Más</div>
+                <div><a href="#viewer/musicians" class="nav-link" style="padding-left:0;">Ver todo en pantalla completa ➜</a></div>
             </div>
             <div class="slider-wrapper">
                 <button class="slider-arrow arrow-left"
@@ -1924,6 +1927,7 @@
             <div class="category-header slide-in-left">
                 <h3 class="category-title burning-text" style="border-color: #d4af37;">Custom Shop</h3>
                 <div class="category-subtitle scanner-text">La imaginación es el límite</div>
+                <div><a href="#viewer/custom" class="nav-link" style="padding-left:0;">Ver todo en pantalla completa ➜</a></div>
             </div>
             <div class="slider-wrapper">
                 <button class="slider-arrow arrow-left"
@@ -2200,9 +2204,31 @@
                 <a id="m-btn" href="#" target="_blank" class="btn-modal">
                     PEDIR POR WHATSAPP
                 </a>
+                <div style="margin-top:10px; text-align:center;">
+                    <button id="open-fullscreen-from-modal" class="btn-header-wa" style="width:100%;">Ver en pantalla completa</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- VIEWER FULLSCREEN (SPA) -->
+    <section id="viewer" style="display:none;">
+        <div id="viewer-overlay" style="position:fixed; inset:0; background:#000; z-index:1900; opacity:0; pointer-events:none; transition:opacity .35s ease;"></div>
+        <div id="viewer-root" style="position:fixed; inset:0; z-index:2001; display:flex; align-items:center; justify-content:center; background:radial-gradient(circle at center, #0b0b0b 0%, #000 70%);">
+            <button id="viewer-prev" aria-label="Anterior" class="carousel-btn prev" style="position:absolute; left:8px; top:50%; transform:translateY(-50%);">&#10094;</button>
+            <button id="viewer-next" aria-label="Siguiente" class="carousel-btn next" style="position:absolute; right:8px; top:50%; transform:translateY(-50%);">&#10095;</button>
+            <button id="viewer-close" aria-label="Cerrar" class="close-modal" style="top:12px; right:18px; z-index:2102;">&times;</button>
+            <div id="viewer-card" style="width:min(92vw, 760px); aspect-ratio:5/7; background:#111; border:1px solid #333; box-shadow:0 20px 60px rgba(0,0,0,.7); position:relative; overflow:hidden; border-radius:2px;">
+                <img id="viewer-img" alt="" style="width:100%; height:100%; object-fit:cover; display:block; filter:brightness(.92) grayscale(10%);">
+                <div id="viewer-overlay-info" style="position:absolute; left:0; right:0; bottom:0; padding:18px; background:linear-gradient(to top, rgba(0,0,0,.85), transparent 65%);">
+                    <div id="viewer-title" style="font-family: var(--font-sub); font-size:clamp(1.1rem,4vw,1.6rem); font-weight:800; text-transform:uppercase; line-height:1.1;"></div>
+                    <div id="viewer-meta" style="color:var(--rust); font-family: var(--font-sub); font-weight:700; letter-spacing:.5px; margin-top:4px; font-size:clamp(.85rem,3vw,1rem);"></div>
+                    <a id="viewer-cta" target="_blank" class="btn-modal" style="margin-top:10px;">PEDIR POR WHATSAPP</a>
+                </div>
+                <div id="viewer-dots" class="carousel-dots" style="pointer-events:auto;"></div>
+            </div>
+        </div>
+    </section>
 
     <script>
         const WHATSAPP_BASE = "https://wa.me/5491112345678";
@@ -2447,7 +2473,7 @@
         
         modal.onclick = (e) => { if (e.target === modal) closeModal(); }
 
-    </script>
+        //
         <script>
     // Page transition overlay + enhanced scroll reveal + hell-rise on hero
     (function(){
