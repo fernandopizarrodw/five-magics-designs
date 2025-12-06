@@ -194,6 +194,8 @@
             user-select: none;
             z-index: 10;
             min-width: 80px;
+            font-size: 1.1rem;
+            padding: 12px 10px;
         }
 
         th::after {
@@ -242,7 +244,23 @@
         tbody tr td:nth-child(12) { border-left: 3px solid var(--col-estado); }
         tbody tr td:nth-child(13) { border-left: 3px solid var(--col-canal); }
         tbody tr td:nth-child(14) { border-left: 3px solid var(--col-nro); }
-        tr:hover { background-color: #252529; } 
+        tbody tr td:nth-child(15) { border-left: 3px solid #666; }
+        tr:hover { background-color: #252529; }
+
+        /* Checkbox y estado de entrega */
+        .chk-entrega {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--col-ganancia);
+        }
+        tr.row-entregado {
+            opacity: 0.6;
+            background-color: rgba(123, 168, 137, 0.08);
+        }
+        tr.row-entregado td {
+            color: #a0a0a0;
+        } 
 
         .tag {
             padding: 3px 8px;
@@ -396,6 +414,7 @@
         <table id="ordersTable">
             <thead>
                 <tr>
+                    <th style="min-width:30px; text-align:center;">✓</th>
                     <th onclick="app.sort('fecha_pedido')">Fecha ⬍</th>
                     <th onclick="app.sort('nombre_apellido')">Cliente</th>
                     <th>Diseño</th>
@@ -999,7 +1018,10 @@ Ciudad: La Plata",,42,22,20,CON,
                 filtered.forEach(o => {
                     const tr = document.createElement('tr');
                     const profitClass = o.ganancia_neta >= 0 ? 'profit-positive' : 'profit-negative';
+                    const isEntregado = o.estado_entrega_actual === 'Entregado';
+                    if (isEntregado) tr.classList.add('row-entregado');
                     tr.innerHTML = `
+                        <td style="text-align:center; padding:5px;"><input type="checkbox" class="chk-entrega" ${isEntregado ? 'checked' : ''} onchange="app.toggleEntrega('${o.id_pedido}', this.checked)"></td>
                         <td style="font-weight:bold; color:var(--accent-violet);">${o.fecha_pedido}</td>
                         <td><div style="font-weight:bold;">${o.nombre_apellido}</div><div style="font-size:0.7em; color:#888;">${o.localidad || '-'}</div></td>
                         <td style="font-size:0.75rem; max-width:100px; overflow:hidden; text-overflow:ellipsis;">${o.diseño_frente || '-'}</td>
@@ -1047,6 +1069,15 @@ Ciudad: La Plata",,42,22,20,CON,
                 if (this.state.sortCol === col) this.state.sortAsc = !this.state.sortAsc;
                 else { this.state.sortCol = col; this.state.sortAsc = true; }
                 this.render();
+            },
+
+            toggleEntrega: function(id, isChecked) {
+                const order = this.state.orders.find(o => o.id_pedido === id);
+                if (order) {
+                    order.estado_entrega_actual = isChecked ? 'Entregado' : 'Pendiente';
+                    localStorage.setItem('fmd_pedidos', JSON.stringify(this.state.orders));
+                    this.render();
+                }
             },
 
             io: {
