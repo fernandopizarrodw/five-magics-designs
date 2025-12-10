@@ -16,6 +16,29 @@
             --card-bg: #1a1a1d;
             --text-main: #e0e0e0;
             --text-muted: #a0a0a0;
+            --accent-violet: #8b7ba8;
+            --accent-cyan: #00eeff;
+            --success: #7ba876;
+            --danger: #d97676;
+            --border-radius: 8px;
+            --border-color: #2c2c32;
+            --font-main: 'Roboto', sans-serif;
+            --font-mono: 'Roboto Mono', monospace;
+            --col-fecha: #8b7ba8;
+            --col-cliente: #7ba876;
+            --col-design: #00eeff;
+            --col-color: #ffa500;
+            --col-talle: #87ceeb;
+            --col-cantidad: #dda0dd;
+            --col-precio: #90ee90;
+            --col-costo: #ffb6c1;
+            --col-ganancia: #7ba876;
+            --col-envio: #87ceeb;
+            --col-tracking: #dda0dd;
+            --col-estado: #ffa500;
+            --col-canal: #90ee90;
+            --col-nro: #ffb6c1;
+        }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -396,7 +419,7 @@
     <!-- BARRA DE CONTROL Y FILTROS -->
     <div class="controls-bar">
         <button class="btn btn-primary" onclick="app.ui.openModal()">+ Nuevo Pedido</button>
-        <button class="btn btn-secondary" onclick="app.ui.seedDemo()">Sembrar demo</button>
+        <button class="btn btn-secondary" onclick="app.ui.seedDemo(true)">Sembrar demo</button>
         
         <div class="filters-group">
             <input type="text" id="filterSearch" placeholder="Buscar cliente..." onkeyup="app.render()">
@@ -698,8 +721,7 @@
     ,2025-12-09,1,Cristian gabriel Coronel,Instagram,RUSTED PIECES V3,RUSTED PIECES V1,L,Clásica,Negra,Sí,42000,21000,0,21000,CON,Pendiente,,,,654,,,,,,0,,,,
     ,2025-12-09,1,Gabriel Gastón Grecco,WhatsApp,LOGO MEGADETH DYSTOPIA,DAVE 90s B&N C/FIRMA,L,Oversize,Negra,Sí,42000,22000,0,20000,CON,Pendiente,,,,655,,,,,,0,,,,`;
         const PRELOADED_CSV = `TARDÓ ,Fecha,Cantidad,Cliente,Canal/IG-Whatsapp,LINKS,Pedido (Diseño),COLOR,Talle / Corte,Doble Estampa?,N° Orden (Dreamful),Cliente,Estado,Dirección,Nro de seguimiento,Precio de Venta,Costo Dreamful,Ganancia Neta,C/S Envío,Gastos en publicidad
-,01/10,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE
-,,,,,,,,,,,,,,,,,,,
+    ,,,,,,,,,,,,,,,,,,,
 ,05/10,1,(Test),,,Vic (Blanca),,XXL (Clásica),No,#300,(Test),Entregado,,,0,15,-15,SIN,
 ,05/10,1,(Test),,,Vic (Negra),,XL (Clásica),No,#301,(Test),Entregado,,,0,15,-15,SIN,
 ,8/10,1,Marcos,,,Vic (Negra),,XL (Clásica),No, #328,Marcos,Entregado,,,37,21,16,CON,
@@ -716,8 +738,6 @@
 ,31/10,1,Santino,,,Messi-Goku,,M (Clásica),No,#421,Santino,Entregado,,,25,15,10,SIN,
 ,31/10,1,Tobias,,,Flema,,L (Clásica),SÍ,#421,Tobias,Entregado,,,20,16,4,SIN,
 ,31/10,1,(PARA VOS),,,Tipping Point (Negra),,(Tu Talle),No,#421,(PARA VOS),Entregado,,,0,15,-15,SIN,
-,,,,,,,,,,,,,,,,,,,
-,01/11,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,NOVIEMBRE,PUBLICIDAD
 ,,,,,,,,,,,,,,,,,,,
 ,01/11,1,Dante,Instagram,,Vic (Negra),NEGRA,2XS (Oversize),No,#433,Dante,Entregado,,,37,-21,16,CON,
 ,02/11,1,Victor,Instagram,,RIP + Custom,NEGRA,L,SÍ,#436,Victor,Entregado,,,42,-22,20,CON,
@@ -743,8 +763,6 @@ Ciudad: Villa Urquiza",360002811816810,37,-21,16,CON,26 mil 28/11
 4 días ,30/11,3,Luis Mariano De M,Instagram,https://goo.su/DUcmkb5,WASP + MINISTRY + APHEX TWIN,NEG + BLK + BLK,L + L + XL (Clasica),No,#602,Luis Mariano De M,Entregado ----,Guardia Vieja - Merlo,360002811813150,111,-47,64,CON,
 ,30/11,1,Gustavo Ortíz,Instagram,https://goo.su/fAlK,VIC RUSTED V-1 + LOGO VICRUS V1,NEGRA,S (Oversize),Sí,#604,Gustavo Ortíz,Entregado OK,"Dirección: M y L de la V 1517
 Ciudad: Moreno",360002811816570,42,-21,21,CON,
-,,,,,,,,,,,,,,,,,,,
-,01/12,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE,DICIEMBRE
 ,,,,,,,,,,,,,,,,,,,
 ,02/12,1,Roberto Sosa,Instagram,https://goo.su/RlpZZ,VIC RUSTED V-2 Frente y Dorso,NEGRA,L (Clásica),Sí ,#610,Roberto Sosa,LLEGA HOY,,,42,22,20,CON,
 ,02/12,1,Adrian Del Curto,Whatsapp,,PRIMAL FEAR FRNT - LOGO DORSO,NEGRA,XXL (Clásica),Sí,#611,Adrian Del Curto,LLEGÓ NO HABIA NADIE,"Dirección: Calle 132
@@ -1130,7 +1148,7 @@ Ciudad: La Plata",,42,22,20,CON,
                         if (!confirm('La semilla ya fue cargada anteriormente. ¿Deseás forzar la carga nuevamente?')) return;
                     }
                     try {
-                        app.io.importFromString(NEW_ORDERS_CSV_DEC9, key);
+                        app.io.importFromString(NEW_ORDERS_CSV_DEC9, key, !!force);
                         app.ui.showToast('Semilla demo cargada.');
                     } catch(e){ console.error(e); alert('Error al cargar la semilla: '+e.message); }
                 }
@@ -1443,14 +1461,19 @@ Ciudad: La Plata",,42,22,20,CON,
                 },
 
                 // 🔥 Nuevo: importar desde un string (lo usamos para sembrar los pedidos del 6–9/12)
-                importFromString: function(text, seedFlagKey) {
-                    if (!text) return;
+                importFromString: function(text, seedFlagKey, force = false) {
+                    console.log('[importFromString] seedFlagKey =', seedFlagKey, 'force =', force);
+                    if (!text) return 0;
 
-                    // Si viene con flag (semilla interna) no repetir
-                    if (seedFlagKey && localStorage.getItem(seedFlagKey)) return;
+                    // Only skip if we have a seed flag AND it's already set AND we're NOT forcing
+                    if (!force && seedFlagKey && localStorage.getItem(seedFlagKey)) {
+                        console.log('[importFromString] skipping import because seed flag present and not forcing');
+                        return 0;
+                    }
 
                     const rows = text.split(/\r?\n/);
-                    if (rows.length < 2) return;
+                    console.log('[importFromString] rows to parse =', rows.length);
+                    if (rows.length < 2) return 0;
 
                     const firstLine = rows[0];
                     const delimiter = firstLine.includes(';') ? ';' : ',';
@@ -1462,37 +1485,100 @@ Ciudad: La Plata",,42,22,20,CON,
                         if (!line || !line.trim()) continue;
 
                         const values = line.split(delimiter);
-                        if (values.length < headers.length) continue;
+                        // accept lines shorter than headers but skip empty rows
+                        if (values.length === 0) continue;
 
-                        const obj = {};
+                        const raw = {};
                         headers.forEach((h, idx) => {
                             let val = values[idx] ? values[idx].replace(/^"|"$/g, '').replace(/""/g, '"').trim() : '';
-
-                            if (['precio_venta','costo_remera','costo_envio','ganancia_neta'].includes(h)) {
-                                const num = parseFloat(val);
-                                if (!isNaN(num) && Math.abs(num) > 0 && Math.abs(num) < 1000) {
-                                    val = (num * 1000).toString();
-                                }
-                            }
-                            obj[h] = val;
+                            raw[h] = val;
                         });
 
-                        if (!obj.id_pedido) obj.id_pedido = app.logic.generateId();
-                        app.state.orders.push(obj);
+                        // Normalize into the standard order object using same logic as bulkInsert
+                        const ventaRaw  = parseFloat((raw['precio_venta'] || raw['Precio de Venta'] || raw['Precio'] || '').toString().replace(/[^0-9\.\-]/g,'')) || 0;
+                        const costoRaw  = parseFloat((raw['costo_remera'] || raw['Costo Dreamful'] || raw['Costo'] || '').toString().replace(/[^0-9\.\-]/g,'')) || 0;
+                        const envioRaw  = parseFloat((raw['costo_envio'] || raw['Costo Envio'] || raw['costo_envio'] || '').toString().replace(/[^0-9\.\-]/g,'')) || 0;
+
+                        const precio = (Math.abs(ventaRaw) > 0 && Math.abs(ventaRaw) < 1000) ? ventaRaw * 1000 : ventaRaw;
+                        const costo  = (Math.abs(costoRaw) > 0 && Math.abs(costoRaw) < 1000) ? costoRaw * 1000 : costoRaw;
+                        const costoE = (Math.abs(envioRaw) > 0 && Math.abs(envioRaw) < 1000) ? envioRaw * 1000 : envioRaw;
+
+                        const ganancia = (raw['ganancia_neta'] != null && raw['ganancia_neta'] !== '')
+                            ? Number(raw['ganancia_neta'])
+                            : (precio - costo - costoE);
+
+                        // Fecha: take fecha_pedido or fecha, expect ISO yyyy-mm-dd already
+                        let fechaIso = raw['fecha_pedido'] || raw['Fecha'] || raw['fecha'] || '';
+                        fechaIso = (fechaIso || '').toString().trim();
+                        if (fechaIso && !/^\d{4}-\d{2}-\d{2}$/.test(fechaIso)) {
+                            const m = String(fechaIso).match(/(\d{1,2})[\/\-](\d{1,2})/);
+                            if (m) {
+                                const dd = m[1].padStart(2,'0');
+                                const mm = m[2].padStart(2,'0');
+                                fechaIso = `2025-${mm}-${dd}`;
+                            }
+                        }
+
+                        const orderObj = {
+                            id_pedido: raw['id_pedido'] || raw['Id'] || raw['ID'] || app.logic.generateId(),
+                            nombre_apellido: raw['nombre_apellido'] || raw['Cliente'] || raw['cliente'] || '(sin nombre)',
+                            direccion: raw['direccion'] || '',
+                            localidad: raw['localidad'] || '',
+                            cp: raw['cp'] || '',
+                            telefono: raw['telefono'] || '',
+                            red_contactado: raw['red_contactado'] || raw['canal'] || raw['Canal/IG-Whatsapp'] || 'Instagram',
+                            es_cliente_recurrente: !!raw['recurrente'],
+
+                            fecha_pedido: fechaIso || new Date().toISOString().slice(0,10),
+                            cantidad: parseInt(raw['cantidad'] || raw['Cantidad'] || 1),
+                            nro_orden_df: raw['nro_orden_df'] || raw['N° Orden (Dreamful)'] || raw['nro_df'] || '',
+                            links: raw['links'] || '',
+                            diseño_frente: raw['diseño_frente'] || raw['diseño'] || raw['Pedido (Diseño)'] || raw['diseno'] || '',
+                            diseño_dorso: raw['diseño_dorso'] || raw['diseno_dorso'] || '',
+                            talle: raw['talle'] || '',
+                            corte: raw['corte'] || '',
+                            color_remera: raw['color_remera'] || raw['color'] || raw['COLOR'] || '',
+                            estampa_doble: (String(raw['estampa_doble'] || raw['Doble Estampa?'] || raw['doble'] || '').toLowerCase().includes('s') ? 'Si' : 'No'),
+
+                            precio_venta: precio,
+                            costo_remera: costo,
+                            costo_envio: costoE,
+                            ganancia_neta: ganancia,
+                            gastos_publicidad: Number(raw['gastos_publicidad'] || raw['Gastos en publicidad'] || 0) || 0,
+
+                            envio_flag: raw['envio_flag'] || raw['C/S Envío'] || (raw['con_envio'] === 'false' ? 'SIN' : 'CON'),
+                            estado_entrega_actual: raw['estado_entrega_actual'] || raw['Estado'] || 'Pendiente',
+                            empresa_envio: raw['empresa_envio'] || '',
+                            nro_envio: raw['nro_envio'] || raw['Nro de seguimiento'] || raw['tracking'] || '',
+                            fecha_entrega: raw['fecha_entrega'] || '',
+                            dias_demora: Number(raw['dias_demora'] || 0) || 0,
+
+                            tardo: raw['tardo'] || '',
+                            detalle_reclamo: raw['detalle_reclamo'] || '',
+                            resena: raw['resena'] || '',
+                            fecha_creacion_registro: new Date().toISOString(),
+                        };
+
+                        app.state.orders.push(orderObj);
                         imported++;
                     }
+
+                    console.log('[importFromString] imported rows =', imported);
 
                     if (imported > 0) {
                         localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
                         if (seedFlagKey) localStorage.setItem(seedFlagKey, '1');
                         app.render();
                     }
+
+                    return imported;
                 }
             }
         };
 
         window.onload = () => {
             app.init();
+            console.log('FMD Manager – total orders in state:', app.state.orders.length);
             // controles de sombras para slide visual
             const cont = document.querySelector('.table-container');
             const el = cont;
