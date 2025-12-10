@@ -1395,11 +1395,16 @@ Ciudad: La Plata",,42,22,20,CON,
             renderStats: function(data) {
                 const totalVentas = data.reduce((sum, o) => sum + (parseFloat(o.precio_venta) || 0), 0);
                 const totalGanancia = data.reduce((sum, o) => sum + (parseFloat(o.ganancia_neta) || 0), 0);
-                
+                const totalPrendas = data.reduce((sum, o) => sum + (parseInt(o.cantidad) || 0), 0);
+
                 document.getElementById('statsPanel').innerHTML = `
                     <div class="stat-card">
                         <div class="stat-value">${data.length}</div>
                         <div class="stat-label">Pedidos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${totalPrendas}</div>
+                        <div class="stat-label">Prendas</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">$${totalVentas.toLocaleString('es-AR')}</div>
