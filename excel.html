@@ -396,6 +396,7 @@
     <!-- BARRA DE CONTROL Y FILTROS -->
     <div class="controls-bar">
         <button class="btn btn-primary" onclick="app.ui.openModal()">+ Nuevo Pedido</button>
+        <button class="btn btn-secondary" onclick="app.ui.seedDemo()">Sembrar demo</button>
         
         <div class="filters-group">
             <input type="text" id="filterSearch" placeholder="Buscar cliente..." onkeyup="app.render()">
@@ -1119,6 +1120,19 @@ Ciudad: La Plata",,42,22,20,CON,
                     el.className = 'toast'; el.innerText = msg;
                     container.appendChild(el);
                     setTimeout(() => el.remove(), 3000);
+                }
+                ,
+                // Sembrar demo manualmente desde la UI. Si ya existe la semilla pregunta si forzar.
+                seedDemo: function(force){
+                    if (typeof NEW_ORDERS_CSV_DEC9 === 'undefined' || !NEW_ORDERS_CSV_DEC9) return alert('No hay datos de demo disponibles.');
+                    const key = 'fmd_seed_2025_12_09';
+                    if (!force && localStorage.getItem(key)) {
+                        if (!confirm('La semilla ya fue cargada anteriormente. ¿Deseás forzar la carga nuevamente?')) return;
+                    }
+                    try {
+                        app.io.importFromString(NEW_ORDERS_CSV_DEC9, key);
+                        app.ui.showToast('Semilla demo cargada.');
+                    } catch(e){ console.error(e); alert('Error al cargar la semilla: '+e.message); }
                 }
             },
 
