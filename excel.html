@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Five Magics Designs | Manager</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml;utf8,
+  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💀</text>
+  </svg>">
     
     <style>
         /* * 🎨 ESTILOS (CSS) - Tema Dark Metal */
@@ -13,30 +16,6 @@
             --card-bg: #1a1a1d;
             --text-main: #e0e0e0;
             --text-muted: #a0a0a0;
-            --accent-cyan: #7a9b8f;
-            --accent-violet: #8b7ba8;
-            --danger: #d97676;
-            --success: #7ba876;
-            --border-radius: 8px;
-            --border-color: #333;
-            --font-main: 'Kanit', sans-serif;
-            --font-mono: 'Roboto Mono', monospace;
-            /* Colores sutiles por columna - tonos tierra, gris, beige elegante */
-            --col-fecha: #a89968;
-            --col-cliente: #8a9b9f;
-            --col-design: #9a8ba6;
-            --col-color: #b09a68;
-            --col-talle: #8a9a97;
-            --col-cantidad: #9a8ab6;
-            --col-precio: #7ba889;
-            --col-costo: #a99a7a;
-            --col-ganancia: #7ba989;
-            --col-envio: #9a907a;
-            --col-tracking: #7a9ab9;
-            --col-estado: #9a7a9a;
-            --col-canal: #b9a97a;
-            --col-nro: #7a9a7f;
-        }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -161,13 +140,29 @@
 
         /* --- TABLA --- */
         .table-container {
+            position: relative;
             overflow-x: auto;
             margin: 20px;
             border-radius: var(--border-radius);
             border: 1px solid var(--border-color);
             background-color: var(--card-bg);
             max-height: 70vh; /* Scroll vertical para tabla muy larga */
+            padding-left: 48px; /* Espacio para flecha izq */
+            padding-right: 48px; /* Espacio para flecha der */
         }
+        /* UI de slide (ayuda visual en móvil) */
+        .slide-hint { position:absolute; right:8px; bottom:8px; background:rgba(0,0,0,.5); color:#ddd; padding:4px 8px; border-radius:12px; font-size:.75rem; display:flex; align-items:center; gap:6px; pointer-events:none; }
+        .slide-arrow { display:inline-block; animation: slideArrow 1.5s infinite ease-in-out; }
+        @keyframes slideArrow { 0%,100% { transform: translateX(0);} 50% { transform: translateX(6px);} }
+        .edge-shadow { position:absolute; top:0; bottom:0; width:16px; pointer-events:none; z-index:5; }
+        .edge-left { left:0; background: linear-gradient(90deg, rgba(0,0,0,.7), transparent); }
+        .edge-right { right:0; background: linear-gradient(270deg, rgba(0,0,0,.7), transparent); }
+        /* Ocultar ayudas viejas que generaban cortes visuales */
+        .slide-hint, .edge-shadow { display:none !important; }
+        .hscroll-btn { position:absolute; top:50%; transform:translateY(-50%); width:40px; height:40px; min-width:40px; min-height:40px; border:1px solid rgba(139,123,168,0.6); border-radius:50%; background: rgba(17,17,17,0.6); color:#fff; font-weight:900; cursor:pointer; display:flex; align-items:center; justify-content:center; z-index:6; transition:.2s; box-shadow:0 2px 8px rgba(0,0,0,.5); backdrop-filter: blur(3px); }
+        .hscroll-btn:hover { background: rgba(139,123,168,0.6); }
+        .hscroll-left { left:6px; }
+        .hscroll-right { right:6px; }
 
         table {
             width: 100%;
@@ -246,6 +241,25 @@
         tbody tr td:nth-child(14) { border-left: 3px solid var(--col-nro); }
         tbody tr td:nth-child(15) { border-left: 3px solid #666; }
         tr:hover { background-color: #252529; }
+
+        /* Separadores por mes y resumen */
+        .month-header {
+            background: linear-gradient(90deg, rgba(139,123,168,0.12), transparent);
+            border-top: 2px solid var(--accent-violet);
+            border-bottom: 1px solid #333;
+        }
+        .month-header td { padding: 10px; font-weight: 700; color: var(--accent-violet); letter-spacing: .5px; }
+        .month-title { display:flex; align-items:center; gap:10px; font-size: 1rem; }
+        .month-title .dot { width:8px; height:8px; border-radius:50%; background: var(--accent-violet); box-shadow:0 0 8px rgba(139,123,168,.6); }
+
+        .month-summary { background:#121214; border-top:1px dashed #333; }
+        .month-summary td { padding: 10px; }
+        .summary-chips { display:flex; flex-wrap:wrap; gap:8px; }
+        .chip { background:#1b1b1f; border:1px solid #2c2c32; color:#ddd; padding:6px 10px; border-radius: 6px; font-size:.8rem; }
+        .chip strong { color:#fff; }
+        .chip.good { border-color: rgba(123,168,118,.5); color:#cfe8cf; }
+        .chip.bad { border-color: rgba(217,118,118,.5); color:#ffd0d0; }
+        .chip.accent { border-color: rgba(139,123,168,.6); color:#e5dbff; }
 
         /* Checkbox y estado de entrega */
         .chk-entrega {
@@ -431,10 +445,16 @@
                     <th>Canal</th>
                     <th>Nro Orden</th>
                     <th>Acciones</th>
+                    <th onclick="app.sort('resena')">Reseña</th>
                 </tr>
             </thead>
             <tbody id="tableBody"></tbody>
         </table>
+        <div class="edge-shadow edge-left" id="edgeLeft" style="opacity:0;"></div>
+        <div class="edge-shadow edge-right" id="edgeRight" style="opacity:0;"></div>
+        <div class="slide-hint" id="slideHint">Deslizá <span class="slide-arrow">➜</span></div>
+        <button class="hscroll-btn hscroll-left" id="hscrollLeft" aria-label="Desplazar a la izquierda">&#10094;</button>
+        <button class="hscroll-btn hscroll-right" id="hscrollRight" aria-label="Desplazar a la derecha">&#10095;</button>
     </div>
 
     <!-- MODAL DE FORMULARIO -->
@@ -661,6 +681,21 @@
     <div id="toast-container"></div>
 
     <script>
+        const NEW_ORDERS_CSV_DEC9 = `id_pedido,fecha_pedido,cantidad,nombre_apellido,red_contactado,diseño_frente,diseño_dorso,talle,corte,color_remera,estampa_doble,precio_venta,costo_remera,costo_envio,ganancia_neta,envio_flag,estado_entrega_actual,empresa_envio,nro_envio,nro_orden_df,links,direccion,localidad,cp,telefono,fecha_entrega,dias_demora,gastos_publicidad,tardo,detalle_reclamo,resena
+    ,2025-12-06,1,Alejandra Caffaratti,Instagram,VIC FATHER,,L,Clásica,Negra,No,37000,21000,0,16000,CON,Pendiente,,,,634,,,,,,0,,,,
+    ,2025-12-07,1,Cesar Alberto Pedernera,WhatsApp,DAVE 90s B&N C/FIRMA,,L,Clásica,Negra,No,37000,21000,0,16000,CON,Pendiente,,,,641,,,,,,0,,,,
+    ,2025-12-08,1,Gabriel Diaz,WhatsApp,VIC TOUR 2026,,L,Clásica,Negra,No,37000,21000,0,16000,CON,Pendiente,,,,643,,,,,,0,,,,
+    ,2025-12-08,1,Francisco José Sampaio Lima de Carvalho,Instagram,LOGO BLANCO MEGADETH,VIC TOUR 2026,L,Oversize,Negra,Sí,42000,22000,0,20000,CON,Pendiente,,,,644,,,,,,0,,,,
+    ,2025-12-08,1,Luís Ramírez,Instagram,VIC BLANCO ULTIMO DISCO,,L,Clásica,Negra,No,37000,21000,0,16000,CON,Pendiente,,,,646,,,,,,0,,,,
+    ,2025-12-08,1,Javier Ritta,Instagram,ARCH ENEMY BURNING BRIDGES,,L,Clásica,Blanca,No,37000,20000,0,17000,CON,Pendiente,,,,647,,,,,,0,,,,
+    ,2025-12-08,1,Javier Ritta,Instagram,VIC BLANCO EN LLAMAS ULTIMO DISCO,,L,Clásica,Blanca,No,37000,20000,0,17000,CON,Pendiente,,,,647,,,,,,0,,,,
+    ,2025-12-09,1,M. Sebastian Duarte Ocampo,Instagram,VIC TOUR 2026,,L,Clásica,Negra,No,37000,21000,0,16000,CON,Pendiente,,,,651,,,,,,0,,,,
+    ,2025-12-09,1,M. Sebastian Duarte Ocampo,Instagram,VIC TOUR 2026 (Oversize),,L,Oversize,Negra,No,37000,22000,0,15000,CON,Pendiente,,,,651,,,,,,0,,,,
+    ,2025-12-09,1,M. Sebastian Duarte Ocampo,Instagram,KIMB VINTAGE '85,,L,Oversize,Negra,No,37000,22000,0,15000,CON,Pendiente,,,,651,,,,,,0,,,,
+    ,2025-12-09,1,M. Sebastian Duarte Ocampo,Instagram,DIMEBAG DARREL B/N + FIRMA,,L,Oversize,Negra,Sí,42000,22000,0,20000,CON,Pendiente,,,,653,,,,,,0,,,,
+    ,2025-12-09,1,Cristian gabriel Coronel,Instagram,VIC EN LLAMAS ULTIMO DISCO,VIC I DON'T CARE,L,Clásica,Negra,Sí,42000,21000,0,21000,CON,Pendiente,,,,654,,,,,,0,,,,
+    ,2025-12-09,1,Cristian gabriel Coronel,Instagram,RUSTED PIECES V3,RUSTED PIECES V1,L,Clásica,Negra,Sí,42000,21000,0,21000,CON,Pendiente,,,,654,,,,,,0,,,,
+    ,2025-12-09,1,Gabriel Gastón Grecco,WhatsApp,LOGO MEGADETH DYSTOPIA,DAVE 90s B&N C/FIRMA,L,Oversize,Negra,Sí,42000,22000,0,20000,CON,Pendiente,,,,655,,,,,,0,,,,`;
         const PRELOADED_CSV = `TARDÓ ,Fecha,Cantidad,Cliente,Canal/IG-Whatsapp,LINKS,Pedido (Diseño),COLOR,Talle / Corte,Doble Estampa?,N° Orden (Dreamful),Cliente,Estado,Dirección,Nro de seguimiento,Precio de Venta,Costo Dreamful,Ganancia Neta,C/S Envío,Gastos en publicidad
 ,01/10,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE,OCTUBRE
 ,,,,,,,,,,,,,,,,,,,
@@ -719,6 +754,7 @@ Ciudad: La Plata",,42,22,20,CON,
         const app = {
             state: {
                 orders: [],
+                // Orden por defecto: por Fecha (recientes primero)
                 sortCol: 'fecha_pedido',
                 sortAsc: false
             },
@@ -728,6 +764,22 @@ Ciudad: La Plata",,42,22,20,CON,
                 if (stored) {
                     try {
                         this.state.orders = JSON.parse(stored);
+                        // Migración x1000 si faltaba (solo una vez)
+                        const migrated = localStorage.getItem('fmd_migrated_x1000');
+                        if (!migrated) {
+                            this.state.orders.forEach(o=>{
+                                ['precio_venta','costo_remera','costo_envio','ganancia_neta'].forEach(k=>{
+                                    if (o[k] !== undefined && o[k] !== null){
+                                        const v = parseFloat(o[k]);
+                                        if (!isNaN(v) && Math.abs(v) > 0 && Math.abs(v) < 1000) {
+                                            o[k] = v * 1000;
+                                        }
+                                    }
+                                });
+                            });
+                            localStorage.setItem('fmd_pedidos', JSON.stringify(this.state.orders));
+                            localStorage.setItem('fmd_migrated_x1000', '1');
+                        }
                     } catch(e) { console.error(e); }
                 } else {
                     // Si no hay datos en localStorage, parseamos el CSV embebido y lo cargamos
@@ -788,9 +840,13 @@ Ciudad: La Plata",,42,22,20,CON,
                                 const estado = (raw['Estado'] || '').trim();
                                 const direccion = (raw['Dirección'] || '').trim();
                                 const tracking = (raw['Nro de seguimiento'] || '').trim();
-                                const precio = parseFloat((raw['Precio de Venta'] || '').replace(/[^0-9\.\-]/g,'')) || 0;
-                                const costo = parseFloat((raw['Costo Dreamful'] || '').replace(/[^0-9\.\-]/g,'')) || 0;
-                                const ganancia = parseFloat((raw['Ganancia Neta'] || '').replace(/[^0-9\.\-]/g,'')) || 0;
+                                let precio = parseFloat((raw['Precio de Venta'] || '').replace(/[^0-9\.\-]/g,'')) || 0;
+                                let costo = parseFloat((raw['Costo Dreamful'] || '').replace(/[^0-9\.\-]/g,'')) || 0;
+                                let ganancia = parseFloat((raw['Ganancia Neta'] || '').replace(/[^0-9\.\-]/g,'')) || 0;
+                                // escala a miles si parecen valores pequeños (p.ej. 37 -> 37000)
+                                if (Math.abs(precio) > 0 && Math.abs(precio) < 1000) precio *= 1000;
+                                if (Math.abs(costo) > 0 && Math.abs(costo) < 1000) costo *= 1000;
+                                if (Math.abs(ganancia) > 0 && Math.abs(ganancia) < 1000) ganancia *= 1000;
                                 const envioFlag = (raw['C/S Envío'] || '').trim();
                                 const gastosPub = (raw['Gastos en publicidad'] || '').trim();
 
@@ -835,6 +891,11 @@ Ciudad: La Plata",,42,22,20,CON,
                             localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
                         }
                     } catch(e) { console.error('Error cargando CSV embebido', e); }
+                }
+
+                // 👉 Sembrar automáticamente los pedidos del 6–9/12/2025 (solo 1 vez)
+                if (NEW_ORDERS_CSV_DEC9) {
+                    app.io.importFromString(NEW_ORDERS_CSV_DEC9, 'fmd_seed_2025_12_09');
                 }
 
                 this.render();
@@ -900,10 +961,10 @@ Ciudad: La Plata",,42,22,20,CON,
                         color_remera: document.getElementById('color_remera').value,
                         estampa_doble: document.getElementById('estampa_doble').value,
                         
-                        precio_venta: parseFloat(document.getElementById('precio_venta').value) || 0,
-                        costo_remera: parseFloat(document.getElementById('costo_remera').value) || 0,
-                        costo_envio: parseFloat(document.getElementById('costo_envio').value) || 0,
-                        ganancia_neta: parseFloat(document.getElementById('ganancia_neta').value) || 0,
+                        precio_venta: (function(){ const v = parseFloat(document.getElementById('precio_venta').value) || 0; return (Math.abs(v)>0 && Math.abs(v)<1000) ? v*1000 : v; })(),
+                        costo_remera: (function(){ const v = parseFloat(document.getElementById('costo_remera').value) || 0; return (Math.abs(v)>0 && Math.abs(v)<1000) ? v*1000 : v; })(),
+                        costo_envio: (function(){ const v = parseFloat(document.getElementById('costo_envio').value) || 0; return (Math.abs(v)>0 && Math.abs(v)<1000) ? v*1000 : v; })(),
+                        ganancia_neta: (function(){ const v = parseFloat(document.getElementById('ganancia_neta').value) || 0; return (Math.abs(v)>0 && Math.abs(v)<1000) ? v*1000 : v; })(),
                         
                         envio_flag: document.getElementById('envio_flag').value,
                         estado_entrega_actual: document.getElementById('estado_entrega_actual').value,
@@ -947,6 +1008,81 @@ Ciudad: La Plata",,42,22,20,CON,
                         app.render();
                         app.ui.showToast('Base de datos vaciada correctamente.');
                     }
+                },
+
+                bulkInsert: function(simpleRows = []) {
+                    // simpleRows = [{ fecha, cliente, diseño, color, talle, cantidad,
+                    //                 precio_venta, costo_remera, costo_envio,
+                    //                 canal, envio_flag, estado, nro_orden_df, localidad, cp, tracking }, ...]
+                    simpleRows.forEach(row => {
+                        const ventaRaw  = Number(row.precio_venta  || 0);
+                        const costoRaw  = Number(row.costo_remera  || 0);
+                        const envioRaw  = Number(row.costo_envio   || 0);
+
+                        const precio = (Math.abs(ventaRaw) > 0 && Math.abs(ventaRaw) < 1000) ? ventaRaw * 1000 : ventaRaw;
+                        const costo  = (Math.abs(costoRaw) > 0 && Math.abs(costoRaw) < 1000) ? costoRaw * 1000 : costoRaw;
+                        const costoE = (Math.abs(envioRaw) > 0 && Math.abs(envioRaw) < 1000) ? envioRaw * 1000 : envioRaw;
+
+                        const ganancia = (row.ganancia_neta != null)
+                            ? Number(row.ganancia_neta)
+                            : (precio - costo - costoE);
+
+                        let fechaIso = row.fecha_pedido || row.fecha || '';
+                        if (fechaIso && !/^\d{4}-\d{2}-\d{2}$/.test(fechaIso)) {
+                            const m = String(fechaIso).match(/(\d{1,2})[\/\-](\d{1,2})/);
+                            if (m) {
+                                const dd = m[1].padStart(2,'0');
+                                const mm = m[2].padStart(2,'0');
+                                fechaIso = `2025-${mm}-${dd}`;
+                            }
+                        }
+
+                        const orderData = {
+                            id_pedido: app.logic.generateId(),
+                            nombre_apellido: row.cliente || row.nombre_apellido || '(sin nombre)',
+                            direccion: row.direccion || '',
+                            localidad: row.localidad || '',
+                            cp: row.cp || '',
+                            telefono: row.telefono || '',
+                            red_contactado: row.canal || row.red_contactado || 'Instagram',
+                            es_cliente_recurrente: !!row.recurrente,
+
+                            fecha_pedido: fechaIso || new Date().toISOString().slice(0,10),
+                            cantidad: parseInt(row.cantidad || 1),
+                            nro_orden_df: row.nro_orden_df || row.nro_df || '',
+                            links: row.links || '',
+                            diseño_frente: row.diseno_frente || row.diseno || row['diseño_frente'] || row['diseño'] || '',
+                            diseño_dorso: row.diseno_dorso || row['diseño_dorso'] || '',
+                            talle: row.talle || '',
+                            corte: row.corte || '',
+                            color_remera: row.color || row.color_remera || '',
+                            estampa_doble: row.estampa_doble || (row.doble ? 'Si' : 'No'),
+
+                            precio_venta: precio,
+                            costo_remera: costo,
+                            costo_envio: costoE,
+                            ganancia_neta: ganancia,
+                            gastos_publicidad: Number(row.gastos_publicidad || 0) || 0,
+
+                            envio_flag: row.envio_flag || (row.con_envio === false ? 'SIN' : 'CON'),
+                            estado_entrega_actual: row.estado || row.estado_entrega_actual || 'Pendiente',
+                            empresa_envio: row.empresa_envio || '',
+                            nro_envio: row.tracking || row.nro_envio || '',
+                            fecha_entrega: row.fecha_entrega || '',
+                            dias_demora: Number(row.dias_demora || 0) || 0,
+
+                            tardo: row.tardo || '',
+                            detalle_reclamo: row.detalle_reclamo || '',
+                            resena: row.resena || '',
+                            fecha_creacion_registro: new Date().toISOString(),
+                        };
+
+                        app.state.orders.push(orderData);
+                    });
+
+                    localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                    app.render();
+                    app.ui.showToast(`Cargado lote de ${simpleRows.length} pedidos.`);
                 }
             },
 
@@ -986,6 +1122,58 @@ Ciudad: La Plata",,42,22,20,CON,
                 }
             },
 
+            utils: {
+                isIsoDate: function(v){ return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v); },
+                monthKey: function(isoDate){
+                    if (!app.utils.isIsoDate(isoDate)) return null; // invalid
+                    return isoDate.slice(0,7); // yyyy-mm
+                },
+                monthLabel: function(key){
+                    if (!key) return 'Sin fecha válida';
+                    const [y, m] = key.split('-');
+                    const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+                    const mi = parseInt(m, 10);
+                    if (isNaN(mi) || mi < 1 || mi > 12) return 'Sin fecha válida';
+                    return `${meses[mi-1]} ${y}`;
+                },
+                groupByMonth: function(rows){
+                    const groups = new Map();
+                    const invalid = [];
+                    rows.forEach(o=>{
+                        const k = app.utils.monthKey(o.fecha_pedido);
+                        if (!k) { invalid.push(o); return; }
+                        if (!groups.has(k)) groups.set(k, []);
+                        groups.get(k).push(o);
+                    });
+                    const sortedKeys = Array.from(groups.keys()).sort((a,b)=> a<b?1:-1);
+                    return { keys: sortedKeys, groups, invalid };
+                },
+                modeOf: function(arr){
+                    const map = new Map();
+                    for (const v of arr){
+                        const key = (v||'').toString().trim().toUpperCase();
+                        if (!key) continue;
+                        map.set(key, (map.get(key)||0)+1);
+                    }
+                    let max=0, best='-';
+                    map.forEach((cnt, k)=>{ if (cnt>max){ max=cnt; best=k; } });
+                    return best === '-' ? '-' : best;
+                },
+                computeSummary: function(rows){
+                    const totalVentas = rows.reduce((s,o)=> s + (parseFloat(o.precio_venta)||0), 0);
+                    const totalCosto = rows.reduce((s,o)=> s + (parseFloat(o.costo_remera)||0), 0);
+                    const totalEnvio = rows.reduce((s,o)=> s + (parseFloat(o.costo_envio)||0), 0);
+                    const totalGan = rows.reduce((s,o)=> s + (parseFloat(o.ganancia_neta)||0), 0);
+                    const totalCant = rows.reduce((s,o)=> s + (parseInt(o.cantidad)||0), 0);
+                    const conEnvio = rows.filter(o => (o.envio_flag||'').toUpperCase()==='CON').length;
+                    const sinEnvio = rows.filter(o => (o.envio_flag||'').toUpperCase()==='SIN').length;
+                    const topTalle = app.utils.modeOf(rows.map(o=> o.talle));
+                    const topColor = app.utils.modeOf(rows.map(o=> o.color_remera));
+                    const topDesign = app.utils.modeOf(rows.map(o=> o.diseño_frente));
+                    return { totalVentas, totalCosto, totalEnvio, totalGan, totalCant, conEnvio, sinEnvio, topTalle, topColor, topDesign };
+                }
+            },
+
             render: function() {
                 const tbody = document.getElementById('tableBody');
                 tbody.innerHTML = '';
@@ -1006,43 +1194,169 @@ Ciudad: La Plata",,42,22,20,CON,
                     return matchesSearch && matchesStatus && matchesChannel && matchesDate;
                 });
 
-                // Ordenar
+                // Ordenar (fechas reales, números reales, texto con collator ES)
+                const collator = new Intl.Collator('es', { sensitivity: 'base', numeric: true, ignorePunctuation: true });
+                const sc = app.state.sortCol;
+                const isDateCol = /fecha/i.test(sc);
                 filtered.sort((a, b) => {
-                    let valA = a[app.state.sortCol] || '';
-                    let valB = b[app.state.sortCol] || '';
-                    if (!isNaN(parseFloat(valA)) && !isNaN(parseFloat(valB))) { valA = parseFloat(valA); valB = parseFloat(valB); }
-                    return app.state.sortAsc ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+                    let valA = a[sc];
+                    let valB = b[sc];
+
+                    if (valA === undefined || valA === null) valA = '';
+                    if (valB === undefined || valB === null) valB = '';
+
+                    // Fechas (ISO yyyy-mm-dd desde el input date o parseables por Date)
+                    if (isDateCol) {
+                        const tA = Date.parse(String(valA));
+                        const tB = Date.parse(String(valB));
+                        if (!isNaN(tA) && !isNaN(tB)) {
+                            return app.state.sortAsc ? (tA - tB) : (tB - tA);
+                        }
+                    }
+
+                    // Numérico puro (evitar tratar fechas como números por el guión)
+                    const numRegex = /^-?\d+(?:\.\d+)?$/;
+                    const numA = (typeof valA === 'number') ? valA : (numRegex.test(String(valA)) ? parseFloat(valA) : NaN);
+                    const numB = (typeof valB === 'number') ? valB : (numRegex.test(String(valB)) ? parseFloat(valB) : NaN);
+                    const bothNumeric = !isNaN(numA) && !isNaN(numB);
+                    if (bothNumeric) {
+                        return app.state.sortAsc ? (numA - numB) : (numB - numA);
+                    }
+
+                    // Texto
+                    const aStr = String(valA);
+                    const bStr = String(valB);
+                    return app.state.sortAsc ? collator.compare(aStr, bStr) : collator.compare(bStr, aStr);
                 });
 
                 this.renderStats(filtered);
 
-                filtered.forEach(o => {
-                    const tr = document.createElement('tr');
-                    const profitClass = o.ganancia_neta >= 0 ? 'profit-positive' : 'profit-negative';
-                    const isEntregado = o.estado_entrega_actual === 'Entregado';
-                    if (isEntregado) tr.classList.add('row-entregado');
-                    tr.innerHTML = `
-                        <td style="text-align:center; padding:5px;"><input type="checkbox" class="chk-entrega" ${isEntregado ? 'checked' : ''} onchange="app.toggleEntrega('${o.id_pedido}', this.checked)"></td>
-                        <td style="font-weight:bold; color:var(--accent-violet);">${o.fecha_pedido}</td>
-                        <td><div style="font-weight:bold;">${o.nombre_apellido}</div><div style="font-size:0.7em; color:#888;">${o.localidad || '-'}</div></td>
-                        <td style="font-size:0.75rem; max-width:100px; overflow:hidden; text-overflow:ellipsis;">${o.diseño_frente || '-'}</td>
-                        <td>${o.color_remera || '-'}</td>
-                        <td>${o.talle || '-'}</td>
-                        <td>${o.cantidad || 1}</td>
-                        <td class="money">$${(o.precio_venta || 0).toLocaleString('es-AR')}</td>
-                        <td class="money">$${(o.costo_remera || 0).toLocaleString('es-AR')}</td>
-                        <td class="money ${profitClass}">$${(o.ganancia_neta || 0).toLocaleString('es-AR')}</td>
-                        <td>${o.envio_flag || 'SIN'}</td>
-                        <td style="font-size:0.75rem;">${o.nro_envio || '-'}</td>
-                        <td><span class="tag tag-status-${(o.estado_entrega_actual || '').replace(/ /g, '')}">${o.estado_entrega_actual || 'Pendiente'}</span></td>
-                        <td>${o.red_contactado || '-'}</td>
-                        <td>${o.nro_orden_df || '-'}</td>
-                        <td>
+                // Agrupar por mes y pintar secciones con resumen
+                const { keys, groups, invalid } = app.utils.groupByMonth(filtered);
+                keys.forEach(key => {
+                    const rows = groups.get(key).slice().sort((a,b)=> (a.fecha_pedido < b.fecha_pedido ? 1 : -1));
+
+                    // Encabezado de mes
+                    const th = document.createElement('tr');
+                    th.className = 'month-header';
+                    th.innerHTML = `<td colspan="17"><div class="month-title"><span class="dot"></span>${app.utils.monthLabel(key)}</div></td>`;
+                    tbody.appendChild(th);
+
+                    // Filas del mes
+                    rows.forEach(o => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'data-row';
+                        const profitClass = o.ganancia_neta >= 0 ? 'profit-positive' : 'profit-negative';
+                        const isEntregado = o.estado_entrega_actual === 'Entregado';
+                        if (isEntregado) tr.classList.add('row-entregado');
+                        tr.innerHTML = `
+                            <td style="text-align:center; padding:5px;"><input type="checkbox" class="chk-entrega" ${isEntregado ? 'checked' : ''} onchange="app.toggleEntrega('${o.id_pedido}', this.checked)"></td>
+                            <td style="font-weight:bold; color:var(--accent-violet);">${o.fecha_pedido}</td>
+                            <td><div style="font-weight:bold;">${o.nombre_apellido}</div><div style="font-size:0.7em; color:#888;">${o.localidad || '-'}</div></td>
+                            <td style="font-size:0.75rem; max-width:100px; overflow:hidden; text-overflow:ellipsis;">${o.diseño_frente || '-'}</td>
+                            <td>${o.color_remera || '-'}</td>
+                            <td>${o.talle || '-'}</td>
+                            <td>${o.cantidad || 1}</td>
+                            <td class="money">${(o.precio_venta || 0).toLocaleString('es-AR')}</td>
+                            <td class="money">${(o.costo_remera || 0).toLocaleString('es-AR')}</td>
+                            <td class="money ${profitClass}">${(o.ganancia_neta || 0).toLocaleString('es-AR')}</td>
+                            <td>${o.envio_flag || 'SIN'}</td>
+                            <td style="font-size:0.75rem;">${o.nro_envio || '-'}</td>
+                            <td><span class="tag tag-status-${(o.estado_entrega_actual || '').replace(/ /g, '')}">${o.estado_entrega_actual || 'Pendiente'}</span></td>
+                            <td>${o.red_contactado || '-'}</td>
+                            <td>${o.nro_orden_df || '-'}</td>
+                            <td>
                             <button class="btn btn-secondary btn-sm" onclick="app.ui.openModal('${o.id_pedido}')" title="Editar">✏️</button>
                             <button class="btn btn-danger btn-sm" onclick="app.data.delete('${o.id_pedido}')" title="Borrar">🗑️</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
+                            </td>
+                            <td style="min-width:180px;">
+                            <div contenteditable="true" data-id="${o.id_pedido}" class="cell-resena" style="outline:none; background:#1b1b1f; border:1px solid #2c2c32; padding:6px; border-radius:6px; color:#ddd;" placeholder="Escribí una reseña...">${(o.resena||'')}</div>
+                            </td>
+                            `;
+                        tbody.appendChild(tr);
+                    });
+
+                    // Resumen del mes
+                    const s = app.utils.computeSummary(rows);
+                    const sr = document.createElement('tr');
+                    sr.className = 'month-summary';
+                    sr.innerHTML = `
+                        <td colspan="17">
+                            <div class="summary-chips">
+                                <div class="chip accent"><strong>Total Ventas:</strong> ${s.totalVentas.toLocaleString('es-AR')}</div>
+                                <div class="chip"><strong>Costo:</strong> ${s.totalCosto.toLocaleString('es-AR')}</div>
+                                <div class="chip ${s.totalGan>=0?'good':'bad'}"><strong>Ganancia Neta:</strong> ${s.totalGan.toLocaleString('es-AR')}</div>
+                                <div class="chip"><strong>Envío (CON/SIN):</strong> ${s.conEnvio}/${s.sinEnvio}</div>
+                                <div class="chip"><strong>Cant. Prendas:</strong> ${s.totalCant}</div>
+                                <div class="chip"><strong>Talle TOP:</strong> ${s.topTalle}</div>
+                                <div class="chip"><strong>Color TOP:</strong> ${s.topColor}</div>
+                                <div class="chip"><strong>Diseño TOP:</strong> ${s.topDesign}</div>
+                            </div>
+                        </td>`;
+                    tbody.appendChild(sr);
+                });
+
+                // Si hay filas sin fecha válida, mostrarlas al final bajo un bloque especial
+                if (invalid.length) {
+                    const th = document.createElement('tr');
+                    th.className = 'month-header';
+                    th.innerHTML = `<td colspan="17"><div class="month-title"><span class="dot"></span>Sin fecha válida</div></td>`;
+                    tbody.appendChild(th);
+                    invalid.forEach(o => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'data-row';
+                        const profitClass = o.ganancia_neta >= 0 ? 'profit-positive' : 'profit-negative';
+                        const isEntregado = o.estado_entrega_actual === 'Entregado';
+                        if (isEntregado) tr.classList.add('row-entregado');
+                        tr.innerHTML = `
+                            <td style="text-align:center; padding:5px;"><input type="checkbox" class="chk-entrega" ${isEntregado ? 'checked' : ''} onchange="app.toggleEntrega('${o.id_pedido}', this.checked)"></td>
+                            <td style="font-weight:bold; color:var(--accent-violet);">${o.fecha_pedido || '-'}</td>
+                            <td><div style="font-weight:bold;">${o.nombre_apellido}</div><div style="font-size:0.7em; color:#888;">${o.localidad || '-'}</div></td>
+                            <td style="font-size:0.75rem; max-width:100px; overflow:hidden; text-overflow:ellipsis;">${o.diseño_frente || '-'}</td>
+                            <td>${o.color_remera || '-'}</td>
+                            <td>${o.talle || '-'}</td>
+                            <td>${o.cantidad || 1}</td>
+                            <td class="money">${(o.precio_venta || 0).toLocaleString('es-AR')}</td>
+                            <td class="money">${(o.costo_remera || 0).toLocaleString('es-AR')}</td>
+                            <td class="money ${profitClass}">${(o.ganancia_neta || 0).toLocaleString('es-AR')}</td>
+                            <td>${o.envio_flag || 'SIN'}</td>
+                            <td style="font-size:0.75rem;">${o.nro_envio || '-'}</td>
+                            <td><span class="tag tag-status-${(o.estado_entrega_actual || '').replace(/ /g, '')}">${o.estado_entrega_actual || 'Pendiente'}</span></td>
+                            <td>${o.red_contactado || '-'}</td>
+                            <td>${o.nro_orden_df || '-'}</td>
+                            <td>
+                                <button class="btn btn-secondary btn-sm" onclick="app.ui.openModal('${o.id_pedido}')" title="Editar">✏️</button>
+                                <button class="btn btn-danger btn-sm" onclick="app.data.delete('${o.id_pedido}')" title="Borrar">🗑️</button>
+                            </td>
+                            <td style="min-width:180px;">
+                                <div contenteditable="true" data-id="${o.id_pedido}" class="cell-resena" style="outline:none; background:#1b1b1f; border:1px solid #2c2c32; padding:6px; border-radius:6px; color:#ddd;" placeholder="Escribí una reseña...">${(o.resena||'')}</div>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                    // bind reseña edits for invalid group
+                    tbody.querySelectorAll('.cell-resena').forEach(el=>{
+                        if (el._bound) return; el._bound = true;
+                        el.addEventListener('blur', ()=>{
+                            const id = el.getAttribute('data-id');
+                            const order = app.state.orders.find(o=> o.id_pedido === id);
+                            if (!order) return;
+                            order.resena = el.innerText.trim();
+                            localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                        });
+                    });
+                }
+
+                // bind reseña edits for normal groups
+                tbody.querySelectorAll('.cell-resena').forEach(el=>{
+                    if (el._bound) return; el._bound = true;
+                    el.addEventListener('blur', ()=>{
+                        const id = el.getAttribute('data-id');
+                        const order = app.state.orders.find(o=> o.id_pedido === id);
+                        if (!order) return;
+                        order.resena = el.innerText.trim();
+                        localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                    });
                 });
             },
 
@@ -1084,11 +1398,16 @@ Ciudad: La Plata",,42,22,20,CON,
             io: {
                 exportCSV: function() {
                     if (!app.state.orders.length) return alert("Nada para exportar.");
-                    const headers = Object.keys(app.state.orders[0]);
+                    const keySet = new Set();
+                    app.state.orders.forEach(o => Object.keys(o).forEach(k => keySet.add(k)));
+                    keySet.add('resena');
+                    const headers = Array.from(keySet);
+                    const idx = headers.indexOf('resena');
+                    if (idx > -1) { headers.splice(idx,1); headers.push('resena'); }
+
                     const csv = [headers.join(',')];
-                    
                     app.state.orders.forEach(row => {
-                        csv.push(headers.map(h => `"${(row[h] || '').toString().replace(/"/g, '""')}"`).join(','));
+                        csv.push(headers.map(h => `"${(row[h] ?? '').toString().replace(/"/g, '""') }"`).join(','));
                     });
 
                     const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
@@ -1103,43 +1422,115 @@ Ciudad: La Plata",,42,22,20,CON,
                     if (!file) return;
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        const text = e.target.result;
-                        const rows = text.split(/\r?\n/);
-                        if (rows.length < 2) return alert("Archivo vacío o inválido");
-
-                        const firstLine = rows[0];
-                        const delimiter = firstLine.includes(';') ? ';' : ',';
-                        
-                        const headers = firstLine.split(delimiter).map(h => h.replace(/^"|"$/g, '').trim());
-                        
-                        let imported = 0;
-                        for (let i = 1; i < rows.length; i++) {
-                            if (!rows[i].trim()) continue;
-                            const values = rows[i].split(delimiter); 
-
-                            if (values.length >= headers.length) {
-                                const obj = {};
-                                headers.forEach((h, idx) => {
-                                    let val = values[idx] ? values[idx].replace(/^"|"$/g, '').replace(/""/g, '"').trim() : '';
-                                    obj[h] = val;
-                                });
-                                if (!obj.id_pedido) obj.id_pedido = app.logic.generateId();
-                                app.state.orders.push(obj);
-                                imported++;
-                            }
-                        }
-                        
-                        localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
-                        app.render();
-                        app.ui.showToast(`Importados ${imported} pedidos correctamente.`);
+                        app.io.importFromString(e.target.result);
                         input.value = '';
                     };
                     reader.readAsText(file);
+                },
+
+                // 🔥 Nuevo: importar desde un string (lo usamos para sembrar los pedidos del 6–9/12)
+                importFromString: function(text, seedFlagKey) {
+                    if (!text) return;
+
+                    // Si viene con flag (semilla interna) no repetir
+                    if (seedFlagKey && localStorage.getItem(seedFlagKey)) return;
+
+                    const rows = text.split(/\r?\n/);
+                    if (rows.length < 2) return;
+
+                    const firstLine = rows[0];
+                    const delimiter = firstLine.includes(';') ? ';' : ',';
+                    const headers = firstLine.split(delimiter).map(h => h.replace(/^"|"$/g, '').trim());
+
+                    let imported = 0;
+                    for (let i = 1; i < rows.length; i++) {
+                        const line = rows[i];
+                        if (!line || !line.trim()) continue;
+
+                        const values = line.split(delimiter);
+                        if (values.length < headers.length) continue;
+
+                        const obj = {};
+                        headers.forEach((h, idx) => {
+                            let val = values[idx] ? values[idx].replace(/^"|"$/g, '').replace(/""/g, '"').trim() : '';
+
+                            if (['precio_venta','costo_remera','costo_envio','ganancia_neta'].includes(h)) {
+                                const num = parseFloat(val);
+                                if (!isNaN(num) && Math.abs(num) > 0 && Math.abs(num) < 1000) {
+                                    val = (num * 1000).toString();
+                                }
+                            }
+                            obj[h] = val;
+                        });
+
+                        if (!obj.id_pedido) obj.id_pedido = app.logic.generateId();
+                        app.state.orders.push(obj);
+                        imported++;
+                    }
+
+                    if (imported > 0) {
+                        localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                        if (seedFlagKey) localStorage.setItem(seedFlagKey, '1');
+                        app.render();
+                    }
                 }
             }
         };
 
-        window.onload = () => app.init();
+        window.onload = () => {
+            app.init();
+            // controles de sombras para slide visual
+            const cont = document.querySelector('.table-container');
+            const el = cont;
+            const left = document.getElementById('edgeLeft');
+            const right = document.getElementById('edgeRight');
+            const hint = document.getElementById('slideHint');
+            const btnL = document.getElementById('hscrollLeft');
+            const btnR = document.getElementById('hscrollRight');
+            function updateShadows(){
+                const max = el.scrollWidth - el.clientWidth;
+                const atStart = el.scrollLeft <= 0;
+                const atEnd = el.scrollLeft >= (max - 2); // tolerancia
+                if (left) left.style.opacity = atStart ? 0 : 1;
+                if (right) right.style.opacity = atEnd ? 0 : 1;
+                if (hint) hint.style.opacity = el.scrollLeft < 20 && max > 0 ? 1 : 0;
+                if (btnL && btnR){
+                    if (max <= 0){
+                        btnL.style.display = 'none';
+                        btnR.style.display = 'none';
+                    } else {
+                        btnL.style.display = 'flex';
+                        btnR.style.display = 'flex';
+                        btnL.style.opacity = atStart ? 0.2 : 1;
+                        btnL.style.pointerEvents = atStart ? 'none' : 'auto';
+                        btnR.style.opacity = atEnd ? 0.2 : 1;
+                        btnR.style.pointerEvents = atEnd ? 'none' : 'auto';
+                    }
+                }
+            }
+            const page = ()=> Math.max(120, Math.round(el.clientWidth * 0.6));
+            if (btnL) btnL.addEventListener('click', ()=>{ el.scrollBy({ left: -page(), behavior: 'smooth' }); setTimeout(updateShadows, 380); });
+            if (btnR) btnR.addEventListener('click', ()=>{ el.scrollBy({ left: page(), behavior: 'smooth' }); setTimeout(updateShadows, 380); });
+            // Soporte wheel con Shift (horizontal)
+            el.addEventListener('wheel', (e)=>{
+                if (e.shiftKey) {
+                    e.preventDefault();
+                    el.scrollLeft += e.deltaY;
+                    updateShadows();
+                }
+            }, { passive: false });
+            // Teclado: Alt+Izq/Der
+            document.addEventListener('keydown', (e)=>{
+                if (e.altKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')){
+                    e.preventDefault();
+                    el.scrollBy({ left: (e.key==='ArrowLeft'?-page():page()), behavior: 'smooth' });
+                    setTimeout(updateShadows, 380);
+                }
+            });
+            el.addEventListener('scroll', updateShadows);
+            window.addEventListener('resize', updateShadows);
+            setTimeout(updateShadows, 300);
+        };
 
         // 🔧 Redimensionamiento de columnas
         document.addEventListener('DOMContentLoaded', function() {
@@ -1149,29 +1540,25 @@ Ciudad: La Plata",,42,22,20,CON,
             headers.forEach((header, idx) => {
                 header.addEventListener('mousedown', (e) => {
                     if (e.offsetX < header.offsetWidth - 5) return; // Solo desde el borde derecho
-                    
                     e.preventDefault();
                     const startX = e.clientX;
                     const startWidth = header.offsetWidth;
-                    
                     const onMouseMove = (moveEvent) => {
                         const diff = moveEvent.clientX - startX;
-                        const newWidth = Math.max(50, startWidth + diff);
+                        const newWidth = Math.max(80, startWidth + diff);
                         header.style.width = newWidth + 'px';
                         header.style.minWidth = newWidth + 'px';
-                        
-                        // Aplicar ancho a todas las celdas de esa columna
-                        table.querySelectorAll(`tbody tr td:nth-child(${idx + 1})`).forEach(td => {
+                        // Aplicar ancho solo a filas de datos, no a separadores/resúmenes
+                        table.querySelectorAll(`tbody tr.data-row td:nth-child(${idx + 1})`).forEach(td => {
+                            if (td.colSpan && td.colSpan > 1) return; // evitar celdas con colspan
                             td.style.width = newWidth + 'px';
                             td.style.minWidth = newWidth + 'px';
                         });
                     };
-                    
                     const onMouseUp = () => {
                         document.removeEventListener('mousemove', onMouseMove);
                         document.removeEventListener('mouseup', onMouseUp);
                     };
-                    
                     document.addEventListener('mousemove', onMouseMove);
                     document.addEventListener('mouseup', onMouseUp);
                 });
