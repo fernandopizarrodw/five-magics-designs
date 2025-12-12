@@ -1619,6 +1619,18 @@
         window.onload = () => {
             app.init();
             console.log('FMD Manager – total orders in state:', app.state.orders.length);
+            
+            // Auto-cargar CSV si no hay datos
+            if (app.state.orders.length === 0) {
+                fetch('./11-12125-fmd_pedidos.csv')
+                    .then(r => r.text())
+                    .then(text => {
+                        app.io.importFromString(text, null, true);
+                        app.render();
+                        console.log('CSV cargado automáticamente');
+                    })
+                    .catch(e => console.log('No se pudo cargar CSV automáticamente:', e));
+            }
             // controles de sombras para slide visual
             const cont = document.querySelector('.table-container');
             const el = cont;
