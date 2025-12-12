@@ -1111,6 +1111,47 @@
             font-family: var(--font-body);
         }
 
+        /* MODELOS - estilos */
+        .model-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: clamp(18px, 3vw, 24px);
+            margin-top: 10px;
+        }
+        @media (min-width: 820px){
+            .model-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        .model-card {
+            background: linear-gradient(145deg, #0a0a0a, #151515);
+            border: 1px solid #222;
+            position: relative;
+            overflow: hidden;
+            transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+            border-radius: 2px;
+        }
+        .model-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--rust);
+            box-shadow: 0 20px 40px rgba(0,0,0,.7);
+        }
+        .model-media { position: relative; aspect-ratio: 4/5; background:#000; }
+        .model-img { width: 100%; height: 100%; object-fit: cover; display:block; filter: brightness(.95) grayscale(10%); }
+        .model-nav {
+            position:absolute; top:50%; transform:translateY(-50%);
+            background: rgba(133, 44, 12, 0.7);
+            color:#fff; border:none; font-weight:700;
+            padding: 10px 12px; cursor:pointer; transition:.25s; z-index: 5;
+        }
+        .model-nav:hover { background: var(--rust); }
+        .model-nav.prev { left: 8px; }
+        .model-nav.next { right: 8px; }
+        .model-dots { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:6; }
+        .model-dot { width:8px; height:8px; border-radius:50%; background: rgba(255,255,255,.6); border:1px solid rgba(255,255,255,.9); cursor:pointer; transition:.25s; }
+        .model-dot.active { background: var(--rust); border-color: var(--rust); }
+        .model-info { padding: 14px 14px 18px; }
+        .model-title { font-family: var(--font-sub); text-transform: uppercase; font-size: clamp(1.1rem, 3.5vw, 1.4rem); margin-bottom: 6px; }
+        .model-desc { color:#bbb; font-size: clamp(0.95rem, 3vw, 1.05rem); line-height:1.5; }
+
         /* INSTAGRAM FEED */
         #social-feed {
             background: #111;
@@ -1838,7 +1879,6 @@
             <a href="#slider-albums" class="nav-link">Álbumes</a>
             <a href="#slider-songs" class="nav-link">Hits</a>
             <a href="#slider-custom" class="nav-link">Custom</a>
-            <a href="excel.html" class="nav-link" style="background: rgba(139, 123, 168, 0.2); padding: 8px 15px; border-radius: 4px; font-size: 0.9rem;">📊 Manager</a>
             <a href="https://wa.me/5491112345678" target="_blank" class="btn-header-wa">WhatsApp</a>
         </div>
     </nav>
@@ -2087,6 +2127,63 @@
         </div>
     </section>
 
+    <!-- SECCIÓN MODELOS (debajo de la tabla de medidas) -->
+    <section id="modelos" class="reveal-on-scroll" style="background:#0a0a0a; border-top:1px solid #222; border-bottom:1px solid #222; padding: clamp(40px,8vw,70px) 15px;">
+        <div style="max-width:1200px; margin:0 auto;">
+            <div class="category-header" style="margin-left:0;">
+                <h3 class="category-title burning-text">Modelos de Remeras</h3>
+                <div class="category-subtitle scanner-text">Previsualizá los cortes en Negro y Blanco</div>
+            </div>
+
+            <div class="model-grid">
+                <!-- Card 1: Negra Clásica -->
+                <article class="model-card" data-model="clasica-negra">
+                    <div class="model-media">
+                        <button class="model-nav prev" aria-label="Anterior">&#10094;</button>
+                        <img src="https://placehold.co/800x1000/000/FFF?text=CLASICA+NEGRA" alt="Remera Negra Clásica" class="model-img" loading="lazy">
+                        <img src="https://placehold.co/800x1000/fff/000?text=CLASICA+BLANCA" alt="Remera Blanca Clásica" class="model-img" loading="lazy" style="display:none;">
+                        <button class="model-nav next" aria-label="Siguiente">&#10095;</button>
+                        <div class="model-dots"></div>
+                    </div>
+                    <div class="model-info">
+                        <h4 class="model-title">Clásica Negra</h4>
+                        <p class="model-desc">Espacio para la descripción del diseño. Podés detallar técnica, inspiración y recomendaciones de uso.</p>
+                    </div>
+                </article>
+
+                <!-- Card 2: Oversize Unisex -->
+                <article class="model-card" data-model="oversize">
+                    <div class="model-media">
+                        <button class="model-nav prev" aria-label="Anterior">&#10094;</button>
+                        <img src="https://placehold.co/800x1000/000/FFF?text=OVERSIZE+NEGRA" alt="Remera Oversize Negra" class="model-img" loading="lazy">
+                        <img src="https://placehold.co/800x1000/fff/000?text=OVERSIZE+BLANCA" alt="Remera Oversize Blanca" class="model-img" loading="lazy" style="display:none;">
+                        <button class="model-nav next" aria-label="Siguiente">&#10095;</button>
+                        <div class="model-dots"></div>
+                    </div>
+                    <div class="model-info">
+                        <h4 class="model-title">Oversize Unisex</h4>
+                        <p class="model-desc">Espacio para la descripción del diseño. Indicar calce holgado, caída y look street.</p>
+                    </div>
+                </article>
+
+                <!-- Card 3: Mujer Clásica -->
+                <article class="model-card" data-model="mujer-clasica">
+                    <div class="model-media">
+                        <button class="model-nav prev" aria-label="Anterior">&#10094;</button>
+                        <img src="https://placehold.co/800x1000/000/FFF?text=MUJER+NEGRA" alt="Remera Mujer Negra" class="model-img" loading="lazy">
+                        <img src="https://placehold.co/800x1000/fff/000?text=MUJER+BLANCA" alt="Remera Mujer Blanca" class="model-img" loading="lazy" style="display:none;">
+                        <button class="model-nav next" aria-label="Siguiente">&#10095;</button>
+                        <div class="model-dots"></div>
+                    </div>
+                    <div class="model-info">
+                        <h4 class="model-title">Mujer Clásica</h4>
+                        <p class="model-desc">Espacio para la descripción del diseño. Sugerencias de talle y calce femenino.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
     <!-- SECCIÓN CÓMO COMPRAR -->
     <section id="como-comprar" class="reveal-on-scroll">
         <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
@@ -2119,7 +2216,7 @@
 
             <div class="cta-wrapper">
                 <button id="cta-comprar" type="button" class="btn-header-wa"
-                    style="font-size: 2.2rem; padding: 25px 60px; display: inline-block; background: #39FF14; color: #000; font-weight: 900; border: none;">
+                    style="font-size: 2.2rem; padding: 25px 60px; display: inline-block; background: #36fd1386; color: #000000; font-weight: 900; border: none;">
                     Quiero encargar ahora
                 </button>
                 <div id="contact-chooser" class="contact-chooser corro-wrap corrosion-border paused">
@@ -2611,6 +2708,45 @@
         } else {
             createParticles();
         }
+    </script>
+    <script>
+        // Slider simple para las 3 cards de modelos (negro/blanco)
+        (function(){
+            function initModelCard(card){
+                const imgs = Array.from(card.querySelectorAll('.model-img'));
+                const prev = card.querySelector('.model-nav.prev');
+                const next = card.querySelector('.model-nav.next');
+                const dotsWrap = card.querySelector('.model-dots');
+                let idx = 0;
+
+                // dots
+                dotsWrap.innerHTML = '';
+                imgs.forEach((_, i)=>{
+                    const dot = document.createElement('div');
+                    dot.className = 'model-dot' + (i===0 ? ' active' : '');
+                    dot.addEventListener('click', ()=> setIndex(i));
+                    dotsWrap.appendChild(dot);
+                });
+
+                function render(){
+                    imgs.forEach((im, i)=> im.style.display = (i===idx?'block':'none'));
+                    dotsWrap.querySelectorAll('.model-dot').forEach((d, i)=>{
+                        d.classList.toggle('active', i===idx);
+                    });
+                }
+                function setIndex(i){
+                    idx = (i + imgs.length) % imgs.length;
+                    render();
+                }
+
+                prev?.addEventListener('click', ()=> setIndex(idx-1));
+                next?.addEventListener('click', ()=> setIndex(idx+1));
+                render();
+            }
+            document.addEventListener('DOMContentLoaded', ()=>{
+                document.querySelectorAll('.model-card').forEach(initModelCard);
+            });
+        })();
     </script>
 </body>
 
