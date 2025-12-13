@@ -1622,14 +1622,20 @@
             
             // Auto-cargar CSV si no hay datos
             if (app.state.orders.length === 0) {
-                fetch('./11-12125-fmd_pedidos.csv')
+                // Detectar si estamos en GitHub Pages o local
+                const baseUrl = window.location.hostname.includes('github') 
+                    ? '/five-magics-designs/' 
+                    : './';
+                const csvPath = baseUrl + '11-12125-fmd_pedidos.csv';
+                
+                fetch(csvPath)
                     .then(r => r.text())
                     .then(text => {
                         app.io.importFromString(text, null, true);
                         app.render();
-                        console.log('CSV cargado automáticamente');
+                        console.log('CSV cargado automáticamente desde:', csvPath);
                     })
-                    .catch(e => console.log('No se pudo cargar CSV automáticamente:', e));
+                    .catch(e => console.log('No se pudo cargar CSV:', csvPath, e));
             }
             // controles de sombras para slide visual
             const cont = document.querySelector('.table-container');
