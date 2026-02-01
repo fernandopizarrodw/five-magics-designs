@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FMD Drafter 2.0 ⚡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* 🎨 ESTILOS DARK METAL */
+        :root {
+            --bg-color: #050505;
+            --card-bg: #141416;
+            --input-bg: #1f1f23;
+            --text-main: #e0e0e0;
+            --accent: #d400ff; /* Magenta Neón */
+            --accent-sec: #00eeff; /* Cyan */
+            --success: #00ff9d;
+            --border: #333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Kanit', sans-serif;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background: linear-gradient(180deg, #111 0%, #000 100%);
+            padding: 15px;
+            border-bottom: 2px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        h1 { font-size: 1.1rem; letter-spacing: 1px; text-transform: uppercase; }
+        h1 span { color: var(--accent); }
+
+        .section { padding: 15px; border-bottom: 1px solid #222; }
+        .section-title { color: var(--accent); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 10px; display:flex; justify-content:space-between;}
+
+        input, select, textarea {
+            width: 100%; background-color: var(--input-bg); border: 1px solid var(--border);
+            color: #fff; padding: 12px; font-size: 1rem; border-radius: 6px;
+            font-family: 'Roboto Mono', monospace; outline: none; margin-bottom: 10px;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+
+        .row { display: flex; gap: 10px; }
+        .col { flex: 1; }
+
+        .btn {
+            width: 100%; padding: 12px; border: none; border-radius: 6px;
+            font-weight: bold; text-transform: uppercase; cursor: pointer;
+            font-family: 'Kanit', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-add { background: var(--accent-sec); color: #000; margin-top: 5px; }
+        .btn-copy { background: var(--accent); color: #fff; font-size: 1rem; margin-top:10px; }
+        .btn-system { background: #222; border: 1px solid var(--success); color: var(--success); font-size: 1rem; margin-top:10px; }
+        .btn-small { padding: 5px 10px; font-size: 0.8rem; width: auto; background: #333; color: #fff; }
+
+        .items-list { background: #0a0a0c; border: 1px solid var(--border); border-radius: 6px; padding: 10px; min-height: 50px; margin-bottom: 10px; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #222; font-size: 0.9rem; }
+        .item-row:last-child { border-bottom: none; }
+        .item-desc { color: #fff; }
+        .item-sub { color: #888; font-size: 0.8rem; }
+        .item-price { color: var(--accent-sec); font-family: 'Roboto Mono'; font-weight: bold; }
+
+        .preview-box {
+            background: #111; border: 1px dashed #444; color: #bbb; padding: 15px;
+            font-family: 'Roboto Mono', monospace; font-size: 0.85rem; white-space: pre-wrap;
+            border-radius: 6px; margin-bottom: 15px;
+        }
+
+        #toast {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #fff; color: #000; padding: 10px 20px; border-radius: 50px;
+            display: none; font-weight: bold; box-shadow: 0 0 20px var(--accent); z-index: 200; white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>FMD <span>DRAFTER</span></h1>
+        <button class="btn btn-small" onclick="app.newOrder()">🔄 Nuevo</button>
+    </header>
+
+    <!-- 1. DATOS CLIENTE -->
+    <div class="section">
+        <div class="section-title">👤 Cliente & Canal</div>
+        <div class="row">
+            <input type="text" id="clientName" placeholder="Nombre / Instagram..." class="col" style="flex:2;" oninput="app.buildPreview()">
+            <select id="clientChannel" class="col" style="flex:1;">
+                <option value="Instagram">Instagram</option>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Otro">Otro</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- 2. ARMAR PEDIDO -->
+    <div class="section">
+        <div class="section-title">👕 Prendas</div>
+        
+        <div class="row">
+            <select id="prodType" class="col" style="flex:1;">
+                <option value="Remera">Remera</option>
+                <option value="Buzo">Buzo</option>
+                <option value="Gorra">Gorra</option>
+            </select>
+            <input type="number" id="prodQty" value="1" style="width:60px; text-align:center;">
+        </div>
+
+        <input type="text" id="prodDesign" placeholder="Diseño (Ej: Megadeth Rust...)" list="designs">
+        <datalist id="designs">
+            <option value="Megadeth Rust in Peace">
+            <option value="Vic Rattlehead">
+            <option value="Doble Estampa">
+            <option value="Personalizado">
+        </datalist>
+
+        <div class="row">
+            <select id="prodSize" class="col">
+                <option value="">Talle...</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+                <option value="XXL">XXL</option>
+                <option value="Oversize L">Over L</option>
+                <option value="Oversize XL">Over XL</option>
+            </select>
+            
+            <select id="prodCut" class="col">
+                <option value="">Corte...</option>
+                <option value="Hombre Clásico">Clásico</option>
+                <option value="Oversize">Oversize</option>
+                <option value="Mujer">Mujer</option>
+            </select>
+        </div>
+        
+        <div class="row">
+            <input type="text" id="prodColor" placeholder="Color" value="Negra" class="col">
+            <input type="number" id="prodPrice" placeholder="$ Venta" class="col">
+            <input type="number" id="prodCost" placeholder="$ Costo" class="col" style="display:none;"> <!-- Oculto por defecto para limpieza -->
+        </div>
+
+        <button class="btn btn-add" onclick="app.addItem()">➕ Agregar Item</button>
+        
+        <div style="margin-top: 15px; font-size:0.8rem; color:#666;">ITEMS:</div>
+        <div class="items-list" id="itemsContainer"></div>
+        
+        <div class="row" style="justify-content: flex-end; align-items: center; gap: 10px;">
+            <span style="color:#888;">TOTAL:</span>
+            <span id="displayTotal" style="font-size:1.5rem; color:var(--accent-sec); font-family:'Roboto Mono'; font-weight:bold;">$0</span>
+        </div>
+    </div>
+
+    <!-- 3. ENVÍO (Solo para datos internos, no saldrá en el texto cliente) -->
+    <div class="section">
+        <div class="section-title">🚚 Datos Envío (Interno)</div>
+        <select id="shipMethod">
+            <option value="Andreani">Andreani</option>
+            <option value="Correo Argentino">Correo Arg</option>
+            <option value="Moto">Moto</option>
+            <option value="Retira">Retira</option>
+            <option value="Envío Incluido">Envío Incluido</option>
+        </select>
+        <textarea id="shipData" placeholder="Dirección / CP / Sucursal..." style="height:50px;"></textarea>
+        <div class="row">
+             <input type="text" id="shipTracking" placeholder="Tracking (Opcional)" class="col">
+             <input type="number" id="shipCost" placeholder="$ Costo Envío" class="col">
+        </div>
+        <textarea id="orderNotes" placeholder="Notas internas / Reseña..." style="height:50px;" oninput="app.buildPreview()"></textarea>
+    </div>
+
+    <!-- 4. ACCIONES -->
+    <div class="section" style="background:#000;">
+        <div class="section-title">👁️ Mensaje para Cliente</div>
+        <div class="preview-box" id="finalPreview">...</div>
+        
+        <button class="btn btn-copy" onclick="app.copyText()">💬 COPIAR MENSAJE (Sin Envío)</button>
+        <button class="btn btn-system" onclick="app.copySystemData()">💾 COPIAR DATOS (JSON Sistema)</button>
+    </div>
+
+    <div id="toast">Copiado!</div>
+
+    <script>
+        const app = {
+            state: {
+                client: '',
+                channel: 'Instagram',
+                items: [],
+                shipMethod: 'Andreani',
+                shipData: '',
+                shipTracking: '',
+                shipCost: 0,
+                notes: ''
+            },
+
+            init: function() {
+                const stored = localStorage.getItem('fmd_current_draft');
+                if (stored) {
+                    try { this.state = JSON.parse(stored); this.restoreUI(); } catch(e) {}
+                }
+                this.buildPreview();
+            },
+
+            save: function() {
+                // Actualizar state desde inputs
+                this.state.client = document.getElementById('clientName').value;
+                this.state.channel = document.getElementById('clientChannel').value;
+                this.state.shipMethod = document.getElementById('shipMethod').value;
+                this.state.shipData = document.getElementById('shipData').value;
+                this.state.shipTracking = document.getElementById('shipTracking').value;
+                this.state.shipCost = parseFloat(document.getElementById('shipCost').value) || 0;
+                this.state.notes = document.getElementById('orderNotes').value;
+                
+                localStorage.setItem('fmd_current_draft', JSON.stringify(this.state));
+                this.buildPreview();
+            },
+
+            addItem: function() {
+                const type = document.getElementById('prodType').value;
+                const design = document.getElementById('prodDesign').value.trim();
+                const size = document.getElementById('prodSize').value;
+                const cut = document.getElementById('prodCut').value;
+                const color = document.getElementById('prodColor').value;
+                const price = parseFloat(document.getElementById('prodPrice').value) || 0;
+                const cost = parseFloat(document.getElementById('prodCost').value) || 0;
+                const qty = parseInt(document.getElementById('prodQty').value) || 1;
+
+                if (!design) return alert('¡Falta el diseño!');
+
+                this.state.items.push({
+                    id: Date.now(),
+                    type, design, size, cut, color, price, cost, qty
+                });
+
+                document.getElementById('prodDesign').value = '';
+                document.getElementById('prodDesign').focus();
+                
+                this.renderItems();
+                this.save();
+            },
+
+            deleteItem: function(id) {
+                this.state.items = this.state.items.filter(i => i.id !== id);
+                this.renderItems();
+                this.save();
+            },
+
+            renderItems: function() {
+                const c = document.getElementById('itemsContainer');
+                c.innerHTML = '';
+                let total = 0;
+
+                this.state.items.forEach(i => {
+                    const subtotal = i.price * i.qty;
+                    total += subtotal;
+                    const div = document.createElement('div');
+                    div.className = 'item-row';
+                    div.innerHTML = `
+                        <div style="flex:1;">
+                            <div class="item-desc"><b>${i.qty}x</b> ${i.type} ${i.design}</div>
+                            <div class="item-sub">${i.color} / ${i.size} ${i.cut}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div class="item-price">$${subtotal.toLocaleString('es-AR')}</div>
+                            <button onclick="app.deleteItem(${i.id})" style="background:none; border:none; color:#d97676;">&times;</button>
+                        </div>`;
+                    c.appendChild(div);
+                });
+                document.getElementById('displayTotal').innerText = '$' + total.toLocaleString('es-AR');
+            },
+
+            buildPreview: function() {
+                const date = new Date().toLocaleDateString('es-AR');
+                let text = `📅 *PEDIDO ${date}*`;
+                if (document.getElementById('clientName').value) text += `\n👤 Cliente: *${document.getElementById('clientName').value}*`;
+                
+                text += `\n\n📝 *DETALLE:*`;
+                let total = 0;
+                this.state.items.forEach(i => {
+                    total += i.price * i.qty;
+                    text += `\n▪ ${i.qty}x ${i.type} *${i.design}*`;
+                    text += `\n   ↳ ${i.color} | ${i.size} ${i.cut}`;
+                });
+                text += `\n\n💰 *TOTAL: $${total.toLocaleString('es-AR')}*`;
+                
+                // NOTA: Se eliminó intencionalmente el bloque de Envío del mensaje al cliente
+
+                if (document.getElementById('orderNotes').value) {
+                    text += `\n\n⚠️ *NOTAS:* ${document.getElementById('orderNotes').value}`;
+                }
+
+                document.getElementById('finalPreview').innerText = text;
+            },
+
+            // Genera el objeto JSON completo para tu sistema (excel.html)
+            copySystemData: function() {
+                this.save(); // Asegurar datos frescos
+                
+                const totalVenta = this.state.items.reduce((acc, i) => acc + (i.price * i.qty), 0);
+                const totalCosto = this.state.items.reduce((acc, i) => acc + (i.cost * i.qty), 0);
+                const ganancia = totalVenta - totalCosto - this.state.shipCost;
+                const itemsCount = this.state.items.reduce((acc, i) => acc + i.qty, 0);
+
+                // Mapeo al formato de excel.html
+                const systemObj = {
+                    id_pedido: "generar_nuevo", // Flag para que el sistema genere ID
+                    fecha_pedido: new Date().toISOString().split('T')[0],
+                    nombre_apellido: this.state.client,
+                    red_contactado: this.state.channel,
+                    
+                    // Items mapeados
+                    items: this.state.items.map(i => ({
+                        diseño_frente: i.design,
+                        diseño_dorso: "", // Default
+                        talle: i.size,
+                        color_remera: i.color,
+                        cantidad: i.qty,
+                        precio_venta: i.price,
+                        costo_remera: i.cost
+                    })),
+
+                    cantidad: itemsCount,
+                    precio_venta: totalVenta,
+                    costo_remera: totalCosto,
+                    costo_envio: this.state.shipCost,
+                    ganancia_neta: ganancia,
+                    
+                    envio_flag: this.state.shipMethod === 'Envío Incluido' ? 'CON' : 'SIN', // Lógica básica
+                    empresa_envio: this.state.shipMethod,
+                    nro_envio: this.state.shipTracking || "Pendiente",
+                    estado_entrega_actual: "Pendiente", // Default
+                    
+                    direccion: this.state.shipData, // Se guarda en direccion
+                    resena: this.state.notes // Se usa notas como reseña inicial
+                };
+
+                const jsonStr = JSON.stringify(systemObj, null, 2);
+                
+                navigator.clipboard.writeText(jsonStr).then(() => {
+                    this.showToast('💾 Datos JSON Copiados!');
+                });
+            },
+
+            copyText: function() {
+                const text = document.getElementById('finalPreview').innerText;
+                navigator.clipboard.writeText(text).then(() => this.showToast('💬 Mensaje Copiado!'));
+            },
+
+            showToast: function(msg) {
+                const t = document.getElementById('toast');
+                t.innerText = msg; t.style.display = 'block';
+                setTimeout(() => t.style.display = 'none', 2000);
+            },
+
+            newOrder: function() {
+                if(!confirm('¿Borrar todo?')) return;
+                this.state = { client: '', channel: 'Instagram', items: [], shipMethod: 'Andreani', shipData: '', shipTracking: '', shipCost: 0, notes: '' };
+                this.restoreUI(); this.save();
+            },
+
+            restoreUI: function() {
+                document.getElementById('clientName').value = this.state.client || '';
+                document.getElementById('clientChannel').value = this.state.channel || 'Instagram';
+                document.getElementById('shipMethod').value = this.state.shipMethod || 'Andreani';
+                document.getElementById('shipData').value = this.state.shipData || '';
+                document.getElementById('shipTracking').value = this.state.shipTracking || '';
+                document.getElementById('shipCost').value = this.state.shipCost || '';
+                document.getElementById('orderNotes').value = this.state.notes || '';
+                this.renderItems();
+            }
+        };
+
+        window.onload = function() { app.init(); };
+    </script>
+</body>
+</html>

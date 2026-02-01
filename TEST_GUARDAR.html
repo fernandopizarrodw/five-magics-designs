@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TEST GUARDAR - FMD</title>
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        h1 { color: #8b7ba8; }
+        
+        .test-section {
+            background: #222;
+            border: 1px solid #444;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        button {
+            cursor: pointer;
+            background: #8b7ba8;
+            color: white;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background: #9b8bb8;
+        }
+        
+        input { width: 100%; }
+        
+        .result {
+            background: #1a3a1a;
+            border: 1px solid #4a8a4a;
+            color: #7dd77d;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .error {
+            background: #3a1a1a;
+            border: 1px solid #8a4a4a;
+            color: #ff7777;
+        }
+        
+        .instructions {
+            background: #1a2a3a;
+            border-left: 4px solid #4a7a8a;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            color: #7dd7dd;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🔧 TEST GUARDAR - Five Magics Designs</h1>
+
+<div class="instructions">
+    <strong>⚡ INSTRUCCIONES:</strong><br>
+    1. Llena los campos de abajo<br>
+    2. Haz click en "GUARDAR TEST"<br>
+    3. Mira el resultado en verde<br>
+    4. Verifica el localStorage<br>
+    5. Recarga la página (F5)<br>
+    6. Haz click en "VER DATOS GUARDADOS"<br>
+    7. Si ves tu pedido = ✅ FUNCIONA
+</div>
+
+<div class="test-section">
+    <h3>📝 Crea un Pedido Simple</h3>
+    
+    <label>Nombre:</label>
+    <input type="text" id="testNombre" placeholder="Ej: Juan Perez">
+    
+    <label>Fecha:</label>
+    <input type="date" id="testFecha">
+    
+    <label>Precio de Venta ($):</label>
+    <input type="number" id="testPrecio" placeholder="Ej: 500" value="500">
+    
+    <button onclick="guardarTest()">💾 GUARDAR TEST</button>
+    
+    <div id="resultadoGuardar" class="result" style="display:none;"></div>
+</div>
+
+<div class="test-section">
+    <h3>📊 Ver Datos Guardados</h3>
+    <button onclick="verDatos()">🔍 VER DATOS GUARDADOS</button>
+    
+    <div id="resultadoDatos" class="result" style="display:none;"></div>
+</div>
+
+<div class="test-section">
+    <h3>🗑️ Limpiar localStorage</h3>
+    <button onclick="limpiar()" style="background:#8a4a4a;">⚠️ LIMPIAR TODO</button>
+    
+    <div id="resultadoLimpiar" class="result" style="display:none;"></div>
+</div>
+
+<script>
+function guardarTest() {
+    const resultDiv = document.getElementById('resultadoGuardar');
+    const nombre = document.getElementById('testNombre').value.trim();
+    const fecha = document.getElementById('testFecha').value;
+    const precio = parseFloat(document.getElementById('testPrecio').value) || 0;
+    
+    resultDiv.className = 'result';
+    resultDiv.style.display = 'block';
+    
+    let html = '🔵 INICIANDO PRUEBA...\n\n';
+    
+    try {
+        // Paso 1: Validar
+        html += '1️⃣ Validando campos...\n';
+        if (!nombre) throw new Error('El nombre es obligatorio');
+        if (!fecha) throw new Error('La fecha es obligatoria');
+        if (precio <= 0) throw new Error('El precio debe ser mayor a 0');
+        html += '   ✅ Campos válidos\n\n';
+        
+        // Paso 2: Crear objeto
+        html += '2️⃣ Creando objeto pedido...\n';
+        const newOrder = {
+            id_pedido: Date.now().toString(),
+            nombre_apellido: nombre,
+            fecha_pedido: fecha,
+            precio_venta: precio,
+            costo_remera: 0,
+            estado_entrega_actual: 'Pendiente',
+            nro_orden_df: '',
+            cantidad: 1,
+            ganancia_neta: precio
+        };
+        html += '   ✅ Objeto creado: ' + JSON.stringify(newOrder) + '\n\n';
+        
+        // Paso 3: Leer storage actual
+        html += '3️⃣ Leyendo datos del localStorage...\n';
+        let orders = [];
+        const stored = localStorage.getItem('fmd_pedidos');
+        if (stored) {
+            orders = JSON.parse(stored);
+            html += '   ℹ️ Encontrados ' + orders.length + ' pedidos existentes\n\n';
+        } else {
+            html += '   ℹ️ localStorage vacío (primer pedido)\n\n';
+        }
+        
+        // Paso 4: Agregar nuevo
+        html += '4️⃣ Agregando pedido a la lista...\n';
+        orders.push(newOrder);
+        html += '   ✅ Total de pedidos: ' + orders.length + '\n\n';
+        
+        // Paso 5: Guardar en localStorage
+        html += '5️⃣ Guardando en localStorage...\n';
+        localStorage.setItem('fmd_pedidos', JSON.stringify(orders));
+        html += '   ✅ Datos guardados\n\n';
+        
+        // Paso 6: Verificar
+        html += '6️⃣ Verificando que se guardó correctamente...\n';
+        const verify = localStorage.getItem('fmd_pedidos');
+        if (!verify) throw new Error('No se pudo leer de localStorage');
+        const verifyParsed = JSON.parse(verify);
+        const lastOrder = verifyParsed[verifyParsed.length - 1];
+        html += '   ✅ Último pedido en storage:\n';
+        html += '      Nombre: ' + lastOrder.nombre_apellido + '\n';
+        html += '      Fecha: ' + lastOrder.fecha_pedido + '\n';
+        html += '      Precio: $' + lastOrder.precio_venta + '\n\n';
+        
+        // Éxito
+        html += '✅✅✅ GUARDADO EXITOSO ✅✅✅\n\n';
+        html += '💡 Ahora:\n';
+        html += '1. Recarga esta página (F5)\n';
+        html += '2. Abre excel.html\n';
+        html += '3. Haz click en "VERIFICAR" en el header\n';
+        html += '4. Deberías ver tu nuevo pedido';
+        
+        resultDiv.style.color = '#7dd77d';
+        resultDiv.style.borderColor = '#4a8a4a';
+        resultDiv.style.background = '#1a3a1a';
+        
+    } catch(error) {
+        html += '❌ ERROR:\n' + error.message + '\n\n';
+        html += 'Detalles técnicos:\n' + error.stack;
+        
+        resultDiv.style.color = '#ff7777';
+        resultDiv.style.borderColor = '#8a4a4a';
+        resultDiv.style.background = '#3a1a1a';
+    }
+    
+    resultDiv.textContent = html;
+}
+
+function verDatos() {
+    const resultDiv = document.getElementById('resultadoDatos');
+    resultDiv.style.display = 'block';
+    
+    try {
+        const stored = localStorage.getItem('fmd_pedidos');
+        
+        if (!stored) {
+            resultDiv.textContent = '❌ No hay datos guardados en localStorage\n\nGuarda un pedido primero usando el formulario de arriba.';
+            resultDiv.style.color = '#ff7777';
+            resultDiv.style.borderColor = '#8a4a4a';
+            resultDiv.style.background = '#3a1a1a';
+            return;
+        }
+        
+        const orders = JSON.parse(stored);
+        let html = '✅ DATOS GUARDADOS EN localStorage\n\n';
+        html += 'Total de pedidos: ' + orders.length + '\n\n';
+        
+        orders.forEach((order, idx) => {
+            html += '─────────────────────────\n';
+            html += 'PEDIDO #' + (idx + 1) + '\n';
+            html += '─────────────────────────\n';
+            html += 'ID: ' + order.id_pedido + '\n';
+            html += 'Nombre: ' + order.nombre_apellido + '\n';
+            html += 'Fecha: ' + order.fecha_pedido + '\n';
+            html += 'Precio: $' + order.precio_venta + '\n';
+            html += 'Costo: $' + order.costo_remera + '\n';
+            html += 'Ganancia: $' + order.ganancia_neta + '\n';
+            html += 'Estado: ' + order.estado_entrega_actual + '\n';
+            html += 'Cantidad: ' + order.cantidad + '\n\n';
+        });
+        
+        resultDiv.textContent = html;
+        resultDiv.style.color = '#7dd77d';
+        resultDiv.style.borderColor = '#4a8a4a';
+        resultDiv.style.background = '#1a3a1a';
+        
+    } catch(error) {
+        resultDiv.textContent = '❌ ERROR al leer datos:\n' + error.message;
+        resultDiv.style.color = '#ff7777';
+        resultDiv.style.borderColor = '#8a4a4a';
+        resultDiv.style.background = '#3a1a1a';
+    }
+}
+
+function limpiar() {
+    const resultDiv = document.getElementById('resultadoLimpiar');
+    resultDiv.style.display = 'block';
+    
+    try {
+        localStorage.removeItem('fmd_pedidos');
+        resultDiv.textContent = '✅ localStorage LIMPIADO\n\nTodos los pedidos han sido eliminados.\nAhora puedes empezar desde cero.';
+        resultDiv.style.color = '#7dd77d';
+        resultDiv.style.borderColor = '#4a8a4a';
+        resultDiv.style.background = '#1a3a1a';
+    } catch(error) {
+        resultDiv.textContent = '❌ ERROR:\n' + error.message;
+        resultDiv.style.color = '#ff7777';
+        resultDiv.style.borderColor = '#8a4a4a';
+        resultDiv.style.background = '#3a1a1a';
+    }
+}
+
+// Establecer la fecha de hoy como default
+document.getElementById('testFecha').valueAsDate = new Date();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Five Magics Designs | Control Financiero</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    
+    <style>
+        :root {
+            --bg-color: #0d0d0f;
+            --card-bg: #1a1a1d;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --accent-violet: #8b7ba8;
+            --accent-cyan: #00eeff;
+            --success: #7ba876;
+            --danger: #d97676;
+            --border-radius: 8px;
+            --border-color: #2c2c32;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Roboto', sans-serif;
+            font-size: 15px;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #111 0%, #222 100%);
+            padding: 20px;
+            border-bottom: 2px solid var(--accent-violet);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--accent-violet);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(139, 123, 168, 0.2);
+        }
+
+        .stats-bar {
+            padding: 15px 20px;
+            background-color: #151518;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.3rem;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .controls-bar {
+            padding: 15px 20px;
+            background-color: #151518;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent-violet), #9000ff);
+            color: white;
+        }
+
+        .btn-primary:hover { filter: brightness(1.2); }
+
+        .btn-secondary { background-color: #444; color: white; }
+        .btn-secondary:hover { background-color: #555; }
+
+        .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+
+        .table-container {
+            position: relative;
+            overflow: auto;
+            margin: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            max-height: 70vh;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            background-color: #111;
+            color: var(--accent-cyan);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            min-width: 120px;
+        }
+
+        tr:hover { background-color: #252529; }
+
+        .money {
+            font-family: 'Roboto Mono', monospace;
+            color: #90ee90;
+            font-weight: 600;
+        }
+
+        .profit-positive { color: var(--success); }
+        .profit-negative { color: var(--danger); }
+
+        input, select {
+            background-color: #2a2a2e;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-violet);
+        }
+
+        .filters-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            width: 95%;
+            max-width: 700px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--accent-violet);
+            padding: 25px;
+            margin-bottom: 50px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+
+        .toast {
+            background-color: #333;
+            color: #fff;
+            padding: 12px 20px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border-left: 4px solid var(--accent-violet);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Five Magics <span style="font-size:0.6em; color:white;">Designs | Financiero</span></h1>
+        <div style="display: flex; gap: 10px;">
+            <a href="operativo.html" class="btn btn-secondary btn-sm" style="text-decoration:none;">📦 Operativo</a>
+            <button class="btn btn-secondary btn-sm" onclick="app.io.exportCSV()">⬇ Exportar CSV</button>
+            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('csvInput').click()">⬆ Importar CSV</button>
+            <input type="file" id="csvInput" accept=".csv" style="display: none;" onchange="app.io.importCSV(this)">
+        </div>
+    </header>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span class="stat-label">Total Ingresos</span>
+            <span class="stat-value" id="totalIngresos">$0.00</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Total Costos</span>
+            <span class="stat-value" id="totalCostos">$0.00</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Total Ganancia</span>
+            <span class="stat-value" id="totalGanancia">$0.00</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Margen Promedio</span>
+            <span class="stat-value" id="margenPromedio">0%</span>
+        </div>
+    </div>
+
+    <div class="controls-bar">
+        <button class="btn btn-primary" onclick="app.ui.openModal()">+ Registrar Finanzas</button>
+        
+        <div class="filters-group">
+            <input type="text" id="filterNro" placeholder="Buscar por Nro Orden..." onkeyup="app.render()">
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table id="financesTable">
+            <thead>
+                <tr>
+                    <th>Nro Orden</th>
+                    <th>Cantidad</th>
+                    <th>Precio Venta ($)</th>
+                    <th>Costo Remera ($)</th>
+                    <th>Ganancia ($)</th>
+                    <th>Margen (%)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <div class="modal-overlay" id="financeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Registrar Finanzas</h2>
+                <button style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;" onclick="app.ui.closeModal()">&times;</button>
+            </div>
+            
+            <form id="financeForm" onsubmit="event.preventDefault(); app.data.save();">
+                <input type="hidden" id="id_pedido">
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nro Orden *</label>
+                        <input type="text" id="nro_orden_df" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad *</label>
+                        <input type="number" id="cantidad" min="1" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio Venta ($) *</label>
+                        <input type="number" id="precio_venta" step="0.01" required oninput="app.logic.recalcProfit()">
+                    </div>
+                    <div class="form-group">
+                        <label>Costo Remera ($)</label>
+                        <input type="number" id="costo_remera" step="0.01" value="0" oninput="app.logic.recalcProfit()">
+                    </div>
+                    <div class="form-group">
+                        <label style="color: var(--success);">Ganancia Neta ($)</label>
+                        <input type="number" id="ganancia_neta" step="0.01" readonly style="border-color: var(--success); background-color: #1a3a1a;">
+                    </div>
+                    <div class="form-group">
+                        <label style="color: var(--accent-cyan);">Margen (%)</label>
+                        <input type="number" id="margen_porcentaje" step="0.01" readonly style="border-color: var(--accent-cyan); background-color: #1a3a3a;">
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #333; padding-top: 20px;">
+                    <button type="button" class="btn btn-secondary" onclick="app.ui.closeModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">💾 Guardar Finanzas</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script>
+        const app = {
+            state: {
+                orders: []
+            },
+
+            init: function() {
+                const stored = localStorage.getItem('fmd_pedidos');
+                if (stored) {
+                    try {
+                        this.state.orders = JSON.parse(stored);
+                    } catch(e) {
+                        console.error(e);
+                    }
+                }
+                this.render();
+            },
+
+            logic: {
+                recalcProfit: function() {
+                    const cantidad = parseInt(document.getElementById('cantidad').value) || 1;
+                    const venta = parseFloat(document.getElementById('precio_venta').value) || 0;
+                    const costo = parseFloat(document.getElementById('costo_remera').value) || 0;
+                    
+                    const totalVenta = venta * cantidad;
+                    const totalCosto = costo * cantidad;
+                    const ganancia = totalVenta - totalCosto;
+                    const margen = totalVenta > 0 ? ((ganancia / totalVenta) * 100) : 0;
+                    
+                    document.getElementById('ganancia_neta').value = ganancia.toFixed(2);
+                    document.getElementById('margen_porcentaje').value = margen.toFixed(2);
+                }
+            },
+
+            data: {
+                save: function() {
+                    const id = document.getElementById('id_pedido').value;
+                    const isNew = !id;
+                    const nro_orden = document.getElementById('nro_orden_df').value;
+                    
+                    // Buscar si existe en orders
+                    let order = app.state.orders.find(o => o.id_pedido === id);
+                    
+                    if (!order && nro_orden) {
+                        order = app.state.orders.find(o => o.nro_orden_df === nro_orden);
+                    }
+
+                    if (order) {
+                        order.nro_orden_df = nro_orden;
+                        order.cantidad = parseInt(document.getElementById('cantidad').value) || 1;
+                        order.precio_venta = parseFloat(document.getElementById('precio_venta').value) || 0;
+                        order.costo_remera = parseFloat(document.getElementById('costo_remera').value) || 0;
+                        order.ganancia_neta = parseFloat(document.getElementById('ganancia_neta').value) || 0;
+                    } else if (isNew) {
+                        app.state.orders.push({
+                            id_pedido: Date.now().toString(36) + Math.random().toString(36).substr(2),
+                            nro_orden_df: nro_orden,
+                            cantidad: parseInt(document.getElementById('cantidad').value) || 1,
+                            precio_venta: parseFloat(document.getElementById('precio_venta').value) || 0,
+                            costo_remera: parseFloat(document.getElementById('costo_remera').value) || 0,
+                            ganancia_neta: parseFloat(document.getElementById('ganancia_neta').value) || 0,
+                            nombre_apellido: '',
+                            fecha_pedido: new Date().toISOString().split('T')[0]
+                        });
+                    }
+
+                    localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                    app.ui.closeModal();
+                    app.render();
+                    app.ui.showToast(isNew ? 'Finanzas Registradas' : 'Finanzas Actualizadas');
+                },
+
+                delete: function(id) {
+                    if(!confirm('¿Estás seguro de BORRAR este registro?')) return;
+                    const order = app.state.orders.find(o => o.id_pedido === id);
+                    if (order) {
+                        order.precio_venta = 0;
+                        order.costo_remera = 0;
+                        order.ganancia_neta = 0;
+                    }
+                    localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                    app.render();
+                    app.ui.showToast('Registro Eliminado');
+                }
+            },
+
+            ui: {
+                openModal: function(id = null) {
+                    const modal = document.getElementById('financeModal');
+                    const form = document.getElementById('financeForm');
+                    
+                    if (id) {
+                        const order = app.state.orders.find(o => o.id_pedido === id);
+                        if (order) {
+                            document.getElementById('modalTitle').textContent = 'Editar Finanzas';
+                            document.getElementById('id_pedido').value = order.id_pedido;
+                            document.getElementById('nro_orden_df').value = order.nro_orden_df || '';
+                            document.getElementById('cantidad').value = order.cantidad || 1;
+                            document.getElementById('precio_venta').value = order.precio_venta || 0;
+                            document.getElementById('costo_remera').value = order.costo_remera || 0;
+                            app.logic.recalcProfit();
+                        }
+                    } else {
+                        document.getElementById('modalTitle').textContent = 'Registrar Finanzas';
+                        form.reset();
+                        document.getElementById('id_pedido').value = '';
+                        document.getElementById('cantidad').value = '1';
+                    }
+                    
+                    modal.style.display = 'flex';
+                },
+
+                closeModal: function() {
+                    document.getElementById('financeModal').style.display = 'none';
+                },
+
+                showToast: function(msg) {
+                    const container = document.getElementById('toast-container');
+                    const toast = document.createElement('div');
+                    toast.className = 'toast';
+                    toast.textContent = msg;
+                    container.appendChild(toast);
+                    setTimeout(() => toast.remove(), 3000);
+                }
+            },
+
+            render: function() {
+                const tbody = document.getElementById('tableBody');
+                tbody.innerHTML = '';
+
+                let filtered = app.state.orders.filter(o => o.nro_orden_df);
+
+                const searchTerm = document.getElementById('filterNro').value.toLowerCase();
+                if (searchTerm) {
+                    filtered = filtered.filter(o => 
+                        (o.nro_orden_df || '').toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                let totalIngresos = 0;
+                let totalCostos = 0;
+                let totalGanancia = 0;
+
+                filtered.forEach(order => {
+                    const cantidad = Math.max(1, parseInt(order.cantidad) || 1);
+                    const precioUnitario = parseFloat(order.precio_venta) || 0;
+                    const costoUnitario = parseFloat(order.costo_remera) || 0;
+                    
+                    const ingresos = precioUnitario * cantidad;
+                    const costos = costoUnitario * cantidad;
+                    const ganancia = ingresos - costos;
+                    const margen = ingresos > 0 ? ((ganancia / ingresos) * 100) : 0;
+
+                    totalIngresos += ingresos;
+                    totalCostos += costos;
+                    totalGanancia += ganancia;
+
+                    const row = document.createElement('tr');
+                    const gananciasClass = ganancia > 0 ? 'profit-positive' : 'profit-negative';
+                    
+                    row.innerHTML = `
+                        <td><strong>${order.nro_orden_df || '-'}</strong></td>
+                        <td>${order.cantidad || 1}</td>
+                        <td class="money">$${ingresos.toFixed(2)}</td>
+                        <td class="money">$${costos.toFixed(2)}</td>
+                        <td class="money ${gananciasClass}">$${ganancia.toFixed(2)}</td>
+                        <td><strong>${margen.toFixed(2)}%</strong></td>
+                        <td style="text-align:center;">
+                            <button class="btn btn-sm btn-secondary" onclick="app.ui.openModal('${order.id_pedido}')">✏️ Editar</button>
+                            <button class="btn btn-sm" style="background-color:#3e1b1b; color:#ff9e9e;" onclick="app.data.delete('${order.id_pedido}')">🗑️ Limpiar</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Actualizar estadísticas
+                const margenPromedio = totalIngresos > 0 ? ((totalGanancia / totalIngresos) * 100) : 0;
+                document.getElementById('totalIngresos').textContent = `$${totalIngresos.toFixed(2)}`;
+                document.getElementById('totalCostos').textContent = `$${totalCostos.toFixed(2)}`;
+                document.getElementById('totalGanancia').textContent = `$${totalGanancia.toFixed(2)}`;
+                document.getElementById('margenPromedio').textContent = `${margenPromedio.toFixed(2)}%`;
+            },
+
+            io: {
+                exportCSV: function() {
+                    const headers = ['Nro Orden', 'Cantidad', 'Precio Venta', 'Costo Remera', 'Ganancia', 'Margen %'];
+                    const rows = app.state.orders
+                        .filter(o => o.nro_orden_df)
+                        .map(o => {
+                            const ingresos = (o.precio_venta || 0) * (o.cantidad || 1);
+                            const costos = (o.costo_remera || 0) * (o.cantidad || 1);
+                            const ganancia = ingresos - costos;
+                            const margen = ingresos > 0 ? ((ganancia / ingresos) * 100) : 0;
+                            return [
+                                o.nro_orden_df,
+                                o.cantidad,
+                                ingresos.toFixed(2),
+                                costos.toFixed(2),
+                                ganancia.toFixed(2),
+                                margen.toFixed(2)
+                            ];
+                        });
+
+                    const csv = [headers, ...rows].map(r => r.map(c => `"${(c || '').toString().replace(/"/g, '""')}"`).join(',')).join('\n');
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'financiero_pedidos.csv';
+                    a.click();
+                },
+
+                importCSV: function(fileInput) {
+                    const file = fileInput.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const csv = e.target.result;
+                        const lines = csv.split('\n');
+
+                        for (let i = 1; i < lines.length; i++) {
+                            if (!lines[i].trim()) continue;
+                            const values = lines[i].split(',');
+                            const nro = values[0]?.replace(/"/g, '');
+                            
+                            const order = app.state.orders.find(o => o.nro_orden_df === nro);
+                            if (order) {
+                                order.cantidad = parseInt(values[1]) || 1;
+                                order.precio_venta = parseFloat(values[2]) || 0;
+                                order.costo_remera = parseFloat(values[3]) || 0;
+                                order.ganancia_neta = parseFloat(values[4]) || 0;
+                            }
+                        }
+
+                        localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                        app.render();
+                        app.ui.showToast('CSV importado correctamente');
+                        fileInput.value = '';
+                    };
+                    reader.readAsText(file);
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>

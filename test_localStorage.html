@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test localStorage - FMD</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #1a1a1a; color: #fff; padding: 20px; }
+        .test { background: #222; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 4px solid #0f0; }
+        .test.fail { border-left-color: #f00; }
+        .test.warn { border-left-color: #fa0; }
+        h1 { color: #0f0; }
+        h2 { color: #0ff; margin-top: 20px; }
+        button { padding: 10px 20px; background: #0f0; color: #000; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0ff; }
+        pre { background: #000; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Test de localStorage - Five Magics Designs</h1>
+    
+    <h2>1️⃣ Verificación básica</h2>
+    <div id="test1" class="test"></div>
+    
+    <h2>2️⃣ Escritura y lectura</h2>
+    <div id="test2" class="test"></div>
+    
+    <h2>3️⃣ Cantidad disponible</h2>
+    <div id="test3" class="test"></div>
+    
+    <h2>4️⃣ Prueba de datos FMD</h2>
+    <button onclick="testFMDData()">Guardar datos de prueba FMD</button>
+    <button onclick="readFMDData()">Leer datos FMD</button>
+    <button onclick="clearFMDData()">Limpiar datos FMD</button>
+    <div id="test4" class="test"></div>
+    
+    <h2>5️⃣ Diagnóstico del navegador</h2>
+    <div id="test5" class="test"></div>
+
+    <script>
+        // Test 1: Verificación básica
+        const test1 = document.getElementById('test1');
+        if (typeof(Storage) !== "undefined") {
+            test1.innerHTML = '✓ localStorage está disponible en tu navegador';
+            test1.classList.add('pass');
+        } else {
+            test1.innerHTML = '❌ localStorage NO está disponible en tu navegador';
+            test1.classList.add('fail');
+        }
+
+        // Test 2: Escritura y lectura
+        const test2 = document.getElementById('test2');
+        try {
+            localStorage.setItem('test_key', 'test_value');
+            const read = localStorage.getItem('test_key');
+            if (read === 'test_value') {
+                test2.innerHTML = '✓ Se pueden guardar y leer datos correctamente';
+                test2.classList.add('pass');
+                localStorage.removeItem('test_key');
+            } else {
+                test2.innerHTML = '❌ Se guardó pero no se leyó correctamente';
+                test2.classList.add('fail');
+            }
+        } catch(e) {
+            test2.innerHTML = '❌ Error al guardar: ' + e.message;
+            test2.classList.add('fail');
+        }
+
+        // Test 3: Cantidad disponible
+        const test3 = document.getElementById('test3');
+        test3.innerHTML = '<strong>localStorage.length: ' + localStorage.length + '</strong><br>';
+        test3.innerHTML += '<strong>Claves guardadas:</strong><br>';
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            const size = (localStorage.getItem(key) || '').length;
+            test3.innerHTML += `• ${key}: ${size} bytes<br>`;
+        }
+
+        // Test 4: Datos FMD
+        function testFMDData() {
+            const testData = [
+                { id: '1', nombre: 'Test 1', precio: 1000 },
+                { id: '2', nombre: 'Test 2', precio: 2000 }
+            ];
+            try {
+                localStorage.setItem('fmd_pedidos', JSON.stringify(testData));
+                document.getElementById('test4').innerHTML = '✓ Se guardaron 2 pedidos de prueba<br>' +
+                    '<strong>Verificando...</strong><br>' +
+                    (localStorage.getItem('fmd_pedidos') ? '✓ GUARDADOS CORRECTAMENTE' : '❌ No se verificó');
+            } catch(e) {
+                document.getElementById('test4').innerHTML = '❌ Error: ' + e.message;
+            }
+        }
+
+        function readFMDData() {
+            const data = localStorage.getItem('fmd_pedidos');
+            const test4 = document.getElementById('test4');
+            if (data) {
+                try {
+                    const parsed = JSON.parse(data);
+                    test4.innerHTML = '✓ Datos FMD leídos correctamente<br>' +
+                        '<strong>Total pedidos:</strong> ' + parsed.length + '<br>' +
+                        '<strong>Primer pedido:</strong><br>' +
+                        '<pre>' + JSON.stringify(parsed[0], null, 2) + '</pre>';
+                } catch(e) {
+                    test4.innerHTML = '❌ Error al parsear JSON: ' + e.message;
+                }
+            } else {
+                test4.innerHTML = '⚠️ No hay datos FMD guardados aún';
+            }
+        }
+
+        function clearFMDData() {
+            localStorage.removeItem('fmd_pedidos');
+            document.getElementById('test4').innerHTML = '✓ Datos FMD eliminados';
+        }
+
+        // Test 5: Diagnóstico del navegador
+        const test5 = document.getElementById('test5');
+        test5.innerHTML = '<strong>Información del navegador:</strong><br>' +
+            'User Agent: ' + navigator.userAgent + '<br>' +
+            'Cookies habilitadas: ' + navigator.cookieEnabled + '<br>' +
+            'Modo incógnito: ' + (navigator.webdriver ? 'Posiblemente' : 'No detectado') + '<br>' +
+            'OnLine: ' + navigator.onLine + '<br>';
+    </script>
+</body>
+</html>

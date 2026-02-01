@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Five Magics Designs | Gestión Operativa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+    
+    <style>
+        :root {
+            --bg-color: #0d0d0f;
+            --card-bg: #1a1a1d;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --accent-violet: #8b7ba8;
+            --accent-cyan: #00eeff;
+            --success: #7ba876;
+            --danger: #d97676;
+            --border-radius: 8px;
+            --border-color: #2c2c32;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Roboto', sans-serif;
+            font-size: 15px;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #111 0%, #222 100%);
+            padding: 20px;
+            border-bottom: 2px solid var(--accent-violet);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--accent-violet);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(139, 123, 168, 0.2);
+        }
+
+        .controls-bar {
+            padding: 15px 20px;
+            background-color: #151518;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent-violet), #9000ff);
+            color: white;
+        }
+
+        .btn-primary:hover { filter: brightness(1.2); }
+
+        .btn-secondary { background-color: #444; color: white; }
+        .btn-secondary:hover { background-color: #555; }
+
+        .btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+
+        .table-container {
+            position: relative;
+            overflow: auto;
+            margin: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            max-height: 70vh;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            background-color: #111;
+            color: var(--accent-violet);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            min-width: 100px;
+        }
+
+        tr:hover { background-color: #252529; }
+
+        .tag {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .tag-entregado {
+            background-color: rgba(0, 255, 157, 0.15);
+            color: var(--success);
+        }
+
+        .tag-pendiente {
+            background-color: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+        }
+
+        .tag-transito {
+            background-color: rgba(123, 143, 159, 0.15);
+            color: #7b8f9f;
+        }
+
+        .chk-entrega {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--success);
+        }
+
+        input, select {
+            background-color: #2a2a2e;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-violet);
+        }
+
+        .filters-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: flex-start;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            width: 95%;
+            max-width: 800px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--accent-violet);
+            padding: 25px;
+            margin-bottom: 50px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+
+        .toast {
+            background-color: #333;
+            color: #fff;
+            padding: 12px 20px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border-left: 4px solid var(--accent-violet);
+        }
+
+        .link-btn {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .link-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Five Magics <span style="font-size:0.6em; color:white;">Designs | Operativo</span></h1>
+        <div style="display: flex; gap: 10px;">
+            <a href="financiero.html" class="btn btn-secondary btn-sm" style="text-decoration:none;">💰 Financiero</a>
+            <button class="btn btn-secondary btn-sm" onclick="app.io.exportCSV()">⬇ Exportar CSV</button>
+            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('csvInput').click()">⬆ Importar CSV</button>
+            <input type="file" id="csvInput" accept=".csv" style="display: none;" onchange="app.io.importCSV(this)">
+        </div>
+    </header>
+
+    <div class="controls-bar">
+        <button class="btn btn-primary" onclick="app.ui.openModal()">+ Nuevo Pedido</button>
+        
+        <div class="filters-group">
+            <input type="text" id="filterSearch" placeholder="Buscar cliente..." onkeyup="app.render()">
+            
+            <select id="filterStatus" onchange="app.render()">
+                <option value="">Todos los estados</option>
+                <option value="Despachado">Despachado</option>
+                <option value="En transito">En tránsito</option>
+                <option value="Entregado">Entregado</option>
+                <option value="Intento Fallido">Intento Fallido</option>
+            </select>
+            
+            <select id="filterChannel" onchange="app.render()">
+                <option value="">Todos los canales</option>
+                <option value="Instagram">Instagram</option>
+                <option value="WhatsApp">WhatsApp</option>
+                <option value="Facebook">Facebook</option>
+                <option value="MercadoLibre">MercadoLibre</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table id="ordersTable">
+            <thead>
+                <tr>
+                    <th style="min-width:30px; text-align:center;">✓</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Diseño</th>
+                    <th>Color</th>
+                    <th>Talle</th>
+                    <th>Cantidad</th>
+                    <th>Envío</th>
+                    <th>Tracking</th>
+                    <th>Estado</th>
+                    <th>Canal</th>
+                    <th>Nro Orden</th>
+                    <th>Acciones</th>
+                    <th>Reseña</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Nuevo Pedido</h2>
+                <button style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;" onclick="app.ui.closeModal()">&times;</button>
+            </div>
+            
+            <form id="orderForm" onsubmit="event.preventDefault(); app.data.save();">
+                <input type="hidden" id="id_pedido">
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nombre y Apellido *</label>
+                        <input type="text" id="nombre_apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha Pedido *</label>
+                        <input type="date" id="fecha_pedido" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nro Orden Dreamful</label>
+                        <input type="text" id="nro_orden_df">
+                    </div>
+                    <div class="form-group">
+                        <label>Canal Contacto</label>
+                        <select id="red_contactado">
+                            <option value="Instagram">Instagram</option>
+                            <option value="WhatsApp">WhatsApp</option>
+                            <option value="Facebook">Facebook</option>
+                            <option value="MercadoLibre">MercadoLibre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Diseño</label>
+                        <input type="text" id="diseño_frente">
+                    </div>
+                    <div class="form-group">
+                        <label>Color Remera</label>
+                        <input type="text" id="color_remera">
+                    </div>
+                    <div class="form-group">
+                        <label>Talle</label>
+                        <select id="talle">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <input type="number" id="cantidad" min="1" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Empresa Envío</label>
+                        <input type="text" id="empresa_envio">
+                    </div>
+                    <div class="form-group">
+                        <label>Tracking</label>
+                        <input type="text" id="nro_envio">
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select id="estado_entrega_actual">
+                            <option value="Despachado">Despachado</option>
+                            <option value="En transito">En tránsito</option>
+                            <option value="Entregado">Entregado</option>
+                            <option value="Intento Fallido">Intento Fallido</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Reseña / Comentarios</label>
+                        <textarea id="resena" rows="2" style="background-color: #2a2a2e; border: 1px solid #444; color: #fff; padding: 8px; border-radius: 8px; font-family: inherit;"></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #333; padding-top: 20px;">
+                    <button type="button" class="btn btn-secondary" onclick="app.ui.closeModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">💾 Guardar Pedido</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script>
+        const app = {
+            state: {
+                orders: []
+            },
+
+            init: function() {
+                const stored = localStorage.getItem('fmd_pedidos');
+                if (stored) {
+                    try {
+                        this.state.orders = JSON.parse(stored);
+                    } catch(e) {
+                        console.error(e);
+                    }
+                }
+                this.render();
+            },
+
+            data: {
+                save: function() {
+                    const id = document.getElementById('id_pedido').value;
+                    const isNew = !id;
+                    
+                    const orderData = {
+                        id_pedido: id || Date.now().toString(36) + Math.random().toString(36).substr(2),
+                        nombre_apellido: document.getElementById('nombre_apellido').value,
+                        fecha_pedido: document.getElementById('fecha_pedido').value,
+                        nro_orden_df: document.getElementById('nro_orden_df').value,
+                        red_contactado: document.getElementById('red_contactado').value,
+                        diseño_frente: document.getElementById('diseño_frente').value,
+                        color_remera: document.getElementById('color_remera').value,
+                        talle: document.getElementById('talle').value,
+                        cantidad: parseInt(document.getElementById('cantidad').value) || 1,
+                        empresa_envio: document.getElementById('empresa_envio').value,
+                        nro_envio: document.getElementById('nro_envio').value,
+                        estado_entrega_actual: document.getElementById('estado_entrega_actual').value,
+                        resena: document.getElementById('resena').value,
+                        precio_venta: 0,
+                        costo_remera: 0,
+                        ganancia_neta: 0
+                    };
+
+                    if (isNew) {
+                        app.state.orders.push(orderData);
+                    } else {
+                        const index = app.state.orders.findIndex(o => o.id_pedido === id);
+                        if (index !== -1) app.state.orders[index] = orderData;
+                    }
+
+                    localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                    app.ui.closeModal();
+                    app.render();
+                    app.ui.showToast(isNew ? 'Pedido Creado' : 'Cambios Guardados');
+                },
+
+                delete: function(id) {
+                    if(!confirm('¿Estás seguro de BORRAR este pedido?')) return;
+                    app.state.orders = app.state.orders.filter(o => o.id_pedido !== id);
+                    localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                    app.render();
+                    app.ui.showToast('Pedido Eliminado');
+                }
+            },
+
+            ui: {
+                openModal: function(id = null) {
+                    const modal = document.getElementById('orderModal');
+                    const form = document.getElementById('orderForm');
+                    
+                    if (id) {
+                        const order = app.state.orders.find(o => o.id_pedido === id);
+                        if (order) {
+                            document.getElementById('modalTitle').textContent = 'Editar Pedido';
+                            document.getElementById('id_pedido').value = order.id_pedido;
+                            document.getElementById('nombre_apellido').value = order.nombre_apellido || '';
+                            document.getElementById('fecha_pedido').value = order.fecha_pedido || '';
+                            document.getElementById('nro_orden_df').value = order.nro_orden_df || '';
+                            document.getElementById('red_contactado').value = order.red_contactado || '';
+                            document.getElementById('diseño_frente').value = order.diseño_frente || '';
+                            document.getElementById('color_remera').value = order.color_remera || '';
+                            document.getElementById('talle').value = order.talle || '';
+                            document.getElementById('cantidad').value = order.cantidad || 1;
+                            document.getElementById('empresa_envio').value = order.empresa_envio || '';
+                            document.getElementById('nro_envio').value = order.nro_envio || '';
+                            document.getElementById('estado_entrega_actual').value = order.estado_entrega_actual || '';
+                            document.getElementById('resena').value = order.resena || '';
+                        }
+                    } else {
+                        document.getElementById('modalTitle').textContent = 'Nuevo Pedido';
+                        form.reset();
+                        document.getElementById('id_pedido').value = '';
+                    }
+                    
+                    modal.style.display = 'flex';
+                },
+
+                closeModal: function() {
+                    document.getElementById('orderModal').style.display = 'none';
+                },
+
+                showToast: function(msg) {
+                    const container = document.getElementById('toast-container');
+                    const toast = document.createElement('div');
+                    toast.className = 'toast';
+                    toast.textContent = msg;
+                    container.appendChild(toast);
+                    setTimeout(() => toast.remove(), 3000);
+                }
+            },
+
+            render: function() {
+                const tbody = document.getElementById('tableBody');
+                tbody.innerHTML = '';
+
+                let filtered = app.state.orders;
+
+                const searchTerm = document.getElementById('filterSearch').value.toLowerCase();
+                const statusFilter = document.getElementById('filterStatus').value;
+                const channelFilter = document.getElementById('filterChannel').value;
+
+                if (searchTerm) {
+                    filtered = filtered.filter(o => 
+                        (o.nombre_apellido || '').toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                if (statusFilter) {
+                    filtered = filtered.filter(o => o.estado_entrega_actual === statusFilter);
+                }
+
+                if (channelFilter) {
+                    filtered = filtered.filter(o => o.red_contactado === channelFilter);
+                }
+
+                filtered.forEach(order => {
+                    const row = document.createElement('tr');
+                    
+                    const statusClass = order.estado_entrega_actual === 'Entregado' ? 'tag-entregado' :
+                                      order.estado_entrega_actual === 'En transito' ? 'tag-transito' : 'tag-pendiente';
+                    
+                    row.innerHTML = `
+                        <td style="text-align:center;"><input type="checkbox" class="chk-entrega" ${order.estado_entrega_actual === 'Entregado' ? 'checked' : ''}></td>
+                        <td>${order.fecha_pedido || ''}</td>
+                        <td>${order.nombre_apellido || ''}</td>
+                        <td>${order.diseño_frente || ''}</td>
+                        <td>${order.color_remera || ''}</td>
+                        <td>${order.talle || ''}</td>
+                        <td>${order.cantidad || 1}</td>
+                        <td>${order.empresa_envio || '-'}</td>
+                        <td>${order.nro_envio || '-'}</td>
+                        <td><span class="tag ${statusClass}">${order.estado_entrega_actual || 'Pendiente'}</span></td>
+                        <td>${order.red_contactado || '-'}</td>
+                        <td>${order.nro_orden_df || '-'}</td>
+                        <td style="text-align:center;">
+                            <button class="btn btn-sm btn-secondary" onclick="app.ui.openModal('${order.id_pedido}')">✏️ Editar</button>
+                            <button class="btn btn-sm" style="background-color:#3e1b1b; color:#ff9e9e;" onclick="app.data.delete('${order.id_pedido}')">🗑️ Borrar</button>
+                        </td>
+                        <td>${order.resena || ''}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            },
+
+            io: {
+                exportCSV: function() {
+                    const headers = ['ID', 'Fecha', 'Cliente', 'Diseño', 'Color', 'Talle', 'Cantidad', 'Envío', 'Tracking', 'Estado', 'Canal', 'Nro Orden', 'Reseña'];
+                    const rows = app.state.orders.map(o => [
+                        o.id_pedido,
+                        o.fecha_pedido,
+                        o.nombre_apellido,
+                        o.diseño_frente,
+                        o.color_remera,
+                        o.talle,
+                        o.cantidad,
+                        o.empresa_envio,
+                        o.nro_envio,
+                        o.estado_entrega_actual,
+                        o.red_contactado,
+                        o.nro_orden_df,
+                        o.resena
+                    ]);
+
+                    const csv = [headers, ...rows].map(r => r.map(c => `"${(c || '').toString().replace(/"/g, '""')}"`).join(',')).join('\n');
+                    const blob = new Blob([csv], { type: 'text/csv' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'operativo_pedidos.csv';
+                    a.click();
+                },
+
+                importCSV: function(fileInput) {
+                    const file = fileInput.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const csv = e.target.result;
+                        const lines = csv.split('\n');
+                        const headers = lines[0].split(',');
+
+                        for (let i = 1; i < lines.length; i++) {
+                            if (!lines[i].trim()) continue;
+                            const values = lines[i].split(',');
+                            const order = {
+                                id_pedido: values[0]?.replace(/"/g, '') || Date.now().toString(),
+                                fecha_pedido: values[1]?.replace(/"/g, ''),
+                                nombre_apellido: values[2]?.replace(/"/g, ''),
+                                diseño_frente: values[3]?.replace(/"/g, ''),
+                                color_remera: values[4]?.replace(/"/g, ''),
+                                talle: values[5]?.replace(/"/g, ''),
+                                cantidad: parseInt(values[6]) || 1,
+                                empresa_envio: values[7]?.replace(/"/g, ''),
+                                nro_envio: values[8]?.replace(/"/g, ''),
+                                estado_entrega_actual: values[9]?.replace(/"/g, ''),
+                                red_contactado: values[10]?.replace(/"/g, ''),
+                                nro_orden_df: values[11]?.replace(/"/g, ''),
+                                resena: values[12]?.replace(/"/g, ''),
+                                precio_venta: 0,
+                                costo_remera: 0,
+                                ganancia_neta: 0
+                            };
+                            app.state.orders.push(order);
+                        }
+
+                        localStorage.setItem('fmd_pedidos', JSON.stringify(app.state.orders));
+                        app.render();
+                        app.ui.showToast('CSV importado correctamente');
+                        fileInput.value = '';
+                    };
+                    reader.readAsText(file);
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>

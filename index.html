@@ -31,6 +31,14 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Bebas+Neue&family=Oswald:wght@300;500;700&family=Inter:wght@300;400;600&display=swap"
         rel="stylesheet">
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1H3XPM82ED"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-1H3XPM82ED');
+    </script>
 
     <style>
         /* --- IDENTITY: "RUST IN PEACE" PALETTE --- */
@@ -1878,6 +1886,7 @@
         <div class="nav-menu">
             <a href="#slider-albums" class="nav-link">Álbumes</a>
             <a href="#slider-songs" class="nav-link">Hits</a>
+            <a href="#slider-vic" class="nav-link">Vic Rattlehead</a>
             <a href="#slider-custom" class="nav-link">Custom</a>
             <a href="excel.html" class="btn-header-wa">📊 Manager</a>
             <a href="https://wa.me/5491112345678" target="_blank" class="btn-header-wa">WhatsApp</a>
@@ -1959,6 +1968,23 @@
                 <div class="slider-container" id="slider-musicians-container"></div>
                 <button class="slider-arrow arrow-right"
                     onclick="scrollSlider('slider-musicians-container', 300)">&#8250;</button>
+                <div class="slider-hint">Deslizá para ver más <span class="slider-hint-arrow">➜</span></div>
+            </div>
+        </div>
+
+        <!-- Fila nueva: Vic Rattlehead -->
+        <div class="category-row reveal-on-scroll" id="slider-vic">
+            <div class="category-header slide-in-left">
+                <h3 class="category-title burning-text" style="border-color: #b22222;">Vic Rattlehead</h3>
+                <div class="category-subtitle scanner-text">Icono y catálogo dedicado</div>
+                <div><a href="#viewer/vic" class="nav-link" style="padding-left:0;">Ver todo en pantalla completa ➜</a></div>
+            </div>
+            <div class="slider-wrapper">
+                <button class="slider-arrow arrow-left"
+                    onclick="scrollSlider('slider-vic-container', -300)">&#8249;</button>
+                <div class="slider-container" id="slider-vic-container"></div>
+                <button class="slider-arrow arrow-right"
+                    onclick="scrollSlider('slider-vic-container', 300)">&#8250;</button>
                 <div class="slider-hint">Deslizá para ver más <span class="slider-hint-arrow">➜</span></div>
             </div>
         </div>
@@ -2427,6 +2453,9 @@
             { id: 30, category: "Musician", year: "Leyenda", name: "Nick Menza – Drum God Tee", img: "https://placehold.co/300x450/000099/FFF?text=MENZA", img_design: "https://placehold.co/300x450/000099/FFF?text=MENZA+DESIGN", img_zoom: "https://placehold.co/300x450/000099/FFF?text=MENZA+ZOOM", desc: "El motor de la banda. Diseño dinámico." },
             { id: 31, category: "Musician", year: "Leyenda", name: "David Ellefson – Bass Tee", img: "https://placehold.co/300x450/006600/FFF?text=JUNIOR", img_design: "https://placehold.co/300x450/006600/FFF?text=JUNIOR+DESIGN", img_zoom: "https://placehold.co/300x450/006600/FFF?text=JUNIOR+ZOOM", desc: "El bajista original. Estampa clásica de los 90s." },
             { id: 32, category: "Musician", year: "Actual", name: "Kiko Loureiro – Brazil Tee", img: "https://placehold.co/300x450/333/FFF?text=KIKO", img_design: "https://placehold.co/300x450/333/FFF?text=KIKO+DESIGN", img_zoom: "https://placehold.co/300x450/333/FFF?text=KIKO+ZOOM", desc: "El virtuoso moderno. Diseño técnico." },
+            // VIC RATTLEHEAD
+            { id: 35, category: "Vic", year: "2025", name: "Vic Rattlehead – My Last Words Tee", img: "/images/vic_rattlehead_my_last_words/preview.jpg", img_design: "/images/vic_rattlehead_my_last_words/design.jpg", img_zoom: "/images/vic_rattlehead_my_last_words/zoom.jpg", desc: "Diseño 'vic_rattlehead_my_last_words' — edición limitada.", stock: 20 },
+
             // CUSTOM
             { id: 33, category: "Custom", year: "Tu Idea", name: "CUSTOM SHOP – Tu Diseño", img: "https://placehold.co/300x450/d4af37/000?text=CUSTOM", img_design: "https://placehold.co/300x450/d4af37/000?text=CUSTOM+DESIGN", img_zoom: "https://placehold.co/300x450/d4af37/000?text=CUSTOM+ZOOM", desc: "¿No encontraste lo que buscabas? Mandanos tu idea." },
             { id: 34, category: "Custom", year: "Restauración", name: "RESCATE RETRO – Restauración", img: "https://placehold.co/300x450/555/FFF?text=RETRO", img_design: "https://placehold.co/300x450/555/FFF?text=RETRO+DESIGN", img_zoom: "https://placehold.co/300x450/555/FFF?text=RETRO+ZOOM", desc: "¿Esa remera que perdiste en el 95? La reconstruimos." }
@@ -2485,6 +2514,7 @@
         renderSlider('slider-albums-container', item => item.category === 'Album');
         renderSlider('slider-songs-container', item => item.category === 'Song');
         renderSlider('slider-musicians-container', item => item.category === 'Musician');
+        renderSlider('slider-vic-container', item => item.category === 'Vic');
         renderSlider('slider-custom-container', item => item.category === 'Custom');
 
         function scrollSlider(id, val) {
@@ -2747,6 +2777,55 @@
             document.addEventListener('DOMContentLoaded', ()=>{
                 document.querySelectorAll('.model-card').forEach(initModelCard);
             });
+        })();
+    </script>
+
+    <!-- GA4 WHATSAPP CLICK TRACKING -->
+    <script>
+        // Global listener for WhatsApp links
+        document.addEventListener("click", function (e) {
+          const a = e.target.closest("a");
+          if (!a) return;
+
+          const href = (a.getAttribute("href") || "").toLowerCase();
+          const isWhatsApp =
+            href.includes("wa.me/") ||
+            href.includes("api.whatsapp.com/") ||
+            href.includes("web.whatsapp.com/") ||
+            href.startsWith("whatsapp:");
+
+          if (!isWhatsApp) return;
+
+          if (typeof gtag === "function") {
+            gtag("event", "whatsapp_click", {
+              link_url: a.href || href,
+              link_text: (a.innerText || "").trim().slice(0, 80),
+              page_path: location.pathname,
+            });
+          }
+        }, true);
+
+        // Track window.open WhatsApp usage
+        (function () {
+          const originalOpen = window.open;
+          window.open = function (url, ...rest) {
+            try {
+              const u = String(url || "").toLowerCase();
+              const isWhatsApp =
+                u.includes("wa.me/") ||
+                u.includes("api.whatsapp.com/") ||
+                u.includes("web.whatsapp.com/");
+
+              if (isWhatsApp && typeof gtag === "function") {
+                gtag("event", "whatsapp_click", {
+                  link_url: String(url),
+                  page_path: location.pathname,
+                  trigger: "window.open",
+                });
+              }
+            } catch (_) {}
+            return originalOpen.call(window, url, ...rest);
+          };
         })();
     </script>
 </body>
